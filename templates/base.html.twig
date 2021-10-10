@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}      {% endblock %}</title>
+    {{ include('default/header.html.twig') }}
+
+</head>
+{% block stylesheets %}
+
+{% endblock %}
+<body class="  ">
+<!-- loader Start -->
+<div id="loading">
+    <div id="loading-center">
+    </div>
+</div>
+<!-- loader END -->
+<!-- Wrapper Start -->
+<div class="wrapper">
+
+    <div class="iq-sidebar  sidebar-default ">
+        <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
+            <a href="index.html" class="header-logo">
+                <img src="../assets/images/logo.png" class="img-fluid rounded-normal light-logo" alt="logo"><h5
+                        class="logo-title light-logo ml-3">POSDash</h5>
+            </a>
+            <div class="iq-menu-bt-sidebar ml-0">
+                <i class="las la-bars wrapper-menu"></i>
+            </div>
+        </div>
+        <div class="data-scrollbar" data-scroll="1">
+
+            {{ include('default/menu.html.twig') }}
+
+
+            <div class="p-3"></div>
+        </div>
+    </div>
+
+
+    {{ include('default/menu2.html.twig') }}
+
+
+
+    <div class="content-page">
+        {% block content %}   {% endblock%}
+    </div>
+</div>
+<!-- Wrapper End-->
+<footer class="iq-footer">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item"><a href="privacy-policy.html">Privacy Policy</a></li>
+                            <li class="list-inline-item"><a href="terms-of-service.html">Terms of Use</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6 text-right">
+                        <span class="mr-1"><script>document.write(new Date().getFullYear())</script>©</span> <a href="#"
+                                                                                                                class="">POS
+                            Dash</a>.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+{{ include('default/footer.html.twig') }}
+</body>
+
+<!-- Mirrored from templates.iqonic.design/posdash/html/backend/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 10 Oct 2021 16:59:29 GMT -->
+</html>
+
+{% block javascripts %}
+
+{% endblock %}
+
