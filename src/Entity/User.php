@@ -14,6 +14,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
 
     public const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_RESPONSABLE = 'ROLE_RESPONSABLE';
+    public const ROLE_GERANT = 'ROLE_GERANT';
 
     /**
      * @ORM\Id
@@ -32,11 +35,71 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $roles = [];
 
+
+    private $plainPassword;
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $lastName;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $phone;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $status;
+
+    /**
+     * @return mixed
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+    /**
+     * @param $password
+     */
+    public function setPlainPassword($password): void
+    {
+        $this->plainPassword = $password;
+    }
+
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $matricule;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastLogin;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $restToken;
+
+    public function __construct()
+    {
+        $this->status = true;
+        $this->setLastLogin(new \DateTime('now'));
+        $this->setStatus(1);
+    }
 
     public function getId(): ?int
     {
@@ -125,5 +188,89 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?bool $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getMatricule(): ?string
+    {
+        return $this->matricule;
+    }
+
+    public function setMatricule(?string $matricule): self
+    {
+        $this->matricule = $matricule;
+
+        return $this;
+    }
+
+    public function getLastLogin(): ?\DateTimeInterface
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(?\DateTimeInterface $lastLogin): self
+    {
+        $this->lastLogin = $lastLogin;
+
+        return $this;
+    }
+
+    public function getRestToken(): ?string
+    {
+        return $this->restToken;
+    }
+
+    public function setRestToken(?string $restToken): self
+    {
+        $this->restToken = $restToken;
+
+        return $this;
     }
 }

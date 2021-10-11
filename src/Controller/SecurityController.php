@@ -33,6 +33,27 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        $user->setLastLogin(new \DateTime());
+        $em->persist($user);
+        $em->flush();
+        throw new \RuntimeException('Cela ne devrait jamais être atteint!');
+
     }
+
+
+    /**
+     * @Route("/profile", name="profile")
+     */
+
+    public function profile()
+    {
+        $user = $this->getUser();
+        return $this->render('default/profile.html.twig', array('user' => $user));
+
+
+    }
+
+
 }
