@@ -1,5 +1,8 @@
 
 ###> symfony/framework-bundle ###
+/composer.lock
+/psymfony.lock
+/public/uploads/*
 /.env
 /.env.test
 /.env.local.php

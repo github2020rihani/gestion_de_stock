@@ -24,7 +24,8 @@
     <div class="iq-sidebar  sidebar-default ">
         <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
             <a href="index.html" class="header-logo">
-                <img src="{{ asset('assets/images/logo.png') }}" class="img-fluid rounded-normal light-logo" alt="logo"><h5
+                <img src="{{ asset('assets/images/logo.png') }}" class="img-fluid rounded-normal light-logo" alt="logo">
+                <h5
                         class="logo-title light-logo ml-3">POSDash</h5>
             </a>
             <div class="iq-menu-bt-sidebar ml-0">
@@ -32,16 +33,19 @@
             </div>
         </div>
         <div class="data-scrollbar" data-scroll="1">
-            {% if  app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
-                {{ include('default/menu/menu.html.twig') }}
+            {% if app.user %}
+                {% if  app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
+                    {{ include('default/menu/menu.html.twig') }}
 
-            {% elseif  app.user.roles[0] == 'ROLE_ADMIN' %}
-                {{ include('default/menu/menu_admin.html.twig') }}
+                {% elseif  app.user.roles[0] == 'ROLE_ADMIN' %}
+                    {{ include('default/menu/menu_admin.html.twig') }}
 
-            {% elseif  app.user.roles[0] == 'ROLE_GERANT' %}
-                {{ include('default/menu/menu_garant.html.twig') }}
-            {% else %}
-                {{ include('default/menu/menu_responsable.html.twig') }}
+                {% elseif  app.user.roles[0] == 'ROLE_GERANT' %}
+                    {{ include('default/menu/menu_garant.html.twig') }}
+                {% else %}
+                    {{ include('default/menu/menu_responsable.html.twig') }}
+                {% endif %}
+
             {% endif %}
 
 
@@ -49,25 +53,26 @@
         </div>
     </div>
 
+    {% if app.user %}
 
-    {% if  app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
-        {{ include('default/menu/menu2.html.twig') }}
+        {% if  app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
+            {{ include('default/menu/menu2.html.twig') }}
 
-    {% elseif  app.user.roles[0] == 'ROLE_ADMIN' %}
-        {{ include('default/menu/menu2_admin.html.twig') }}
+        {% elseif  app.user.roles[0] == 'ROLE_ADMIN' %}
+            {{ include('default/menu/menu2_admin.html.twig') }}
 
-    {% elseif  app.user.roles[0] == 'ROLE_GERANT' %}
-        {{ include('default/menu/menu2_garant.html.twig') }}
+        {% elseif  app.user.roles[0] == 'ROLE_GERANT' %}
+            {{ include('default/menu/menu2_garant.html.twig') }}
 
-    {% else %}
-        {{ include('default/menu/menu2_responsable.html.twig') }}
+        {% else %}
+            {{ include('default/menu/menu2_responsable.html.twig') }}
 
+        {% endif %}
     {% endif %}
 
 
-
     <div class="content-page">
-        {% block content %}   {% endblock%}
+        {% block content %}   {% endblock %}
     </div>
 </div>
 <!-- Wrapper End-->

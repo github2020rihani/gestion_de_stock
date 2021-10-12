@@ -17,7 +17,13 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                {{ form_start(form,{'method': 'post', 'action': path('add_category'),'attr': {'data-toggle': 'validator'}}) }}
+                                {%  if categorie %}
+                                    {{ form_start(form,{'method': 'post', 'action': path('edit_category', {id: categorie.id}),'attr': {'data-toggle': 'validator'}}) }}
+
+                                {% else%}
+                                    {{ form_start(form,{'method': 'post', 'action': path('add_category'),'attr': {'data-toggle': 'validator'}}) }}
+
+                                {% endif %}
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
