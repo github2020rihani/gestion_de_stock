@@ -3,11 +3,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ClientRepository;
+use App\Repository\FournisseurRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=ClientRepository::class)
+ * @ORM\Entity(repositoryClass=FournisseurRepository::class)
  */
 class  Fournisseur
 {
@@ -50,6 +50,11 @@ class  Fournisseur
      */
     private $email;
 
+    public function __toString()
+    {
+        return $this->nom;
+    }
+
     /**
      * @return \DateTime
      */
@@ -65,6 +70,7 @@ class  Fournisseur
     {
         $this->createdAt = $createdAt;
     }
+
 
     /**
      * @ORM\Column(type="datetime")
@@ -188,6 +194,7 @@ class  Fournisseur
     {
         $this->email = $email;
     }
+
 
 
 

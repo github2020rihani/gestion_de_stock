@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Categories;
 use App\Entity\Category;
 use App\Form\CategoriesType;
-use App\Form\CategorYType;
+use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +26,7 @@ class CategoryController extends AbstractController
     public function add( Request $request , EntityManagerInterface $em): Response
     {
         $categories = new Category();
-        $form = $this->createForm(CategorYType::class,$categories);
+        $form = $this->createForm(CategoryType::class,$categories);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $em->persist($categories);
@@ -80,7 +80,7 @@ class CategoryController extends AbstractController
 
 
 
-        $form = $this->createForm(CategorYType::class,$categorie);
+        $form = $this->createForm(CategoryType::class,$categorie);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $em->persist($categorie);

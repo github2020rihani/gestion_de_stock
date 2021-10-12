@@ -5,6 +5,7 @@ use App\Entity\Fournisseur;
 use App\Form\FournisseurType;
 use App\Repository\FournisseurRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,7 +69,6 @@ class FournisseurController extends AbstractController
         return $this->redirectToRoute('index_fournisseur');
     }
 
-
     /**
      * @Route("/edit/{id<\d+>}", name="edit_fournisseur")
      */
@@ -90,7 +90,6 @@ class FournisseurController extends AbstractController
             'fournisseur' => $fournisseur
         ]);
     }
-
 
 
 
