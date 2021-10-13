@@ -17,7 +17,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                {{ form_start(form) }}
+
                                 {{ form_start(form,{'method': 'post', 'action': path('add_category'),'attr': {'data-toggle': 'validator'}}) }}
                                 <div class="row">
                                     <div class="col-md-12">
@@ -40,7 +40,6 @@
                                 <button type="submit" class="btn btn-primary mr-2">{%  if categorie %} Modifier {% else%}  Sauvargarder {% endif %}</button>
                                 <button type="reset" class="btn btn-danger">Annuler</button>
 
-                                {{ form_start(form) }}
                                 {{ form_end(form) }}
 
 

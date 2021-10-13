@@ -13,7 +13,7 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between">
                                 <div class="header-title">
-                                    <h4 class="card-title">{%  if client %} Modifier {% else%}  Ajouter {% endif %} clients</h4>
+                                    <h4 class="card-title">{%  if client %} Modifier {% else%}  Ajouter {% endif %} client</h4>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -57,14 +57,8 @@
                                 </div>
                             </div>
                             <div class="card-body">
-
-                                {%  if client %}
-                                    {{ form_start(form,{'method': 'post', 'action': path('edit_client' , {id: client.id}),'attr': {'novalidate': 'novalidate'}}) }}
-                                {% else%}
-                                    {{ form_start(form,{'method': 'post', 'action': path('add_client'),'attr': {'novalidate': 'novalidate'}}) }}
-                                {% endif %}
                                 <div class="new-user-info">
-                                    {{ form_start(form,{'method': 'post', 'action': path('add_client'),'attr': {'novalidate': 'novalidate'}}) }}
+                                    {{ form_start(form,{'method': 'post', 'action': path('add_client'),'attr': {'data-toggle': 'validator'}}) }}
                                         <div class="row">
                                             <div class="form-group col-md-6">
                                                 <label for="pno">Code Client:</label>
@@ -82,17 +76,13 @@
                                                 <label for="lname">Prenom:</label>
                                                 {{ form_widget(form.prenom ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter Prenom'}}) }}
                                             </div>
-                                            <div class="form-group col-md-12">
+                                            <div class="form-group col-md-6">
                                                 <label for="add1">Adresse:</label>
                                                 {{ form_widget(form.adresse ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter adresse'}}) }}
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="add2">Telephone:</label>
                                                 {{ form_widget(form.telephone ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter telephone'}}) }}
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="email">Email:</label>
-                                                {{ form_widget(form.email ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter email'}}) }}
                                             </div>
 
                                             <div class="form-group col-md-6">
@@ -111,8 +101,10 @@
                                                     </select>
                                                 </div>
                                             </div>
-
-
+                                            <div class="form-group col-md-6">
+                                                <label for="email">Email:</label>
+                                                {{ form_widget(form.email ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter email'}}) }}
+                                            </div>
 
 
                                         </div>
@@ -121,12 +113,8 @@
                                     <button type="submit" class="btn btn-primary mr-2">{%  if client %} Modifier {% else%}  Sauvargarder {% endif %}</button>
                                     <button type="reset" class="btn btn-danger">Annuler</button>
 
-
                                     {{ form_start(form) }}
-
                                     {{ form_end(form) }}
-
-
                                 </div>
                             </div>
                         </div>

@@ -45,6 +45,8 @@ class  Fournisseur
      */
     private $telephone;
 
+
+
     /**
      * @ORM\Column(type="string", length=100)
      */

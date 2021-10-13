@@ -9,9 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @Route("/admin/client")
+ * @Route("/super_admin/client")
  */
 class ClientController extends AbstractController
 {
@@ -20,18 +21,25 @@ class ClientController extends AbstractController
     /**
      * @Route("/new", name="add_client")
      */
-    public function add( Request $request , EntityManagerInterface $em): Response
+    public function add(Request $request , EntityManagerInterface $em): Response
     {
         $clients = new Client();
         $form = $this->createForm(ClientType::class,$clients);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
-            $em->persist($clients);
+
+        if($form->isSubmitted() && $form->isValid()    ){
+            $email = $clients->getEmail();
+
+                $em->persist($clients);
+                $em->flush();
+
             $em->flush();
             $this->addFlash('success',' Successfully added');
 
             return $this->redirectToRoute('index_client');
         }
+
+
 
         return $this->render('admin/client/new.html.twig',[
             'form' => $form->createView(),
@@ -50,8 +58,6 @@ class ClientController extends AbstractController
             'clients' =>$clients
         ]);
     }
-
-
 
     /**
      * @Route("/{id<\d+>}", name="delete_client")

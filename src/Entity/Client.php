@@ -5,9 +5,12 @@ namespace App\Entity;
 
 use App\Repository\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
+ * @UniqueEntity("email")
  */
 class  Client
 {
@@ -26,11 +29,13 @@ class  Client
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="Nom est vide")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="Prénom est vide")
      */
     private $prenom;
 
@@ -41,19 +46,30 @@ class  Client
     private $adresse;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="telephone", type="string", length=20, nullable=true)
+     *
+     * @Assert\Length(
+     *     min=8,
+     *     max="20",
+     *     minMessage="Mobile doit être au moin 8 caractéres.",
+     *     maxMessage="Mobile est trop long (max 20 caractéres).",
+     *    )
      */
     private $telephone;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @Assert\Email()
      */
     private $email;
+
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $codeTVA;
+
+
 
     /**
      * @return \DateTime
@@ -77,6 +93,54 @@ class  Client
      */
     private $createdAt;
 
+    /**
+     * @return mixed
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param mixed $country
+     */
+    public function setCountry($country): void
+    {
+        $this->country = $country;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param mixed $city
+     */
+    public function setCity($city): void
+    {
+        $this->city = $city;
+    }
+
+  /*  /**
+     * @ORM\OneToOne(targetEntity=Location::class, inversedBy="client", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true)
+
+    private $location
+*/
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $country;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $city;
 
     public function __construct()
     {
@@ -209,6 +273,18 @@ class  Client
     public function setCodeTVA($codeTVA): void
     {
         $this->codeTVA = $codeTVA;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(Location $location): self
+    {
+        $this->location = $location;
+
+        return $this;
     }
 
 

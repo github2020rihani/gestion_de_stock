@@ -13,7 +13,7 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between">
                                 <div class="header-title">
-                                    <h4 class="card-title">{%  if client %} Modifier {% else%}  Ajouter {% endif %} clients</h4>
+                                    <h4 class="card-title">Ajouter Client</h4>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -57,42 +57,28 @@
                                 </div>
                             </div>
                             <div class="card-body">
-
-                                {%  if client %}
-                                    {{ form_start(form,{'method': 'post', 'action': path('edit_client' , {id: client.id}),'attr': {'novalidate': 'novalidate'}}) }}
-                                {% else%}
-                                    {{ form_start(form,{'method': 'post', 'action': path('add_client'),'attr': {'novalidate': 'novalidate'}}) }}
-                                {% endif %}
                                 <div class="new-user-info">
-                                    {{ form_start(form,{'method': 'post', 'action': path('add_client'),'attr': {'novalidate': 'novalidate'}}) }}
+                                    <form>
                                         <div class="row">
                                             <div class="form-group col-md-6">
-                                                <label for="pno">Code Client:</label>
-                                                {{ form_widget(form.code , {'attr': {'class' : 'form-control' , 'placeholder': 'Enter Code'}}) }}
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="pno">Code Tva:</label>
-                                                {{ form_widget(form.codeTVA , {'attr': {'class' : 'form-control' , 'placeholder': 'Enter Code'}}) }}
-                                            </div>
-                                            <div class="form-group col-md-6">
                                                 <label for="fname">Nom:</label>
-                                                {{ form_widget(form.nom ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter Nom'}}) }}
+                                                <input type="text" class="form-control" id="fname" placeholder="First Name">
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="lname">Prenom:</label>
-                                                {{ form_widget(form.prenom ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter Prenom'}}) }}
+                                                <input type="text" class="form-control" id="lname" placeholder="Last Name">
                                             </div>
-                                            <div class="form-group col-md-12">
+                                            <div class="form-group col-md-6">
                                                 <label for="add1">Adresse:</label>
-                                                {{ form_widget(form.adresse ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter adresse'}}) }}
+                                                <input type="text" class="form-control" id="add1" placeholder="Street Address 1">
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="add2">Telephone:</label>
-                                                {{ form_widget(form.telephone ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter telephone'}}) }}
+                                                <input type="text" class="form-control" id="add2" placeholder="Street Address 2">
                                             </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="email">Email:</label>
-                                                {{ form_widget(form.email ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter email'}}) }}
+                                            <div class="form-group col-md-12">
+                                                <label for="cname">Nom de l'entreprise:</label>
+                                                <input type="text" class="form-control" id="cname" placeholder="Company Name">
                                             </div>
 
                                             <div class="form-group col-md-6">
@@ -111,22 +97,20 @@
                                                     </select>
                                                 </div>
                                             </div>
-
-
-
+                                            <div class="form-group col-md-6">
+                                                <label for="email">Email:</label>
+                                                <input type="email" class="form-control" id="email" placeholder="Email">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="pno">Code Client:</label>
+                                                <input type="text" class="form-control" id="pno" placeholder="Pin Code">
+                                            </div>
 
                                         </div>
                                         <hr>
 
-                                    <button type="submit" class="btn btn-primary mr-2">{%  if client %} Modifier {% else%}  Sauvargarder {% endif %}</button>
-                                    <button type="reset" class="btn btn-danger">Annuler</button>
-
-
-                                    {{ form_start(form) }}
-
-                                    {{ form_end(form) }}
-
-
+                                        <button type="submit" class="btn btn-primary">Add New User</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
