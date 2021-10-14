@@ -1,0 +1,7 @@
+vich_uploader:
+    db_driver: orm # or mongodb or phpcr
+    mappings:
+        produit_image:
+            uri_prefix: /uploads/produits
+            upload_destination: '%kernel.project_dir%/public/uploads/produits'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer

@@ -72,7 +72,10 @@
 
 
     <div class="content-page">
-        {% block content %}   {% endblock %}
+
+        {% block content %}
+
+        {% endblock%}
     </div>
 </div>
 <!-- Wrapper End-->
@@ -98,12 +101,15 @@
     </div>
 </footer>
 {{ include('default/footer.html.twig') }}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+{% block javascripts %}
+
+{% endblock %}
 </body>
 
 <!-- Mirrored from templates.iqonic.design/posdash/html/backend/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 10 Oct 2021 16:59:29 GMT -->
 </html>
 
-{% block javascripts %}
 
-{% endblock %}
 

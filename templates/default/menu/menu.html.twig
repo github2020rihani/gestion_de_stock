@@ -3,7 +3,7 @@
 <nav class="iq-sidebar-menu">
     <ul id="iq-sidebar-toggle" class="iq-menu">
         <li class="">
-            <a href="{{ path('dashboard_super_admin') }}" class="svg-icon">
+            <a href="{{ path('dashboard_super_admin' , {slug: app.user.departemnt.CodeDeppart}) }}" class="svg-icon">
                 <svg class="svg-icon" id="p-dash1" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                      stroke-linecap="round" stroke-linejoin="round">
@@ -15,6 +15,31 @@
             </a>
         </li>
 
+
+        <li class="{% if app.request.attributes.get('_route') in [ 'index_departement' , 'add_departement'] %} active {% endif %}">
+            <a href="#departement" class="collapsed" data-toggle="collapse" aria-expanded="{% if app.request.attributes.get('_route') in [ 'index_departement' , 'add_departement'] %} true {% else%} false {% endif %}">
+                <svg class="svg-icon" id="p-dash3" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span class="ml-4">Departement</span>
+                <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
+                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="10 15 15 20 20 15"></polyline>
+                    <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
+                </svg>
+            </a>
+            <ul id="departement" class="iq-submenu collapse {% if app.request.attributes.get('_route') in [ 'index_departement' , 'add_departement'] %} show {% endif %}" data-parent="#iq-sidebar-toggle">
+                <li class="{% if app.request.attributes.get('_route') in [ 'index_departement' ] %} active {% endif %}">
+                    <a href="{{ path('index_departement') }}">
+                        <i class="las la-minus"></i><span>List Departements</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
         <li class="{% if app.request.attributes.get('_route') in [ 'index_category' , 'add_category'] %} active {% endif %}">
             <a href="#category" class="collapsed" data-toggle="collapse" aria-expanded="{% if app.request.attributes.get('_route') in [ 'index_category' , 'add_category'] %} true {% else%} false {% endif %}">
                 <svg class="svg-icon" id="p-dash3" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
@@ -44,38 +69,9 @@
                 </li>
             </ul>
         </li>
-        <li class=" ">
-            <a href="#product" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                <svg class="svg-icon" id="p-dash2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                     stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="9" cy="21" r="1"></circle>
-                    <circle cx="20" cy="21" r="1"></circle>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                </svg>
-                <span class="ml-4">Products</span>
-                <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
-                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="10 15 15 20 20 15"></polyline>
-                    <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                </svg>
-            </a>
-            <ul id="product" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                <li class="">
-                    <a href="page-list-product.html">
-                        <i class="las la-minus"></i><span>List Product</span>
-                    </a>
-                </li>
-                <li class="">
-                    <a href="page-add-product.html">
-                        <i class="las la-minus"></i><span>Add Product</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class=" ">
-            <a href="#people" class="collapsed" data-toggle="collapse" aria-expanded="false">
+
+        <li class="{% if app.request.attributes.get('_route') in [ 'index_client' , 'add_client'] %} active {% endif %}">
+            <a href="#client" class="collapsed" data-toggle="collapse" aria-expanded="{% if app.request.attributes.get('_route') in [ 'index_client' , 'add_client'] %} true {% else%} false {% endif %}">
                 <svg class="svg-icon" id="p-dash8" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                      stroke-linecap="round" stroke-linejoin="round">
@@ -84,7 +80,7 @@
                     <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                     <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                 </svg>
-                <span class="ml-4">People</span>
+                <span class="ml-4">Clients</span>
                 <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -92,48 +88,32 @@
                     <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
                 </svg>
             </a>
-            <ul id="people" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                <li class="">
-                    <a href="page-list-customers.html">
-                        <i class="las la-minus"></i><span>Customers</span>
+            <ul id="client" class="iq-submenu collapse {% if app.request.attributes.get('_route') in [ 'index_client' , 'add_client'] %} show {% endif %}" data-parent="#iq-sidebar-toggle">
+                <li class="{% if app.request.attributes.get('_route') in [ 'index_client' ] %} active {% endif %}">
+                    <a href="{{ path('index_client') }}">
+                        <i class="las la-minus"></i><span>List client</span>
                     </a>
                 </li>
-                <li class="">
-                    <a href="page-add-customers.html">
-                        <i class="las la-minus"></i><span>Add Customers</span>
-                    </a>
-                </li>
-                <li class="">
-                    <a href="page-list-users.html">
-                        <i class="las la-minus"></i><span>Users</span>
-                    </a>
-                </li>
-                <li class="">
-                    <a href="page-add-users.html">
-                        <i class="las la-minus"></i><span>Add Users</span>
-                    </a>
-                </li>
-                <li class="">
-                    <a href="page-list-suppliers.html">
-                        <i class="las la-minus"></i><span>Suppliers</span>
-                    </a>
-                </li>
-                <li class="">
-                    <a href="page-add-supplier.html">
-                        <i class="las la-minus"></i><span>Add Suppliers</span>
+                <li class="{% if app.request.attributes.get('_route') in [ 'add_client' ] %} active {% endif %}">
+                    <a href="{{ path('add_client') }}">
+                        <i class="las la-minus"></i><span>Ajouter client</span>
                     </a>
                 </li>
             </ul>
         </li>
-        <li class=" ">
-            <a href="#sale" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                <svg class="svg-icon" id="p-dash4" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+
+
+        <li class="{% if app.request.attributes.get('_route') in [ 'index_fournisseur' , 'add_fournisseur'] %} active {% endif %}">
+            <a href="#fournisseur" class="collapsed" data-toggle="collapse" aria-expanded="{% if app.request.attributes.get('_route') in [ 'index_fournisseur' , 'add_fournisseur'] %} true {% else%} false {% endif %}">
+                <svg class="svg-icon" id="p-dash8" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                      stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
-                    <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                 </svg>
-                <span class="ml-4">Stock</span>
+                <span class="ml-4">Fournisseur</span>
                 <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -141,19 +121,111 @@
                     <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
                 </svg>
             </a>
-            <ul id="sale" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                <li class="">
-                    <a href="page-list-sale.html">
-                        <i class="las la-minus"></i><span>Entrer</span>
+            <ul id="fournisseur" class="iq-submenu collapse {% if app.request.attributes.get('_route') in [ 'index_fournisseur' , 'add_fournisseur'] %} show {% endif %}" data-parent="#iq-sidebar-toggle">
+                <li class="{% if app.request.attributes.get('_route') in [ 'index_fournisseur' ] %} active {% endif %}">
+                    <a href="{{ path('index_fournisseur') }}">
+                        <i class="las la-minus"></i><span>List fournisseur</span>
                     </a>
                 </li>
-                <li class="">
-                    <a href="page-add-sale.html">
-                        <i class="las la-minus"></i><span>Sortie</span>
+                <li class="{% if app.request.attributes.get('_route') in [ 'add_fournisseur' ] %} active {% endif %}">
+                    <a href="{{ path('add_fournisseur') }}">
+                        <i class="las la-minus"></i><span>Ajouter fournisseur</span>
                     </a>
                 </li>
             </ul>
         </li>
+
+        <li class="{% if app.request.attributes.get('_route') in [ 'index_produit' , 'add_produit'] %} active {% endif %}">
+            <a href="#produit" class="collapsed" data-toggle="collapse" aria-expanded="{% if app.request.attributes.get('_route') in [ 'index_produit' , 'add_produit'] %} true {% else%} false {% endif %}">
+                <svg class="svg-icon" id="p-dash3" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span class="ml-4">Produits</span>
+                <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
+                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="10 15 15 20 20 15"></polyline>
+                    <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
+                </svg>
+            </a>
+            <ul id="produit" class="iq-submenu collapse {% if app.request.attributes.get('_route') in [ 'index_produit' , 'add_produit'] %} show {% endif %}" data-parent="#iq-sidebar-toggle">
+                <li class="{% if app.request.attributes.get('_route') in [ 'index_produit' ] %} active {% endif %}">
+                    <a href="{{ path('index_produit') }}">
+                        <i class="las la-minus"></i><span>List produits</span>
+                    </a>
+                </li>
+                <li class="{% if app.request.attributes.get('_route') in [ 'add_produit' ] %} active {% endif %}">
+                    <a href="{{ path('add_produit') }}">
+                        <i class="las la-minus"></i><span>Ajouter produit</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+
+        <li class="{% if app.request.attributes.get('_route') in [ 'index_user' , 'add_user'] %} active {% endif %}">
+            <a href="#users" class="collapsed" data-toggle="collapse" aria-expanded="{% if app.request.attributes.get('_route') in [ 'index_user' , 'add_user'] %} true {% else%} false {% endif %}">
+                <svg class="svg-icon" id="p-dash8" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                <span class="ml-4">Utilisateurs</span>
+                <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
+                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="10 15 15 20 20 15"></polyline>
+                    <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
+                </svg>
+            </a>
+            <ul id="users" class="iq-submenu collapse {% if app.request.attributes.get('_route') in [ 'index_user' , 'add_user'] %} show {% endif %}" data-parent="#iq-sidebar-toggle">
+                <li class="{% if app.request.attributes.get('_route') in [ 'index_user' ] %} active {% endif %}">
+                    <a href="{{ path('index_user') }}">
+                        <i class="las la-minus"></i><span>List utilisateurs</span>
+                    </a>
+                </li>
+                <li class="{% if app.request.attributes.get('_route') in [ 'add_user' ] %} active {% endif %}">
+                    <a href="{{ path('add_user') }}">
+                        <i class="las la-minus"></i><span>Ajouter utilisateur</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+{#        <li class=" ">#}
+{#            <a href="#sale" class="collapsed" data-toggle="collapse" aria-expanded="false">#}
+{#                <svg class="svg-icon" id="p-dash4" width="20" height="20" xmlns="http://www.w3.org/2000/svg"#}
+{#                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"#}
+{#                     stroke-linecap="round" stroke-linejoin="round">#}
+{#                    <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>#}
+{#                    <path d="M22 12A10 10 0 0 0 12 2v10z"></path>#}
+{#                </svg>#}
+{#                <span class="ml-4">Stock</span>#}
+{#                <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"#}
+{#                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"#}
+{#                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">#}
+{#                    <polyline points="10 15 15 20 20 15"></polyline>#}
+{#                    <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>#}
+{#                </svg>#}
+{#            </a>#}
+{#            <ul id="sale" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">#}
+{#                <li class="">#}
+{#                    <a href="page-list-sale.html">#}
+{#                        <i class="las la-minus"></i><span>Entrer</span>#}
+{#                    </a>#}
+{#                </li>#}
+{#                <li class="">#}
+{#                    <a href="page-add-sale.html">#}
+{#                        <i class="las la-minus"></i><span>Sortie</span>#}
+{#                    </a>#}
+{#                </li>#}
+{#            </ul>#}
+{#        </li>#}
 
     </ul>
 </nav>
