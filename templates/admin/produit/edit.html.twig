@@ -18,21 +18,15 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                {%  if produit %}
-                                    {{ form_start(form,{'method': 'post', 'action': path('edit_produit', {id: produit.id}),'attr': {'data-toggle': 'validator'}}) }}
-
-                                {% else%}
-                                    {{ form_start(form,{'method': 'post', 'action': path('add_produit'),'attr': {'data-toggle': 'validator'}}) }}
-
-                                {% endif %}
+                                {{ form_start(form,{'method': 'post', 'action': path('edit_produit', {id: produit.id}),'attr': {'data-toggle': 'validator'}}) }}
                                 <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Image *</label>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Image *</label>
 
                                             <div class="custom-file">
                                                 {{ form_widget(form.imageFile ,{'attr': {'class' : 'custom-file-input'}}) }}
-                                                <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                                                <label class="custom-file-label" for="validatedCustomFile">{{ produit.imageName }}</label>
                                                 <div class="invalid-feedback">Example invalid custom file feedback</div>
                                             </div>
 
@@ -128,7 +122,6 @@
                                 <button type="reset" class="btn btn-danger">Annuler</button>
 
 
-                                {{ form_rest(form) }}
                                 {{ form_end(form) }}
 
                             </div>
@@ -143,26 +136,5 @@
 
 
 {% block javascripts %}
-    <script>
-        var $country= $('#produit_category');
 
-        $country.change(function() {
-            var $form = $(this).closest('form');
-            var data = {};
-            console.log(data);
-            console.log($country.val());
-            data[$country.attr('name')] = $country.val();
-
-            $.ajax({
-                url : $form.attr('action'),
-                type: $form.attr('method'),
-                data : data,
-                success: function(html) {
-                    $('#produit_fournisseur').replaceWith(
-                        $(html).find('#produit_fournisseur')
-                    );
-                }
-            });
-        });
-    </script>
 {% endblock %}

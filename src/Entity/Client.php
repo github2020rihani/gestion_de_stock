@@ -58,7 +58,7 @@ class  Client
     private $telephone;
 
     /**
-     * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @ORM\Column(name="email", type="string", length=255, unique=true, nullable=true)
      * @Assert\Email()
      */
     private $email;
@@ -94,53 +94,16 @@ class  Client
     private $createdAt;
 
     /**
-     * @return mixed
-     */
-    public function getCountry()
-    {
-        return $this->country;
-    }
-
-    /**
-     * @param mixed $country
-     */
-    public function setCountry($country): void
-    {
-        $this->country = $country;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCity()
-    {
-        return $this->city;
-    }
-
-    /**
-     * @param mixed $city
-     */
-    public function setCity($city): void
-    {
-        $this->city = $city;
-    }
-
-  /*  /**
-     * @ORM\OneToOne(targetEntity=Location::class, inversedBy="client", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=true)
-
-    private $location
-*/
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Country" , inversedBy="clients")
      */
     private $country;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="App\Entity\City" , inversedBy="clients" )
      */
     private $city;
+
+
 
     public function __construct()
     {
@@ -275,17 +238,34 @@ class  Client
         $this->codeTVA = $codeTVA;
     }
 
-    public function getLocation(): ?Location
+    public function getCountry(): ?Country
     {
-        return $this->location;
+        return $this->country;
     }
 
-    public function setLocation(Location $location): self
+    public function setCountry(?Country $country): self
     {
-        $this->location = $location;
+        $this->country = $country;
 
         return $this;
     }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+
+
+
+
 
 
 

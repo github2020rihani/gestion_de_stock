@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -14,6 +15,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Produit
 {
+
+    const EN_STOCK = "En stock";
+    const EPUIISE = "EPUISE";
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -89,12 +93,6 @@ class Produit
 
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $addedBy;
-
-
-    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime_immutable",options={"default": "CURRENT_TIMESTAMP"})
      */
@@ -107,8 +105,7 @@ class Produit
     private $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="produits")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="produits")
      */
     private $category;
 
@@ -129,8 +126,6 @@ class Produit
     }
 
 
-
-
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      *
@@ -148,13 +143,24 @@ class Produit
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="Fournisseur")
-     * @ORM\JoinColumns({
-     * @ORM\JoinColumn(name="fournisseur_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="App\Entity\Fournisseur")
      */
     private $fournisseur;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="produits")
+     */
+    private $createdBy;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $status;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $qteSec;
 
 
     public function __toString()
@@ -171,6 +177,10 @@ class Produit
     }
 
 
+    public function __construct()
+    {
+        $this->status = true;
+    }
 
     public function getId(): ?int
     {
@@ -239,7 +249,6 @@ class Produit
     }
 
 
-
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
@@ -292,10 +301,6 @@ class Produit
     }
 
 
-
-
-
-
     public function getTva(): ?string
     {
         return $this->tva;
@@ -332,7 +337,41 @@ class Produit
         return $this;
     }
 
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
 
+    public function setCreatedBy(?User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?bool $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getQteSec(): ?string
+    {
+        return $this->qteSec;
+    }
+
+    public function setQteSec(string $qteSec): self
+    {
+        $this->qteSec = $qteSec;
+
+        return $this;
+    }
 
 
 }

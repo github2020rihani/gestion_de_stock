@@ -79,6 +79,21 @@ class  Fournisseur
      */
     private $createdAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="fournisseurs")
+     */
+    private $category;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="fournisseurs")
+     */
+    private $country;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="fournisseurs")
+     */
+    private $city;
+
 
     public function __construct()
     {
@@ -195,6 +210,42 @@ class  Fournisseur
     public function setEmail($email): void
     {
         $this->email = $email;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getCountry(): ?Country
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?Country $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): self
+    {
+        $this->city = $city;
+
+        return $this;
     }
 
 

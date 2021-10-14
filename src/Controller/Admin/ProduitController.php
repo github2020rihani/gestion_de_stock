@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 use App\Entity\Produit;
+use App\Form\EditProduitType;
 use App\Form\ProduitType;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/produit")
+ * @Route("/super_admin/produit")
  */
 class ProduitController extends AbstractController
 {
@@ -24,6 +25,7 @@ class ProduitController extends AbstractController
         $form = $this->createForm(ProduitType::class,$produits);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            $produits->setCreatedBy($this->getUser());
             $em->persist($produits);
             $em->flush();
             $this->addFlash('success',' Successfully added');
@@ -70,7 +72,7 @@ class ProduitController extends AbstractController
     public function edit(Produit $produit, Request $request, EntityManagerInterface $em): Response
     {
 
-        $form = $this->createForm(ProduitType::class,$produit);
+        $form = $this->createForm(EditProduitType::class,$produit);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $em->persist($produit);
@@ -80,7 +82,7 @@ class ProduitController extends AbstractController
             return $this->redirectToRoute('index_produit');
         }
 
-        return $this->render('admin/produit/new.html.twig',[
+        return $this->render('admin/produit/edit.html.twig',[
             'form' => $form->createView(),
             'produit' => $produit
         ]);

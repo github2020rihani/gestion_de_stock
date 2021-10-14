@@ -42,6 +42,11 @@ class Category
      */
     private $produits;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Fournisseur::class, mappedBy="category")
+     */
+    private $fournisseurs;
+
     public function __toString()
     {
         return $this->title;
@@ -67,6 +72,7 @@ class Category
     {
         $this->createdAt = new \DateTime('now');
         $this->produits = new ArrayCollection();
+        $this->fournisseurs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -126,6 +132,36 @@ class Category
             // set the owning side to null (unless already changed)
             if ($produit->getCategory() === $this) {
                 $produit->setCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Fournisseur[]
+     */
+    public function getFournisseurs(): Collection
+    {
+        return $this->fournisseurs;
+    }
+
+    public function addFournisseur(Fournisseur $fournisseur): self
+    {
+        if (!$this->fournisseurs->contains($fournisseur)) {
+            $this->fournisseurs[] = $fournisseur;
+            $fournisseur->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFournisseur(Fournisseur $fournisseur): self
+    {
+        if ($this->fournisseurs->removeElement($fournisseur)) {
+            // set the owning side to null (unless already changed)
+            if ($fournisseur->getCategory() === $this) {
+                $fournisseur->setCategory(null);
             }
         }
 
