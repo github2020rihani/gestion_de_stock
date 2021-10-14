@@ -21,6 +21,8 @@ class EditUserType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class)
+            ->add('function', TextType::class)
+
 
 
             ->add('firstName',TextType::class,[

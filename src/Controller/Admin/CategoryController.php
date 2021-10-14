@@ -31,7 +31,7 @@ class CategoryController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $em->persist($categories);
             $em->flush();
-            $this->addFlash('success',' Successfully added');
+            $this->addFlash('success','Ajout effectué avec succés');
 
             return $this->redirectToRoute('index_category');
         }
@@ -64,9 +64,9 @@ class CategoryController extends AbstractController
         if ($categories) {
             $em->remove($categories);
             $em->flush();
-            $this->addFlash('success',' Successfully deleted');
+            $this->addFlash('success','Supprimer effectué avec succés');
         }else{
-            $this->addFlash('error',' error deleted');
+            $this->addFlash('error','Aucun categorie trouvé ');
         }
         return $this->redirectToRoute('index_category');
     }
@@ -85,7 +85,7 @@ class CategoryController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $em->persist($categorie);
             $em->flush();
-            $this->addFlash('success',' Successfully edit');
+            $this->addFlash('success','Modifier effectué avec succés');
 
             return $this->redirectToRoute('index_category');
         }

@@ -13,15 +13,15 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between">
                                 <div class="header-title">
-                                    <h4 class="card-title">{%  if categorie %} Modifier {% else%}  Ajouter {% endif %} categorie</h4>
+                                    <h4 class="card-title">{%  if categorie %} Modifier {% else%}  Ajouter {% endif %} un categorie</h4>
                                 </div>
                             </div>
                             <div class="card-body">
                                 {%  if categorie %}
-                                    {{ form_start(form,{'method': 'post', 'action': path('edit_category', {id: categorie.id}),'attr': {'data-toggle': 'validator'}}) }}
+                                    {{ form_start(form,{'method': 'post', 'action': path('edit_category', {id: categorie.id}),'attr': {'class': 'needs-validation' , 'novalidate' : 'novalidate' , 'id' : 'formCat' }}) }}
 
                                 {% else%}
-                                    {{ form_start(form,{'method': 'post', 'action': path('add_category'),'attr': {'data-toggle': 'validator'}}) }}
+                                    {{ form_start(form,{'method': 'post', 'action': path('add_category'),'attr': {'class': 'needs-validation' , 'novalidate' : 'novalidate' , 'id' : 'formCat' }}) }}
 
                                 {% endif %}
 
@@ -29,16 +29,20 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Titre *</label>
-                                            {{ form_widget(form.title ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter Product Name'}}) }}
-
+                                            {{ form_widget(form.title ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter  titre du categorie'}}) }}
+                                            <div class="invalid-feedback">
+                                                s'il vous plaît entre le titre du categorie
+                                            </div>
                                             <div class="help-block with-errors"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Code *</label>
-                                            {{ form_widget(form.code , {'attr': {'class' : 'form-control' , 'placeholder': 'Enter Code'}}) }}
-
+                                            {{ form_widget(form.code , {'attr': {'class' : 'form-control' , 'placeholder': 'Enter le code du categorie'}}) }}
+                                            <div class="invalid-feedback">
+                                                s'il vous plaît entre le code du categorie
+                                            </div>
                                             <div class="help-block with-errors"></div>
                                         </div>
                                     </div>

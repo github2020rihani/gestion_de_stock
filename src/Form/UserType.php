@@ -26,6 +26,7 @@ class UserType extends AbstractType
 
             ->add('roles', CollectionType::class, [
                 'entry_type'   => ChoiceType::class,
+
                 'entry_options'  => [
                     'choices'  => [
                         'Administrateur' => 'ROLE_ADMIN',
@@ -37,12 +38,15 @@ class UserType extends AbstractType
 
                     'attr' => ['class' => 'form-control'],
                     'label' => false,
+                    'placeholder'=> 'Choisir un role',
+
                 ],
             ])
             ->add('function', TextType::class)
             ->add('departemnt', EntityType::class, [
                 // looks for choices from this entity
                 'class' => Departement::class,
+                'placeholder'=> 'Choisir un département',
                 'choice_label' => 'libelle',
                 'choice_value' => 'codeDeppart',
                 'expanded' => false,

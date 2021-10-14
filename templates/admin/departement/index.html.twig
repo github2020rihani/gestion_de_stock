@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Liste des departements{% endblock %}
+{% block title %} Liste des départements{% endblock %}
 
 {% block stylesheets %}
 
@@ -12,10 +12,10 @@
                     <div class="col-lg-12">
                         <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                             <div>
-                                <h4 class="mb-3">Liste departements </h4>
+                                <h4 class="mb-3">Liste des départements </h4>
 
                             </div>
-                            <a href="{{ path('add_departement') }}" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Ajouter departement  </a>
+                            <a href="{{ path('add_departement') }}" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Ajouter un département  </a>
                         </div>
                     </div>
                     <div class="col-lg-12">
@@ -38,7 +38,7 @@
                                     <td>{{ d.libelle }}</td>
                                     <td>
                                         <div class="d-flex align-items-center list-action">
-                                            <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="{{path('edit_departement', {id: d.id})}}"><i class="ri-pencil-line mr-0"></i></a>
+                                            <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Modifier" href="{{path('edit_departement', {id: d.id})}}"><i class="ri-pencil-line mr-0"></i></a>
                                         </div>
                                     </td>
 

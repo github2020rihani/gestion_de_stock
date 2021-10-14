@@ -1,0 +1,19 @@
+.my-error-class {
+    color:#E08DB4;  /* red */
+}
+.my-valid-class {
+    color:#00CC00; /* green */
+}
+
+.iq-sidebar-logo img {
+    height: 55px;
+}
+
+@media (min-width: 1300px){
+    body.sidebar-main .iq-menu-bt-sidebar {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 81px;
+    }
+}

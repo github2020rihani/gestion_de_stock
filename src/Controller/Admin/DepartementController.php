@@ -37,7 +37,7 @@ class DepartementController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $this->em->persist($departement);
             $this->em->flush();
-            $this->addFlash('success',' Successfully added');
+            $this->addFlash('success','Ajout effectué avec succés');
 
             return $this->redirectToRoute('index_departement');
         }
@@ -60,7 +60,7 @@ class DepartementController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $this->em->persist($departement);
             $this->em->flush();
-            $this->addFlash('success',' Successfully modified');
+            $this->addFlash('success','Modifier effectué avec succés');
 
             return $this->redirectToRoute('index_departement');
         }

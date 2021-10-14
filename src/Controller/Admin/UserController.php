@@ -41,7 +41,7 @@ class UserController extends AbstractController
             $email = $form->get('email')->getData();
             $emailExiste = $this->userRepository->findBy(array('email' => $email));
             if ($emailExiste) {
-                $this->addFlash('error', ' email existe ');
+                $this->addFlash('error', 'Email existe déja  ');
                 exit;
             }
             $role = $form->get('roles')->getData();
@@ -54,7 +54,7 @@ class UserController extends AbstractController
             );
             $this->em->persist($user);
             $this->em->flush();
-            $this->addFlash('success', ' Successfully added');
+            $this->addFlash('success', 'Ajout effectué avec succés');
             return $this->redirectToRoute('index_user');
         }
         return $this->render('admin/user/new.html.twig', [
@@ -77,16 +77,22 @@ class UserController extends AbstractController
     /**
      * @Route("/edit/{id}", name="edit_user")
      */
-    public function edit(Request $request, User $user ,  UserPasswordEncoderInterface $passwordEncoder)
+    public function edit(Request $request, User $user ,  UserPasswordEncoderInterface $passwordEncoder, DepartementRepository $departementRepository)
     {
         $form = $this->createForm(EditUserType::class, $user);
+        $departements = $departementRepository->findAll();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
             $oldEmail = $user->getEmail();
-            $emailExiste = $this->userRepository->findBy(array('email' => $email));
             if ($oldEmail != $email) {
-              $user->setEmail($email);
+                $emailExiste = $this->userRepository->findBy(array('email' => $email));
+                if ($emailExiste) {
+                    $this->addFlash('error', 'Email existe déja  ');
+                    exit;
+                }
+
+                $user->setEmail($email);
             }
             $role = $request->request->get('roles');
             $password = $passwordEncoder->encodePassword(
@@ -107,12 +113,13 @@ class UserController extends AbstractController
             }
             $this->em->persist($user);
             $this->em->flush();
-            $this->addFlash('success', ' Successfully modified');
+            $this->addFlash('success', 'Modifier effectué avec succés');
             return $this->redirectToRoute('index_user');
         }
         return $this->render('admin/user/edit.html.twig', [
             'form' => $form->createView(),
-            'user' => $user
+            'user' => $user,
+            'departements' => $departements
         ]);
 
     }
