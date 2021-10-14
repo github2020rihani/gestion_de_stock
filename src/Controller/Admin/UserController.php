@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\User;
 use App\Form\EditUserType;
 use App\Form\UserType;
+use App\Repository\DepartementRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,7 +32,7 @@ class UserController extends AbstractController
     /**
      * @Route("/new", name="add_user")
      */
-    public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder, DepartementRepository $departementRepository)
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);

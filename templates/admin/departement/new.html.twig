@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {%  if departement %} Modifier {% else%}  Ajouter {% endif %}un departement {% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+        {% block content %}
+            <div class="container-fluid add-form-list">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <div class="header-title">
+                                    <h4 class="card-title">{%  if departement %} Modifier {% else%}  Ajouter {% endif %} departement</h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                {%  if departement %}
+                                    {{ form_start(form,{'method': 'post', 'action': path('edit_departement', {id: departement.id}),'attr': {'data-toggle': 'validator'}}) }}
+
+                                {% else%}
+                                    {{ form_start(form,{'method': 'post', 'action': path('add_departement'),'attr': {'data-toggle': 'validator'}}) }}
+
+                                {% endif %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Code Dep *</label>
+                                            {{ form_widget(form.codeDeppart ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter code departement'}}) }}
+
+                                            <div class="help-block with-errors"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Libelle *</label>
+                                            {{ form_widget(form.libelle , {'attr': {'class' : 'form-control' , 'placeholder': 'Enter libelle departement'}}) }}
+
+                                            <div class="help-block with-errors"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary mr-2">{%  if departement %} Modifier {% else%}  Sauvargarder {% endif %}</button>
+                                <button type="reset" class="btn btn-danger">Annuler</button>
+
+                                {{ form_end(form) }}
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page end  -->
+            </div>
+        {% endblock %}
+
+
+{% block javascripts %}
+
+{% endblock %}

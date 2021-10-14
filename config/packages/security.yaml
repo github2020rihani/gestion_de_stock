@@ -46,4 +46,6 @@ security:
         - { path: '^/admin/', roles: [ ROLE_ADMIN ,  IS_AUTHENTICATED_FULLY] }
         - { path: '^/responsable/', roles: [ ROLE_RESPONSABLE ,  IS_AUTHENTICATED_FULLY] }
         - { path: '^/gerant/', roles: [ ROLE_GERANT ,  IS_AUTHENTICATED_FULLY] }
+        - { path: '^/magasinier/', roles: [ ROLE_MAGASINIER ,  IS_AUTHENTICATED_FULLY] }
+        - { path: '^/personelle/', roles: [ ROLE_PERSONELLE ,  IS_AUTHENTICATED_FULLY] }
     #    - { path: ^/profile, roles: ROLE_USER }

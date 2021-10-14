@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Departement;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -29,11 +31,22 @@ class UserType extends AbstractType
                         'Administrateur' => 'ROLE_ADMIN',
                         'Responsable' => 'ROLE_RESPONSABLE',
                         'Gerant' =>  'ROLE_GERANT',
+                        'Magasinier' =>  'ROLE_MAGASINIER',
+                        'Personelle' =>  'ROLE_PERSONELLE',
                     ],
 
                     'attr' => ['class' => 'form-control'],
                     'label' => false,
                 ],
+            ])
+            ->add('function', TextType::class)
+            ->add('departemnt', EntityType::class, [
+                // looks for choices from this entity
+                'class' => Departement::class,
+                'choice_label' => 'libelle',
+                'choice_value' => 'codeDeppart',
+                'expanded' => false,
+                'attr' => ['class' => 'form-control'],
             ])
             ->add('plainPassword',RepeatedType::class, [
                 'type' => PasswordType::class,

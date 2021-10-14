@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -17,6 +19,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public const ROLE_ADMIN = 'ROLE_ADMIN';
     public const ROLE_RESPONSABLE = 'ROLE_RESPONSABLE';
     public const ROLE_GERANT = 'ROLE_GERANT';
+    public const ROLE_MAGASINIER = 'ROLE_MAGASINIER';
+    public const ROLE_PERSONELLE = 'ROLE_PERSONELLE';
 
     /**
      * @ORM\Id
@@ -93,6 +97,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $restToken;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $function;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Departement::class, inversedBy="users")
+     * @JoinColumn(name="codeDep", referencedColumnName="codeDeppart")
+     */
+    private $departemnt;
+
+
 
     public function __construct()
     {
@@ -273,4 +290,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getFunction(): ?string
+    {
+        return $this->function;
+    }
+
+    public function setFunction(string $function): self
+    {
+        $this->function = $function;
+
+        return $this;
+    }
+
+    public function getDepartemnt(): ?Departement
+    {
+        return $this->departemnt;
+    }
+
+    public function setDepartemnt(?Departement $departemnt): self
+    {
+        $this->departemnt = $departemnt;
+
+        return $this;
+    }
+
+
 }
