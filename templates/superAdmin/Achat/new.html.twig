@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {% if article %} Modifier {% else %}  Ajouter {% endif %}un achat {% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+        {% block content %}
+            <div class="container-fluid add-form-list">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <div class="header-title">
+                                    <h4 class="card-title">{% if article %} Modifier {% else %}  Ajouter {% endif %} un
+                                        achat</h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form method="post" action="" class="">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="validationCustom01">Fournisseur</label>
+                                            <select name="fournisseur" class="form-control js-example-basic-single">
+                                                <option value="" selected disabled>Choisir un fournisseur</option>
+                                                {% for f in fournisseurs %}
+                                                    <option value="{{ f.id }}">{{ f.nom }} {{ f.prenom }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="validationCustom01">N achat</label>
+                                            <input type="text" class="form-control" id="validationCustom01" required=""
+                                                   name="numero_achat">
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="validationCustom01">Date creation</label>
+                                            <input type="date" class="form-control" id="validationCustom01" required=""
+                                                   name="date_creation">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <table class="table">
+                                                <thead class="thead-light">
+                                                <tr>
+                                                    <th class="text-center" scope="col" colspan="7">Article</th>
+                                                    <th class="text-center" scope="col" colspan="2">Vente</th>
+                                                </tr>
+                                                <tr id="ligne_achat_1">
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Réference</th>
+                                                    <th scope="col">Désignation</th>
+                                                    <th scope="col">PU HT Net</th>
+                                                    <th scope="col">Qte</th>
+                                                    <th scope="col">TVA (%)</th>
+                                                    <th scope="col">PU TTC</th>
+                                                    <th scope="col">Marge (%)</th>
+                                                    <th scope="col">P.Vente TTC</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody class="tbodyLingeAchat">
+
+                                                </tbody>
+                                            </table>
+                                            <button type="button" class="mt-2 btn btn-primary float-right addLingeAchat"><i
+                                                        class="fa fa-plus"></i>Autre
+                                            </button>
+                                            <br>
+
+                                        </div>
+
+
+                                        <div class="col-md-2">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h4 class="card-title">Total HT</h4>
+                                                    <p class="card-text total_ht">0.00</p>
+                                                    <h4 class="card-title">Total TVA</h4>
+                                                    <p class="card-text total_tva">0.00</p>
+                                                    <h4 class="card-title">Timbre</h4>
+                                                    <p class="card-text timbre">0.600</p>
+                                                    <h4 class="card-title">Total TTC</h4>
+                                                    <p class="card-text total_ttc">0.000</p>
+                                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                                        <input type="checkbox" class="custom-control-input" name="fodec"
+                                                               id="customCheck5">
+                                                        <label class="custom-control-label" for="customCheck5">Fodec</label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button type="button" class="mt-5 btn btn-primary float-right"
+                                                        style="float: right"><i
+                                                            class="fa fa-save"></i>Enregistrer
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page end  -->
+            </div>
+        {% endblock %}
+
+
+{% block javascripts %}
+    <script>   $(document).ready(function () {
+            $('.js-example-basic-single').select2();
+        });
+
+    </script>
+    <script src="{{ asset('app/js/superAdmin/achat/addAchat.js') }}"></script>
+{% endblock %}

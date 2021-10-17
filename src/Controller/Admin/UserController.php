@@ -10,6 +10,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -32,7 +33,7 @@ class UserController extends AbstractController
     /**
      * @Route("/new", name="add_user")
      */
-    public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder, DepartementRepository $departementRepository)
+    public function new(Request $request, UserPasswordHasherInterface  $passwordEncoder, DepartementRepository $departementRepository)
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -47,7 +48,7 @@ class UserController extends AbstractController
             $role = $form->get('roles')->getData();
             $user->setRoles($role);
             $user->setPassword(
-                $passwordEncoder->encodePassword(
+                $passwordEncoder->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
@@ -68,7 +69,7 @@ class UserController extends AbstractController
      * @Route("/", name="index_user")
      */
     public function index() {
-        $users = $this->userRepository->findAll();
+        $users = $this->userRepository->findUserByDepartementSaufSuperAdmin($this->getUser()->getDepartemnt()->getId(), $this->getUser());
         return $this->render('admin/user/index.html.twig',[
             'users' =>$users
         ]);
@@ -77,13 +78,19 @@ class UserController extends AbstractController
     /**
      * @Route("/edit/{id}", name="edit_user")
      */
-    public function edit(Request $request, User $user ,  UserPasswordEncoderInterface $passwordEncoder, DepartementRepository $departementRepository)
+    public function edit(Request $request, User $user ,  UserPasswordHasherInterface $passwordEncoder, DepartementRepository $departementRepository)
     {
         $form = $this->createForm(EditUserType::class, $user);
         $departements = $departementRepository->findAll();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
+            $oldepart = $user->getDepartemnt();
+            $departement = $request->get('departement');
+            if ($oldepart != $departement) {
+                $user->setDepartemnt($departementRepository->find($departement));
+            }
+
             $oldEmail = $user->getEmail();
             if ($oldEmail != $email) {
                 $emailExiste = $this->userRepository->findBy(array('email' => $email));
@@ -95,13 +102,23 @@ class UserController extends AbstractController
                 $user->setEmail($email);
             }
             $role = $request->request->get('roles');
-            $password = $passwordEncoder->encodePassword(
-                $user,
-                $request->request->get('password'));
+            //new password
+
+//            dump($request->request->get('password'));
+            dump($user->getPassword());
+            dump(     $user->setPassword(
+                $passwordEncoder->hashPassword(
+                    $user,
+                    '123456'
+                )
+            ));
+            $password = $request->request->get('password');
+
+
 
             if ($password && $password != $user->getPassword()) {
                 $user->setPassword(
-                    $passwordEncoder->encodePassword(
+                    $passwordEncoder->hashPassword(
                         $user,
                         $password
                     )

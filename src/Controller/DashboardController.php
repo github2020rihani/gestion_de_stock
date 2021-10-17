@@ -13,7 +13,7 @@ class DashboardController extends AbstractController
 
 
     /**
-     * @Route("/super_admin/{slug}", name="dashboard_super_admin")
+     * @Route("/super_admin", name="dashboard_super_admin")
      */
     public function dashboard()
     {
@@ -21,7 +21,7 @@ class DashboardController extends AbstractController
         return $this->render('dashboard/dashboard_super_admin.html.twig');
     }
     /**
-     * @Route("/admin/{slug}", name="dashboard_admin")
+     * @Route("/admin", name="dashboard_admin")
      */
     public function dashboardAdmin()
     {
@@ -29,7 +29,7 @@ class DashboardController extends AbstractController
         return $this->render('dashboard/dashboard_admin.html.twig');
     }
     /**
-     * @Route("/responsable/{slug}", name="dashboard_responsable")
+     * @Route("/responsable", name="dashboard_responsable")
      */
     public function dashboardResponsable()
     {
@@ -38,7 +38,7 @@ class DashboardController extends AbstractController
     }
 
     /**
-     * @Route("/gerant/{slug}", name="dashboard_gerant")
+     * @Route("/gerant", name="dashboard_gerant")
      */
     public function dashboardGerant()
     {

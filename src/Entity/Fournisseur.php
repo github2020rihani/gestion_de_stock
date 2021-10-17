@@ -4,6 +4,8 @@
 namespace App\Entity;
 
 use App\Repository\FournisseurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -94,10 +96,16 @@ class  Fournisseur
      */
     private $city;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Achat::class, mappedBy="fournisseur")
+     */
+    private $achats;
+
 
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
+        $this->achats = new ArrayCollection();
     }
 
     /**
@@ -244,6 +252,36 @@ class  Fournisseur
     public function setCity(?City $city): self
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Achat[]
+     */
+    public function getAchats(): Collection
+    {
+        return $this->achats;
+    }
+
+    public function addAchat(Achat $achat): self
+    {
+        if (!$this->achats->contains($achat)) {
+            $this->achats[] = $achat;
+            $achat->setFournisseur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAchat(Achat $achat): self
+    {
+        if ($this->achats->removeElement($achat)) {
+            // set the owning side to null (unless already changed)
+            if ($achat->getFournisseur() === $this) {
+                $achat->setFournisseur(null);
+            }
+        }
 
         return $this;
     }

@@ -28,6 +28,7 @@ class ProduitController extends AbstractController
             $produits->setCreatedBy($this->getUser());
             $em->persist($produits);
             $em->flush();
+
             $this->addFlash('success',' Successfully added');
 
             return $this->redirectToRoute('index_produit');

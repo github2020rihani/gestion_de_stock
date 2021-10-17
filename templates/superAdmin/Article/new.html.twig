@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {%  if article %} Modifier {% else%}  Ajouter {% endif %}un article {% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+        {% block content %}
+            <div class="container-fluid add-form-list">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <div class="header-title">
+                                    <h4 class="card-title">{%  if article %} Modifier {% else%}  Ajouter {% endif %} un article</h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                {%  if article %}
+                                    {{ form_start(form,{'method': 'post', 'action': path('edit_article', {id: article.id}),'attr': {'class': 'needs-validation' , 'novalidate' : 'novalidate' , 'id' : '' }}) }}
+
+                                {% else%}
+                                    {{ form_start(form,{'method': 'post', 'action': path('add_article'),'attr': {'class': 'needs-validation' , 'novalidate' : 'novalidate' , 'id' : '' }}) }}
+
+                                {% endif %}
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Ref article *</label>
+                                            {{ form_widget(form.ref ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter la reference de l\'article'}}) }}
+                                            <div class="invalid-feedback">
+                                                s'il vous plaît entre la reference de l\'article
+                                            </div>
+                                            <div class="help-block with-errors"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Description *</label>
+                                            {{ form_widget(form.description , {'attr': {'class' : 'form-control' , 'placeholder': 'Enter le description de l\'article'}}) }}
+                                            <div class="invalid-feedback">
+                                                s'il vous plaît entre le description de l\'article
+                                            </div>
+                                            <div class="help-block with-errors"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Code *</label>
+                                            {{ form_widget(form.categorie , {'attr': {'class' : 'form-control'}}) }}
+                                            <div class="invalid-feedback">
+                                                s'il vous plaît Choisir une categorie
+                                            </div>
+                                            <div class="help-block with-errors"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary mr-2">{%  if article %} Modifier {% else%}  Enregistrer {% endif %}</button>
+                                <button type="reset" class="btn btn-danger">Annuler</button>
+
+                                {{ form_end(form) }}
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page end  -->
+            </div>
+        {% endblock %}
+
+
+{% block javascripts %}
+
+{% endblock %}

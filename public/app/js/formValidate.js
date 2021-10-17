@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     $("#formUser").validate({
         errorClass: "my-error-class",
         validClass: "my-valid-class",
@@ -20,7 +19,7 @@ $(document).ready(function () {
                 required: true,
                 // pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8})$/,
                 //pwcheck: true,
-                equalTo: "#user[plainPassword][first]"
+                equalTo: "#user_plainPassword_first"
 
             },
 
@@ -41,6 +40,8 @@ $(document).ready(function () {
     });
 
     $("#formEditUser").validate({
+        errorClass: "my-error-class",
+        validClass: "my-valid-class",
         rules: {
             'edit_user[phone]': {
                 required: true,
@@ -48,9 +49,6 @@ $(document).ready(function () {
                 minlength: 8,
                 maxlength: 8
             },
-
-
-
         },
         messages: {
 
@@ -59,6 +57,28 @@ $(document).ready(function () {
                 minlength: "le numéro téléphone contient que 8 chiffres",
                 maxlength: "le numéro téléphone contient que 8 chiffres",
             },
+
+        },
+        errorElement: "em",
+
+});
+    $("#formLogin").validate({
+        errorClass: "my-error-class",
+        validClass: "my-valid-class",
+        rules: {
+            'email': {
+                required: true,
+                email: true
+            },
+            'password': {
+                required: true,
+
+
+            },
+        },
+        messages: {
+
+
 
         },
         errorElement: "em",

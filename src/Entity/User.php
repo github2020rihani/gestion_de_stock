@@ -108,6 +108,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $departemnt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="addedBy")
+     */
+    private $articles;
+
+    /**
+     * @ORM\OneToMany(targetEntity=AchatArticle::class, mappedBy="addedBy")
+     */
+    private $achatArticles;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Achat::class, mappedBy="addedBy")
+     */
+    private $achats;
+
 
 
     public function __construct()
@@ -115,6 +130,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->status = true;
         $this->setLastLogin(new \DateTime('now'));
         $this->setStatus(1);
+        $this->articles = new ArrayCollection();
+        $this->achatArticles = new ArrayCollection();
+        $this->achats = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -310,6 +328,96 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDepartemnt(?Departement $departemnt): self
     {
         $this->departemnt = $departemnt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Article[]
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Article $article): self
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles[] = $article;
+            $article->setAddedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): self
+    {
+        if ($this->articles->removeElement($article)) {
+            // set the owning side to null (unless already changed)
+            if ($article->getAddedBy() === $this) {
+                $article->setAddedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AchatArticle[]
+     */
+    public function getAchatArticles(): Collection
+    {
+        return $this->achatArticles;
+    }
+
+    public function addAchatArticle(AchatArticle $achatArticle): self
+    {
+        if (!$this->achatArticles->contains($achatArticle)) {
+            $this->achatArticles[] = $achatArticle;
+            $achatArticle->setAddedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAchatArticle(AchatArticle $achatArticle): self
+    {
+        if ($this->achatArticles->removeElement($achatArticle)) {
+            // set the owning side to null (unless already changed)
+            if ($achatArticle->getAddedBy() === $this) {
+                $achatArticle->setAddedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Achat[]
+     */
+    public function getAchats(): Collection
+    {
+        return $this->achats;
+    }
+
+    public function addAchat(Achat $achat): self
+    {
+        if (!$this->achats->contains($achat)) {
+            $this->achats[] = $achat;
+            $achat->setAddedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAchat(Achat $achat): self
+    {
+        if ($this->achats->removeElement($achat)) {
+            // set the owning side to null (unless already changed)
+            if ($achat->getAddedBy() === $this) {
+                $achat->setAddedBy(null);
+            }
+        }
 
         return $this;
     }
