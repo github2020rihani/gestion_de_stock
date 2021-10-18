@@ -19,22 +19,28 @@ class AchatRepository extends ServiceEntityRepository
         parent::__construct($registry, Achat::class);
     }
 
-    // /**
-    //  * @return Achat[] Returns an array of Achat objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findAllAchat()
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('a.id', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+    public function getDetailAchat($id)
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a', 'aa', 'article', 'f')
+            ->leftJoin('a.fournisseur', 'f')
+            ->leftJoin('a.achatArticles', 'aa')
+            ->leftJoin('aa.article', 'article')
+            ->where('a.id = :id_achat')
+            ->setParameter('id_achat', $id)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Achat

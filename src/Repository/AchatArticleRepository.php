@@ -19,6 +19,19 @@ class AchatArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, AchatArticle::class);
     }
 
+    public function findAchatArticleByIdAricleAndIdAchat($id_article, $id_achat)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.article = :id_article')
+            ->andWhere('a.Achat = :id_achat')
+            ->setParameter('id_article', $id_article)
+            ->setParameter('id_achat', $id_achat)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+
     // /**
     //  * @return AchatArticle[] Returns an array of AchatArticle objects
     //  */
