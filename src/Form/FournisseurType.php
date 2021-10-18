@@ -42,14 +42,14 @@ class FournisseurType extends AbstractType
                 ],
                 'choices' => []
             ])
-            ->add('category', EntityType::class, [
-                    'class' => Category::class,
-                    'choice_label' => 'title',
-                    'attr' => [
-                        'class' => 'form-control'
-                    ],
-                ]
-            )
+//            ->add('category', EntityType::class, [
+//                    'class' => Category::class,
+//                    'choice_label' => 'title',
+//                    'attr' => [
+//                        'class' => 'form-control'
+//                    ],
+//                ]
+//            )
 
             ->add('telephone',TextType::class)
             ->add('email',EmailType::class)

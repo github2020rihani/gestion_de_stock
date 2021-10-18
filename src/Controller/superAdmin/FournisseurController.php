@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\superAdmin;
 use App\Entity\Fournisseur;
 use App\Form\FournisseurType;
 use App\Repository\FournisseurRepository;
@@ -34,7 +34,7 @@ class FournisseurController extends AbstractController
             return $this->redirectToRoute('index_fournisseur');
         }
 
-        return $this->render('admin/fournisseur/new.html.twig',[
+        return $this->render('superAdmin/fournisseur/new.html.twig',[
             'form' => $form->createView(),
             'fournisseur' => ''
         ]);
@@ -85,7 +85,7 @@ class FournisseurController extends AbstractController
             return $this->redirectToRoute('index_fournisseur');
         }
 
-        return $this->render('admin/fournisseur/new.html.twig',[
+        return $this->render('superAdmin/fournisseur/new.html.twig',[
             'form' => $form->createView(),
             'fournisseur' => $fournisseur
         ]);

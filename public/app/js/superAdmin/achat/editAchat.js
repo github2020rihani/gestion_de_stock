@@ -3,8 +3,8 @@ $(document).ready(function () {
     var id = url.substring(url.lastIndexOf('/') + 1);
     getArticlesAchat(id);
     removeArticle();
-    changePUHTNETDefault();
-    changePVenteTTCDefault();
+    changePUHTNET();
+    changePVenteTTC();
     addLigneAchat();
 
 
@@ -80,26 +80,26 @@ function addLigneAchat() {
                                                 </td>
                                                 <td class="descriptionarticle_${index}"></td>
                                                 <td>
-                                                    <input type="text" name="puhtnet[]"  data-index="${index}" value="0.000" class="form-control puhtnet_${index}">
+                                                    <input type="text" name="puhtnet[]" data-index = "${index}" value="0.000" class="form-control  puhtnet puhtnet_${index}">
                                                 </td>
                                                 <td>
-                                                    <input type="number" min="1" name="qte[]" data-index="${index}" value="0.000" class="form-control qte_${index}">
+                                                    <input type="number" min="1" name="qte[]" data-index = "${index}" value="0.000" class="form-control qte_${index}">
 
                                                 </td>
                                                 <td>
-                                                    <input type="text" value="19.0" name="tva[]" data-index="${index}"  class="form-control tva_${index}" readonly>
+                                                    <input type="text" value="19.0" name="tva[]" data-index = "${index}"  class="form-control tva_${index}" readonly>
 
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="puttc[]"  data-index="${index}" value="0.000" class="form-control puttc_${index}" readonly>
+                                                    <input type="text" name="puttc[]" value="0.000" data-index = "${index}" class="form-control puttc_${index}" readonly>
 
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="marge[]" data-index="${index}" value="0.000" class="form-control marge_${index}" readonly>
+                                                    <input type="text" name="marge[]" value="0.000" data-index = "${index}" class="form-control marge_${index}" readonly>
 
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="pventettc[]" data-index="${index}"  value="0.000" class="form-control pventettc_${index}">
+                                                    <input type="text" name="pventettc[]" value="0.000" data-index = "${index}" class="form-control pventettc pventettc_${index}">
 
                                                 </td>
                                             </tr>`);
@@ -117,8 +117,8 @@ function addLigneAchat() {
                     //select article
                     selectArticle(index);
                     //changePUHTnET
-                    changePUHTNET(index);
-                    changePVenteTTC(index);
+                    changePUHTNET();
+                    changePVenteTTC();
                 }
 
             },
@@ -164,28 +164,16 @@ function selectArticle(index) {
 
 
 }
-function changePVenteTTC(index) {
 
-    puttc =   $('.puttc_'+index).attr('value');
-
-    marge = 0 ;
-    $('.pventettc_'+index).keyup("input", function(e) {
-        marge =  ((($(this).val() - puttc) / puttc) * 100).toFixed(2);
-
-
-        $('.marge_'+index).val(marge);
-    })
-
-}
-
-function changePUHTNET(index) {
+function changePUHTNET() {
     var tva = 1.19;
     puttc = 0 ;
 
-    $('.puhtnet_'+index).keyup("input", function(e) {
+    $('.puhtnet').keyup("input", function(e) {
+        var index = $(this).data('index');
         var pventettc =  $('.pventettc_'+index).val();
-        puttc = Math.round(parseFloat($(this).val() * tva).toFixed(3));
-        $('.puttc_'+index).val(Math.round(puttc).toFixed(3));
+        puttc = (parseFloat($(this).val() * tva).toFixed(3));
+        $('.puttc_'+index).val((puttc));
         console.log(pventettc);
         if (pventettc) {
             marge =  (((pventettc - puttc) / puttc) * 100).toFixed(2);
@@ -194,31 +182,13 @@ function changePUHTNET(index) {
     })
 
 }
+function changePVenteTTC() {
 
-
-function changePUHTNETDefault() {
-    var tva = 1.19;
-    puttc = 0 ;
-
-    $('.puhtnet').keyup("input", function(e) {
-        var index = $(this).data('index');
-        var pventettc =  $('.pventettc_'+index).val();
-        puttc = Math.round(parseFloat($(this).val() * tva).toFixed(3));
-        $('.puttc_'+index).val(Math.round(puttc).toFixed(3));
-        if (pventettc) {
-            marge =  (((pventettc - puttc) / puttc) * 100).toFixed(2);
-            $('.marge_'+index).val(marge);
-        }
-    })
-}
-
-
-function changePVenteTTCDefault() {
-
-    marge = 0 ;
     $('.pventettc').keyup("input", function(e) {
         var index = $(this).data('index');
-        puttc =   $('.puttc_'+index).attr('value');
+
+        puttc =   $('.puttc_'+index).val();
+        console.log(puttc);
 
 
         marge =  ((($(this).val() - puttc) / puttc) * 100).toFixed(2);
@@ -226,7 +196,11 @@ function changePVenteTTCDefault() {
 
         $('.marge_'+index).val(marge);
     })
+
 }
+
+
+
 
 
 
