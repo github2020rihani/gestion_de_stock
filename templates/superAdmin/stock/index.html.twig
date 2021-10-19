@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste des stocks {% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+        {% block content %}
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+                            <div>
+                                <h4 class="mb-3">Liste des stocks </h4>
+
+                            </div>
+                            {#                            <a href="{{ path('add_fournisseur') }}" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Ajouter Fournisseur  </a>#}
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="table-responsive rounded mb-3">
+                            {{ include('default/FlashBag/flashBag.html.twig') }}
+
+                            <table class="data-table table_stock table mb-0 tbl-server-info">
+                                <thead class="bg-white text-uppercase">
+                                <tr class="ligth ligth-data">
+
+                                    <th>Date</th>
+                                    <th>Réf article</th>
+                                    <th>Designation</th>
+                                    <th>Stock</th>
+                                    <th>Statut</th>
+                                    <th>MAJ</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody class="ligth-body">
+                                {% for s in stocks %}
+                                    <tr>
+                                        <td>{{ s.dateEntree|date('d/m/Y') }}</td>
+                                        <td>{{ s.article.ref }}</td>
+                                        <td>{{ s.article.description }}</td>
+                                        <td class="old_qte_{{ s.article.id }}">{{ s.qte }}</td>
+                                        <td>
+                                            {% if  s.qte > 10 %}
+                                                <div id="status_{{ s.article.id }}" class="badge badge-success">En
+                                                    stock
+                                                </div>
+                                            {% elseif s.qte <= 10 %}
+                                                <div id="status_{{ s.article.id }}" class="badge badge-warning">Pré
+                                                    epuisée
+                                                </div>
+
+                                            {% elseif s.qte == 0 %}
+                                                <div id="status_{{ s.article.id }}" class="badge badge-danger">Epuisée
+                                                </div>
+
+
+                                            {% endif %}
+                                        </td>
+                                        <td width="10%"><input type="text" class="form-control"
+                                                               id="majQte_{{ s.article.id }}"></td>
+                                        <td>
+                                            <div class="d-flex align-items-center list-action">
+                                                <a class=" btn_majQte badge bg-info mr-2" data-toggle="tooltip"
+                                                   data-placement="top" title="" type="button"
+                                                   data-id="{{ s.article.id }}"
+                                                   data-type="add"
+                                                   data-original-title="Incrementer">
+                                                    <b style="font-size: 12px; font-weight: bold">+</b>
+                                                </a>
+                                                <a class=" btn_majQte badge bg-danger mr-2" data-toggle="tooltip"
+                                                   data-placement="top" title="" type="button"
+                                                   data-type="moin"
+                                                   data-id="{{ s.article.id }}" data-original-title="Decrimenter">
+                                                    <b style="font-size: 12px; font-weight: bold">-</b>
+                                                </a>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page end  -->
+            </div>
+
+
+        {% endblock %}
+
+
+{% block javascripts %}
+    <script src="{{ asset('app/js/superAdmin/stock/stock.js') }}"></script>
+
+{% endblock %}

@@ -67,6 +67,11 @@ class AchatArticle
      */
     private $addedBy;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable= true)
+     */
+    private $typePrix;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -188,6 +193,18 @@ class AchatArticle
     public function setAddedBy(?User $addedBy): self
     {
         $this->addedBy = $addedBy;
+
+        return $this;
+    }
+
+    public function getTypePrix(): ?string
+    {
+        return $this->typePrix;
+    }
+
+    public function setTypePrix(string $typePrix): self
+    {
+        $this->typePrix = $typePrix;
 
         return $this;
     }

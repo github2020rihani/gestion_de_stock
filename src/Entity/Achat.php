@@ -69,9 +69,15 @@ class Achat
      */
     private $addedBy;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $stocker;
+
     public function __construct()
     {
         $this->achatArticles = new ArrayCollection();
+        $this->setStocker(false);
     }
 
     public function getId(): ?int
@@ -213,6 +219,18 @@ class Achat
     public function setAddedBy(?User $addedBy): self
     {
         $this->addedBy = $addedBy;
+
+        return $this;
+    }
+
+    public function getStocker(): ?bool
+    {
+        return $this->stocker;
+    }
+
+    public function setStocker(?bool $stocker): self
+    {
+        $this->stocker = $stocker;
 
         return $this;
     }

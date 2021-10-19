@@ -123,6 +123,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $achats;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Prix::class, mappedBy="addedBy")
+     */
+    private $prixes;
+
 
 
     public function __construct()
@@ -133,6 +138,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->articles = new ArrayCollection();
         $this->achatArticles = new ArrayCollection();
         $this->achats = new ArrayCollection();
+        $this->prixes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -416,6 +422,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($achat->getAddedBy() === $this) {
                 $achat->setAddedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Prix[]
+     */
+    public function getPrixes(): Collection
+    {
+        return $this->prixes;
+    }
+
+    public function addPrix(Prix $prix): self
+    {
+        if (!$this->prixes->contains($prix)) {
+            $this->prixes[] = $prix;
+            $prix->setAddedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrix(Prix $prix): self
+    {
+        if ($this->prixes->removeElement($prix)) {
+            // set the owning side to null (unless already changed)
+            if ($prix->getAddedBy() === $this) {
+                $prix->setAddedBy(null);
             }
         }
 

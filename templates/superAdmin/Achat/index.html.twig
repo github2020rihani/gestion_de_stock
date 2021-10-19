@@ -15,36 +15,57 @@
                                 <h4 class="mb-3">Liste des achats </h4>
 
                             </div>
-                            <a href="{{ path('add_achat') }}" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Ajouter un achat  </a>
+                            <a href="{{ path('add_achat') }}" class="btn btn-primary add-list"><i
+                                        class="las la-plus mr-3"></i>Ajouter une nouvelle achat </a>
                         </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="table-responsive rounded mb-3">
                             {{ include('default/FlashBag/flashBag.html.twig') }}
 
-                            <table class="data-table table mb-0 tbl-server-info">
+                            <table class="data-table table mb-0 tbl-server-info tabel_achat">
                                 <thead class="bg-white text-uppercase">
                                 <tr class="ligth ligth-data">
 
                                     <th>Date</th>
                                     <th>Numéro</th>
                                     <th>Ajouter par</th>
+                                    <th>Nombre d'article</th>
+                                    <th>Envoyer vers stock</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody class="ligth-body">
-                                {%  for a in achats %}
+                                {% for a in achats %}
                                     <tr>
                                         <td>{{ a.createdAt|date('d/m/Y') }}</td>
                                         <td>{{ a.numero }}</td>
                                         <td>{{ a.addedBy.lastName }} {{ a.addedBy.firstname }}</td>
-                                        <td>
-                                            <div class="d-flex align-items-center list-action">
-                                                <a class="badge bg-success mr-2" data-toggle="tooltip"
-                                                   data-placement="top" title="" data-original-title="Modifier"
-                                                   href="{{ path('edit_achat', {id: a.id}) }}"><i
-                                                            class="ri-pencil-line mr-0"></i></a>
-                                            </div>
+                                        <td>{{ a.achatArticles|length }}
+                                            article {% if a.achatArticles|length > 1 %}s{% endif %}</td>
+                                        <td id="stocker_achat_{{ a.id }}">
+                                            {% if a.stocker %}
+                                                <span class="badge badge-success ml-1">Stocké</span>
+                                            {% else %}
+                                                <button type="button"  data-id_achat="{{ a.id }}"class="btn btn-outline-primary stocker_achat  mt-2">Stoker
+                                                    l'achat
+                                                </button>
+
+                                            {% endif %}
+                                        </td>
+                                        <td id="btnStocked_{{ a.id }}">
+                                            {% if a.stocker %}
+                                                <a class="badge badge-info mr-2" data-toggle="tooltip"
+                                                   data-placement="top" title="" data-original-title="Détail"
+                                                   href="{{ path('detail_achat', {id:  a.id })}}"><i class="ri-eye-line mr-0"></i></a>
+                                            {% else %}
+                                                <div class="d-flex align-items-center list-action">
+                                                    <a class="badge bg-success mr-2" data-toggle="tooltip"
+                                                       data-placement="top" title="" data-original-title="Modifier"
+                                                       href="{{ path('edit_achat', {id: a.id}) }}"><i
+                                                                class="ri-pencil-line mr-0"></i></a>
+                                                </div>
+                                            {% endif %}
                                         </td>
 
                                     </tr>
@@ -62,5 +83,6 @@
 
 
 {% block javascripts %}
+    <script src="{{ asset('app/js/superAdmin/achat/index.js') }}"></script>
 
 {% endblock %}

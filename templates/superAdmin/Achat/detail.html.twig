@@ -1,0 +1,173 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Détail un achat {% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+        {% block content %}
+            <div class="container-fluid add-form-list">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <div class="header-title">
+                                    <h4 class="card-title">Détail un achat</h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="validationCustom01">Fournisseur :</label>
+                                        {#                                            <select name="fournisseur" class="form-control js-example-basic-single" disabled>#}
+                                        {#                                                <option value="" selected disabled>Choisir un fournisseur</option>#}
+                                        {#                                                {% for f in fournisseurs %}#}
+                                        {#                                                    <option value="{{ f.id }}" {% if achat['fournisseur']['id'] == f.id %} selected {% endif %}>{{ f.nom }} {{ f.prenom }}</option>#}
+                                        {#                                                {% endfor %}#}
+                                        {#                                            </select>#}
+                                        {{ achat['fournisseur']['nom'] }} {{ achat['fournisseur']['prenom'] }}
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="validationCustom01">N achat :</label>
+                                        {{ achat['numero'] }}
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="">Date creation :</label>
+                                        {{ achat['createdAt']|date('d/m/Y') }}
+
+                                    </div>
+                                    <script>
+
+                                    </script>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <table class="table">
+                                            <thead class="thead-light">
+                                            <tr>
+                                                <th class="text-center" scope="col" colspan="7">Article</th>
+                                                <th class="text-center" scope="col" colspan="2">Vente</th>
+                                            </tr>
+                                            <tr id="ligne_achat_1">
+                                                <th scope="col">#</th>
+                                                <th scope="col">Réference</th>
+                                                <th scope="col">Désignation</th>
+                                                <th scope="col">PU HT Net</th>
+                                                <th scope="col">Qte</th>
+                                                <th scope="col">TVA (%)</th>
+                                                <th scope="col">PU TTC</th>
+                                                <th scope="col">Marge (%)</th>
+                                                <th scope="col">P.Vente TTC</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="tbodyLingeAchat">
+
+                                            {% for article in achat['achatArticles'] %}
+
+
+                                                <tr class="ligne_achat">
+                                                    <th scope="row">
+
+                                                    </th>
+                                                    <td>
+
+                                                        {{ article['article']['ref'] }}
+                                                    </td>
+                                                    <td class="descriptionarticle_{{ loop.index }}">{{ article['article']['description'] }}</td>
+                                                    <td>
+                                                        <input type="text" name="puhtnet[]" disabled
+                                                               value="{{ article['puhtnet']|number_format(3) }}"
+                                                               data-index="{{ loop.index }}"
+                                                               class="form-control puhtnet puhtnet_{{ loop.index }}">
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" min="1" name="qte[]" disabled
+                                                               value="{{ article['qte'] }}"
+                                                               data-index="{{ loop.index }}"
+                                                               class="form-control qte_{{ loop.index }}">
+
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" value="19" name="tva[]" disabled
+                                                               data-index="{{ loop.index }}"
+                                                               class="form-control tva_{{ loop.index }}" readonly>
+
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="puttc[]" disabled
+                                                               value="{{ article['puttc']|number_format(3) }}"
+                                                               data-index="{{ loop.index }}"
+                                                               class="form-control  puttc_{{ loop.index }}" readonly>
+
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="marge[]" disabled
+                                                               value="{{ article['marge']|number_format(2) }}"
+                                                               data-index="{{ loop.index }}"
+                                                               class="form-control marge_{{ loop.index }}" readonly>
+
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="pventettc[]" disabled
+                                                               value="{{ article['pventettc']|number_format(3) }}"
+                                                               data-index="{{ loop.index }}"
+                                                               class="form-control pventettc pventettc_{{ loop.index }}">
+
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+
+                                            </tbody>
+                                        </table>
+
+                                        <br>
+
+                                    </div>
+
+
+                                    <div class="col-md-2">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="card-title">Total HT</h4>
+                                                <p class="card-text total_ht">{% if achat['totalHT'] %} {{ achat['totalHT'] }} {% else %} 0.000 {% endif %}</p>
+                                                <h4 class="card-title">Total TVA</h4>
+                                                <p class="card-text total_tva">{% if achat['totalTVA'] %} {{ achat['totalTVA'] }} {% else %} 0.000 {% endif %}</p>
+                                                <h4 class="card-title">Timbre</h4>
+                                                <p class="card-text timbre">{% if achat['timbre'] %} {{ achat['timbre'] }} {% else %} 0.600 {% endif %}</p>
+                                                <h4 class="card-title">Total TTC</h4>
+                                                <p class="card-text total_ttc">{% if achat['totalTTC'] %} {{ achat['totalTTC'] }} {% else %} 0.000 {% endif %}</p>
+                                                <div class="custom-control custom-checkbox custom-control-inline">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                           name="fodec" {% if achat['fodec'] %} checked {% endif %}
+                                                           id="customCheck5">
+                                                    <label class="custom-control-label"
+                                                           for="customCheck5">Fodec</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page end  -->
+            </div>
+        {% endblock %}
+
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('.js-example-basic-single').select2();
+        });
+
+    </script>
+    <script src="{{ asset('app/js/superAdmin/achat/editAchat.js') }}"></script>
+{% endblock %}

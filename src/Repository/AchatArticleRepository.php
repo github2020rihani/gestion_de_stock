@@ -31,6 +31,28 @@ class AchatArticleRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findArticleLastAchat($type_prix) {
+        return $this->createQueryBuilder('a')
+            ->select('a', 'art')
+            ->leftJoin('a.article', 'art')
+            ->where('a.typePrix =  :typePrix')
+            ->setParameter('typePrix', $type_prix)
+            ->getQuery()
+            ->getResult()
+            ;
+    }    public function findArticleWithNewPrix($id_article ,$type_prix) {
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.article =  :id_article')
+            ->andWhere('a.typePrix =  :typePrix')
+            ->setParameter('id_article', $id_article)
+            ->setParameter('typePrix', $type_prix)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     // /**
     //  * @return AchatArticle[] Returns an array of AchatArticle objects

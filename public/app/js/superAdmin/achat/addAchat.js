@@ -11,7 +11,6 @@ function addLigneAchat() {
         var index = ($('.ligne_achat').length);
         var contentListArticle = '';
         index++ ;
-        console.log(index);
         $.ajax({
             url: Routing.generate('get_articles'),
             type: "POST",

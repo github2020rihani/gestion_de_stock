@@ -110,10 +110,22 @@ class Article
      */
     private $achatArticles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Stock::class, mappedBy="article")
+     */
+    private $stocks;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Prix::class, mappedBy="article")
+     */
+    private $prixes;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
         $this->achatArticles = new ArrayCollection();
+        $this->stocks = new ArrayCollection();
+        $this->prixes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -253,6 +265,66 @@ class Article
             // set the owning side to null (unless already changed)
             if ($achatArticle->getArticle() === $this) {
                 $achatArticle->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Stock[]
+     */
+    public function getStocks(): Collection
+    {
+        return $this->stocks;
+    }
+
+    public function addStock(Stock $stock): self
+    {
+        if (!$this->stocks->contains($stock)) {
+            $this->stocks[] = $stock;
+            $stock->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStock(Stock $stock): self
+    {
+        if ($this->stocks->removeElement($stock)) {
+            // set the owning side to null (unless already changed)
+            if ($stock->getArticle() === $this) {
+                $stock->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Prix[]
+     */
+    public function getPrixes(): Collection
+    {
+        return $this->prixes;
+    }
+
+    public function addPrix(Prix $prix): self
+    {
+        if (!$this->prixes->contains($prix)) {
+            $this->prixes[] = $prix;
+            $prix->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrix(Prix $prix): self
+    {
+        if ($this->prixes->removeElement($prix)) {
+            // set the owning side to null (unless already changed)
+            if ($prix->getArticle() === $this) {
+                $prix->setArticle(null);
             }
         }
 
