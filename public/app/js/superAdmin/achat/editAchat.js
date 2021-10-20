@@ -1,4 +1,9 @@
 $(document).ready(function () {
+    var totalHt = 0;
+    var totalTVA = 0;
+    var timbre = 0.600;
+    var totalTTC = 0;
+    var qte = 0;
     var url = window.location.href;
     var id = url.substring(url.lastIndexOf('/') + 1);
     getArticlesAchat(id);
@@ -6,6 +11,27 @@ $(document).ready(function () {
     changePUHTNET();
     changePVenteTTC();
     addLigneAchat();
+    $('.editAchat').click(function () {
+        var sommepuhtnet = 0;
+        //calculer totalHT totaltva totalttc
+        $('.puhtnet').each(function (index) {
+            totalHt += (parseFloat($(this).val()) *parseInt( $('.qte_'+(index+1)).val()));
+        })
+        totalTVA = (totalHt * 1.19) ;
+        totalTTC = (totalHt+totalTVA+timbre);
+        $('.total_ht').text(totalHt.toFixed(3))
+        $('.total_tva').text(totalTVA.toFixed(3))
+        $('.total_ttc').text(totalTTC.toFixed(3))
+
+        setTimeout(function () {
+            $('.formEditAchat').submit();
+
+        }, 3000)
+
+
+
+
+    })
 
 
 

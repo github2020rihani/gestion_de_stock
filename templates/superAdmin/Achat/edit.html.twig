@@ -17,7 +17,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form method="post" action="{{ path('edit_achat' , {id: achat['id']}) }}" class="">
+                                <form method="post" action="{{ path('edit_achat' , {id: achat['id']}) }}" class="formEditAchat">
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="validationCustom01">Fournisseur</label>
@@ -167,18 +167,15 @@
                                                         <label class="custom-control-label"
                                                                for="customCheck5">Fodec</label>
                                                     </div>
+                                                    <button type="submit" class="mt-5 btn btn-primary float-right editAchat"
+                                                            style="float: right"><i
+                                                                class="fa fa-save"></i>Modifier
+                                                    </button>
                                                 </div>
 
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <button type="submit" class="mt-5 btn btn-primary float-right"
-                                                        style="float: right"><i
-                                                            class="fa fa-save"></i>Modifier
-                                                </button>
-                                            </div>
-                                        </div>
+
 
                                     </div>
                                 </form>

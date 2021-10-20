@@ -1,6 +1,31 @@
 $(document).ready(function () {
-
+    var totalHt = 0;
+    var totalTVA = 0;
+    var timbre = 0.600;
+    var totalTTC = 0;
+    var qte = 0;
     addLigneAchat();
+    $('.addAchat').click(function () {
+        var sommepuhtnet = 0;
+        //calculer totalHT totaltva totalttc
+        $('.puhtnet').each(function (index) {
+            totalHt += (parseFloat($(this).val()) *parseInt( $('.qte_'+(index+1)).val()));
+        })
+        totalTVA = (totalHt * 1.19) ;
+        totalTTC = (totalHt+totalTVA+timbre);
+        $('.total_ht').text(totalHt.toFixed(3))
+        $('.total_tva').text(totalTVA.toFixed(3))
+        $('.total_ttc').text(totalTTC.toFixed(3))
+
+        setTimeout(function () {
+            $('.formAddAchat').submit();
+
+        }, 3000)
+
+
+
+
+    })
 
 
 });
@@ -10,7 +35,7 @@ function addLigneAchat() {
     $('.addLingeAchat').click(function () {
         var index = ($('.ligne_achat').length);
         var contentListArticle = '';
-        index++ ;
+        index++;
         $.ajax({
             url: Routing.generate('get_articles'),
             type: "POST",
@@ -63,7 +88,7 @@ function addLigneAchat() {
                     $('.js-example-basic-single').select2();
                     //remove ligne achat
                     $(".delete_ligneAchat_" + index).click(function (event) {
-                        const indexArticle = selectAricle.indexOf( $('.selectArticle_' + index).val());
+                        const indexArticle = selectAricle.indexOf($('.selectArticle_' + index).val());
                         if (indexArticle > -1) {
                             selectAricle.splice(indexArticle, 1);
                         }
@@ -88,15 +113,18 @@ function addLigneAchat() {
     })
 
 }
+
 var puttc = 0
 var marge = 0
 var selectAricle = [];
+
+
 function selectArticle(index) {
     $('.selectArticle_' + index).change(function () {
-        if (selectAricle.includes($(this).val())){
-           toastr.error('cet article a été choisir , veuillez choisir un autre');
+        if (selectAricle.includes($(this).val())) {
+            toastr.error('cet article a été choisir , veuillez choisir un autre');
             $(this).parent().parent().remove();
-            return false ;
+            return false;
         }
         selectAricle.push($(this).val());
         console.log(selectAricle);
@@ -125,34 +153,38 @@ function selectArticle(index) {
 
 function changePUHTNET() {
     var tva = 1.19;
-     puttc = 0 ;
-
-    $('.puhtnet').keyup("input", function(e) {
+    puttc = 0;
+    $('.puhtnet').keyup("input", function (e) {
+        var puhtnet = parseFloat($(this).val());
         var index = $(this).data('index');
-        var pventettc =  $('.pventettc_'+index).val();
+        var pventettc = $('.pventettc_' + index).val();
         puttc = (parseFloat($(this).val() * tva).toFixed(3));
-        $('.puttc_'+index).val((puttc));
+        $('.puttc_' + index).val((puttc));
         console.log(pventettc);
         if (pventettc) {
-            marge =  (((pventettc - puttc) / puttc) * 100).toFixed(2);
-            $('.marge_'+index).val(marge);
+            marge = (((pventettc - puttc) / puttc) * 100).toFixed(2);
+            $('.marge_' + index).val(marge);
         }
+
+
+
     })
 
 }
+
 function changePVenteTTC() {
 
-    $('.pventettc').keyup("input", function(e) {
+    $('.pventettc').keyup("input", function (e) {
         var index = $(this).data('index');
 
-        puttc =   $('.puttc_'+index).val();
+        puttc = $('.puttc_' + index).val();
         console.log(puttc);
 
 
-        marge =  ((($(this).val() - puttc) / puttc) * 100).toFixed(2);
+        marge = ((($(this).val() - puttc) / puttc) * 100).toFixed(2);
 
 
-        $('.marge_'+index).val(marge);
+        $('.marge_' + index).val(marge);
     })
 
 }

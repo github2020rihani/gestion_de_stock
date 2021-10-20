@@ -23,7 +23,7 @@ class AchatArticle
     private $puhtnet;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="integer")
      */
     private $qte;
 
@@ -89,12 +89,12 @@ class AchatArticle
         return $this;
     }
 
-    public function getQte(): ?float
+    public function getQte(): ?int
     {
         return $this->qte;
     }
 
-    public function setQte(float $qte): self
+    public function setQte(int $qte): self
     {
         $this->qte = $qte;
 
