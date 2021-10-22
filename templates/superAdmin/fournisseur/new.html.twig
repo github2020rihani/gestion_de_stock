@@ -5,109 +5,103 @@
 {% block stylesheets %}
 
 {% endblock %}
-
+      {% block smenu %}
+          <ul class="breadcrumb">
+              <li class="breadcrumb-item">
+                  <a href="index.html">Tableau de bord</a>
+              </li>
+              <li class="breadcrumb-item">
+                  <a href="index.html">fournisseurs</a>
+              </li>
+              <li class="breadcrumb-item">
+                  <span>{%  if fournisseur %} Modifier {% else%}  Ajouter {% endif %}</span>
+              </li>
+          </ul>
+      {% endblock %}
         {% block content %}
-    <!-- Wrapper Start -->
 
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-xl-3 col-lg-4">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between">
-                                <div class="header-title">
-                                    <h4 class="card-title">{%  if fournisseur %} Modifier {% else%}  Ajout {% endif %}  un fournisseur </h4>
-                                </div>
+            <div class="col-sm-12">
+                <div class="element-wrapper">
+                    <div class="element-box">
+                            {%  if fournisseur %}
+                                {{ form_start(form,{'method': 'post', 'action': path('edit_fournisseur' , {id: fournisseur.id}),'attr': {'id': 'formValidate'}}) }}
+                            {% else%}
+                                {{ form_start(form,{'method': 'post', 'action': path('add_fournisseur'),'attr': {'id': 'formValidate'}}) }}
+                            {% endif %}
+                            <h5 class="form-header">
+                                {%  if fournisseur %} Modifier {% else%}  Ajouter {% endif %}un fournisseur                            </h5>
+                            <div class="form-desc">
                             </div>
-                            <div class="card-body">
-                                <form>
-                                    <div class="form-group">
-                                        <div class="crm-profile-img-edit position-relative">
-                                            <img class="crm-profile-pic rounded avatar-100" src="{{ asset('assets/images/user/03.jpg') }}" alt="profile-pic">
-                                            <div class="crm-p-image bg-primary">
-                                                <i class="las la-pen upload-button"></i>
-                                                <input class="file-upload" type="file" accept="image/*">
-                                            </div>
-                                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="pno">Code :</label>
+                                {{ form_widget(form.code , {'attr': {'class' : 'form-control' , 'placeholder': 'Enter Code'}}) }}
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
 
-                                    </div>
-
-
-
-                                </form>
                             </div>
+
+
+
+
+                            <div class="form-group col-md-6">
+                                <label for="fname">Nom:</label>
+                                {{ form_widget(form.nom ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter Nom'}}) }}
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
+
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="lname">Prenom:</label>
+                                {{ form_widget(form.prenom ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter Prenom'}}) }}
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
+
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="add1">Adresse:</label>
+                                {{ form_widget(form.adresse ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter adresse'}}) }}
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
+
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="add1">Pays:</label>
+                                {{ form_widget(form.country ,{'attr': {'class' : 'form-control'}}) }}
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
+
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="add1">Ville:</label>
+                                {{ form_widget(form.city ,{'attr': {'class' : 'form-control'}}) }}
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
+
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="add2">Telephone:</label>
+                                {{ form_widget(form.telephone ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter telephone'}}) }}
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
+
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="email">Email:</label>
+                                {{ form_widget(form.email ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter email'}}) }}
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
+
+                            </div>
+
+
+
+
                         </div>
-                    </div>
-                    <div class="col-xl-9 col-lg-8">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between">
-                                <div class="header-title">
-                                    <h4 class="card-title">Informations de fournisseur</h4>
-                                </div>
+
+                            <div class="form-buttons-w">
+
+                                <button type="submit" class="btn btn-primary mr-2">{%  if fournisseur %} Modifier {% else%}  Sauvargarder {% endif %}</button>
+                                <button type="reset" class="btn btn-danger">Annuler</button>
                             </div>
-                            <div class="card-body">
-                                {%  if fournisseur %}
-                                    {{ form_start(form,{'method': 'post', 'action': path('edit_fournisseur' , {id: fournisseur.id}),'attr': {'data-toggle': 'validator'}}) }}
-                                {% else%}
-                                    {{ form_start(form,{'method': 'post', 'action': path('add_fournisseur'),'attr': {'data-toggle': 'validator'}}) }}
-                                {% endif %}
-                                <div class="new-user-info">
-                                    {{ form_start(form,{'method': 'post', 'action': path('add_client'),'attr': {'data-toggle': 'validator'}}) }}
-                                        <div class="row">
-                                            <div class="form-group col-md-6">
-                                                <label for="pno">Code :</label>
-                                                {{ form_widget(form.code , {'attr': {'class' : 'form-control' , 'placeholder': 'Enter Code'}}) }}
-                                            </div>
-
-
-
-
-                                            <div class="form-group col-md-6">
-                                                <label for="fname">Nom:</label>
-                                                {{ form_widget(form.nom ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter Nom'}}) }}
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="lname">Prenom:</label>
-                                                {{ form_widget(form.prenom ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter Prenom'}}) }}
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="add1">Adresse:</label>
-                                                {{ form_widget(form.adresse ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter adresse'}}) }}
-                                            </div>
-
-                                            <div class="form-group col-md-6">
-                                                <label for="add1">Pays:</label>
-                                                {{ form_widget(form.country ,{'attr': {'class' : 'form-control'}}) }}
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="add1">Ville:</label>
-                                                {{ form_widget(form.city ,{'attr': {'class' : 'form-control'}}) }}
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="add2">Telephone:</label>
-                                                {{ form_widget(form.telephone ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter telephone'}}) }}
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="email">Email:</label>
-                                                {{ form_widget(form.email ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter email'}}) }}
-                                            </div>
-
-
-
-
-                                        </div>
-                                        <hr>
-
-                                    <button type="submit" class="btn btn-primary mr-2">{%  if fournisseur %} Modifier {% else%}  Sauvargarder {% endif %}</button>
-                                    <button type="reset" class="btn btn-danger">Annuler</button>
-
-                                    {{ form_start(form) }}
-                                    {{ form_end(form) }}
-                                </div>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
+
         {% endblock %}
 
 

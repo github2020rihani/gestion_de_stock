@@ -54,7 +54,7 @@ class StockController extends AbstractController
             }
             else{
                 if ((int) $newQte > (int)$articleStocked[0]->getQte()) {
-                    $message = 'La quatite qui est doit suprimer est superieure de la quatite dans le stock ';
+                    $message = 'La quantité est supérieur de la quantité du base ';
                     return $this->json(array('message' => $message, 'success' => false));
                 }else{
                     $articleStocked[0]->setQte((int)$articleStocked[0]->getQte() - (int) $newQte);
@@ -63,7 +63,7 @@ class StockController extends AbstractController
             $this->em->persist($articleStocked[0]);
             $this->em->flush();
 
-            $message = 'La quatite a été modifier';
+            $message = 'La quantité a été modifier';
             $success = true;
         } else {
             $message = 'Aucun article trouver dans le stock ';

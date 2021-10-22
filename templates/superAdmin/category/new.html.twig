@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {%  if categorie %} Modifier {% else%}  Ajouter {% endif %}un categorie {% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+       {% block smenu %}
+           <ul class="breadcrumb">
+               <li class="breadcrumb-item">
+                   <a href="index.html">Tableau de bord</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <a href="index.html">Catégorie</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <span> {%  if categorie %} Modifier {% else%}  Ajouter {% endif %}</span>
+               </li>
+           </ul>
+       {% endblock %}
+        {% block content %}
+            <div class="element-wrapper">
+                <div class="element-box">
+                        {%  if categorie %}
+                            {{ form_start(form,{'method': 'post', 'action': path('edit_category', {id: categorie.id}),'attr': {'class': 'needs-validation' , 'novalidate' : 'novalidate' , 'id' : 'formValidate' }}) }}
+
+                        {% else%}
+                            {{ form_start(form,{'method': 'post', 'action': path('add_category'),'attr': {'class': 'needs-validation' , 'novalidate' : 'novalidate' , 'id' : 'formValidate' }}) }}
+
+                        {% endif %}
+                        <h5 class="form-header">
+                            {%  if categorie %} Modifier {% else%}  Ajouter {% endif %}un categorie
+                        </h5>
+                        <div class="form-desc">
+                        </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Titre *</label>
+                                {{ form_widget(form.title ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter  titre du categorie'}}) }}
+                                <div class="invalid-feedback">
+                                    s'il vous plaît entre le titre du categorie
+                                </div>
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Code *</label>
+                                {{ form_widget(form.code , {'attr': {'class' : 'form-control' , 'placeholder': 'Enter le code du categorie'}}) }}
+                                <div class="invalid-feedback">
+                                    s'il vous plaît entre le code du categorie
+                                </div>
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-buttons-w">
+                        <button type="submit" class="btn btn-primary mr-2">{%  if categorie %} Modifier {% else%}  Sauvargarder {% endif %}</button>
+                        <button type="reset" class="btn btn-danger">Annuler</button>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+
+
+
+        {% endblock %}
+
+
+{% block javascripts %}
+
+{% endblock %}

@@ -47,7 +47,7 @@ class FournisseurController extends AbstractController
     public function index( Request $request , EntityManagerInterface $em, FournisseurRepository $fournisseurRepository): Response
     {
         $fournisseurs = $fournisseurRepository->findAll();
-        return $this->render('admin/fournisseur/index.html.twig',[
+        return $this->render('superAdmin/fournisseur/index.html.twig',[
             'fournisseurs' =>$fournisseurs
         ]);
     }

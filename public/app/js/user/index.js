@@ -14,15 +14,13 @@ function changeStatus() {
                 id: id,
             },
             success: function (data) {
-                if (data.mot === 'Activer') {
+                if (data.mot === 'Activé') {
                     $('#statusUser_' + id).removeClass('badge badge-danger').addClass(data.classcss);
-                    $('#btn_statusUser_' + id).removeClass('badge bg-success').addClass('badge bg-danger');
-                    $('#btn_statusUser_' + id).attr('data-original-title', 'desactiver')
+                    $('#btn_statusUser_' + id).attr('title', 'Désactiver')
 
-                } else  if (data.mot === 'Desactiver') {
+                } else  if (data.mot === 'Désactivé') {
                     $('#statusUser_' + id).removeClass('badge badge-success').addClass(data.classcss);
-                    $('#btn_statusUser_' + id).removeClass('badge bg-danger').addClass('badge bg-success');
-                    $('#btn_statusUser_' + id).attr('data-original-title', 'Activer')
+                    $('#btn_statusUser_' + id).attr('title', 'Activer')
 
 
                 }

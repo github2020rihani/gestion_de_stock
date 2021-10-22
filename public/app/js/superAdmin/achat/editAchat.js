@@ -109,7 +109,7 @@ function addLigneAchat() {
                                                     <input type="text" name="puhtnet[]" data-index = "${index}" value="0.000" class="form-control  puhtnet puhtnet_${index}">
                                                 </td>
                                                 <td>
-                                                    <input type="number" min="1" name="qte[]" data-index = "${index}" value="0.000" class="form-control qte_${index}">
+                                                    <input type="number" min="1" name="qte[]" data-index = "${index}" value="0" class="form-control qte_${index}">
 
                                                 </td>
                                                 <td>

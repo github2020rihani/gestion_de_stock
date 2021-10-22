@@ -1,154 +1,133 @@
+<ul class="main-menu">
+    <li class="sub-header">
+        <span>Layouts</span>
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in [ 'dashboard_super_admin' ] %} selected {% endif %}">
+        <a href="{{ path('dashboard_super_admin') }}">
+            <div class="icon-w">
+                <div class="icon-home {% if app.request.attributes.get('_route') in ['dashboard_super_admin'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+            </div>
+            <span>Tableau de bord</span></a>
+
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in [ 'index_category' , 'add_category', 'edit_category'] %} selected {% endif %}">
+        <a href="{{ path('index_category') }}">
+            <div class="icon-w">
+
+                <div class="icon-organization {% if app.request.attributes.get('_route') in ['index_category' ,  'add_category', 'edit_category'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+            </div>
+            <span>Catégories</span></a>
+
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in [ 'index_departement' , 'add_departement' , 'edit_departement' ] %} selected {% endif %}">
+        <a href="{{ path('index_departement') }}">
+            <div class="icon-w">
+                <div class="icon-screen-tablet {% if app.request.attributes.get('_route') in ['index_departement' , 'add_departement' , 'edit_departement'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+            </div>
+            <span>Département</span></a>
+
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in [ 'index_user' , 'edit_user' , 'add_user' ] %} selected {% endif %}">
+        <a href="{{ path('index_user') }}">
+            <div class="icon-w">
+                <div class="icon-lock-open {% if app.request.attributes.get('_route') in ['index_user' ,'edit_user' , 'add_user'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+            </div>
+            <span>Comptes</span></a>
+
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in [ 'index_article', 'add_article', 'edit_article' ] %} selected {% endif %}">
+        <a href="{{ path('index_article') }}">
+            <div class="icon-w">
+                <div class="icon-tag{% if app.request.attributes.get('_route') in [ 'index_article', 'add_article', 'edit_article'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+            </div>
+            <span>Articles</span></a>
+
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in [ 'index_fournisseur', 'add_fournisseur' , 'edit_fournisseur'] %} selected {% endif %}">
+        <a href="{{ path('index_fournisseur') }}">
+            <div class="icon-w">
+                <div class="icon-user{% if app.request.attributes.get('_route') in ['index_fournisseur', 'add_fournisseur' , 'edit_fournisseur'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+            </div>
+            <span>Fournisseurs</span></a>
+
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in [ 'index_achat', 'add_achat' , 'edit_achat', 'detail_achat'] %} selected {% endif %} has-sub-menu">
+        <a href="{{ path('index_achat') }}">
+            <div class="icon-w">
+                <div class="icon-basket"></div>
+            </div>
+            <span>Achat</span></a>
+        <div class="sub-menu-w">
+            <div class="sub-menu-header">
+                Achat
+            </div>
+            <div class="sub-menu-icon">
+                <i class="os-icon os-icon-layers{% if app.request.attributes.get('_route') in [ 'index_achat', 'add_achat' , 'edit_achat' , 'detail_achat'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></i>
+            </div>
+            <div class="sub-menu-i">
+                <ul class="sub-menu">
+                    <li>
+                        <a href="{{ path('add_achat') }}"
+                           style="{% if app.request.attributes.get('_route') in ['add_achat'] %} color: #0a7cf8; font-weight: bold {% endif %}">Nouvelle
+                            achat</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('index_achat') }}"
+                           style="{% if app.request.attributes.get('_route') in ['index_achat', 'detail_achat', 'edit_achat'] %} color: #0a7cf8; font-weight: bold {% endif %}">Liste
+                            d'achats</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in [ 'index_stock'] %} selected {% endif %}">
+        <a href="{{ path('index_stock') }}">
+            <div class="icon-w">
+                <div class="icon-layers {% if app.request.attributes.get('_route') in ['index_stock'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+            </div>
+            <span>Stock</span></a>
+
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in [ 'index_prix', 'detail_articles' ] %} selected {% endif %} has-sub-menu">
+        <a href="{{ path('index_prix') }}">
+            <div class="icon-w">
+                <div class="icon-list {% if app.request.attributes.get('_route') in [ 'index_prix', 'detail_articles'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+
+            </div>
+            <span>Prix</span></a>
+        <div class="sub-menu-w">
+            <div class="sub-menu-header">
+                Prix
+            </div>
+            <div class="sub-menu-icon">
+                <i class="fa fa-money"></i>
+            </div>
+            <div class="sub-menu-i">
+                <ul class="sub-menu">
+                    <li class="active">
+                        <a href="{{ path('index_prix') }}"
+                           style="{% if app.request.attributes.get('_route') in ['index_prix'] %} color: #0a7cf8; font-weight: bold {% endif %}">Prix</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('detail_articles') }}"
+                           style="{% if app.request.attributes.get('_route') in ['detail_articles'] %} color: #0a7cf8 ; font-weight: bold{% endif %}">Liste
+                            d'articles</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </li>
+
+    <li class="">
+        <a href="">
+            <div class="icon-w">
+                <div class="icon-note"></div>
+            </div>
+            <span>Inventaire</span></a>
+
+    </li>
 
 
-<nav class="iq-sidebar-menu">
-    <ul id="iq-sidebar-toggle" class="iq-menu">
-        <li class="{% if app.request.attributes.get('_route') in [ 'dashboard_super_admin'] %} active {% endif %}">
-            <a href="{{ path('dashboard_super_admin') }}" class="svg-icon">
-                <i class="fa fa-3x fa-home"></i>
-                <span class="ml-4">Tableau de bord</span>
-            </a>
-        </li>
-
-{#        <li class="{% if app.request.attributes.get('_route') in [ 'index_departement' , 'add_departement'] %} active {% endif %}">#}
-{#            <a href="{{ path('index_departement') }}" class="svg-icon">#}
-{#                <svg class="svg-icon" id="p-dash3" width="20" height="20" xmlns="http://www.w3.org/2000/svg"#}
-{#                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"#}
-{#                     stroke-linecap="round" stroke-linejoin="round">#}
-{#                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>#}
-{#                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>#}
-{#                </svg>#}
-{#                <span class="ml-4">Départements</span>#}
-{#            </a>#}
-{#        </li>#}
-
-
-        <li class="{% if app.request.attributes.get('_route') in [ 'index_category' , 'add_category'] %} active {% endif %}">
-            <a href="{{ path('index_category') }}" class="svg-icon">
-                <i style="font-size: 22px;" class="fa fa-3x fa-cubes"></i>
-
-                <span class="ml-4">Categories</span>
-            </a>
-        </li>
-        <li class="{% if app.request.attributes.get('_route') in [ 'add_fourniseeur' , 'index_fournisseur'] %} active {% endif %}">
-            <a href="{{ path('index_fournisseur') }}" class="svg-icon">
-                <i style="font-size: 22px;" class="fa fa-3x fa-truck"></i>
-
-                <span class="ml-4">Fournisseurs</span>
-            </a>
-        </li>
-        <li class="{% if app.request.attributes.get('_route') in [ 'add_article' , 'index_article'] %} active {% endif %}">
-            <a href="{{ path('index_article') }}" class="svg-icon">
-                <i style="font-size: 22px;" class="fa fa-3x fa-tag"></i>
-
-                <span class="ml-4">Articles</span>
-            </a>
-        </li>
-        <li class="{% if app.request.attributes.get('_route') in [ 'index_achat' , 'add_achat'] %} active {% endif %}">
-            <a href="#achat" class="collapsed" data-toggle="collapse" aria-expanded="{% if app.request.attributes.get('_route') in [ 'index_departement' , 'add_departement'] %} true {% else%} false {% endif %}">
-                <i style="font-size: 22px;" class="fa fa-3x fa-thumbtack"></i>
-
-                <span class="ml-4">Achat</span>
-                <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
-                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="10 15 15 20 20 15"></polyline>
-                    <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                </svg>
-            </a>
-            <ul id="achat" class="iq-submenu collapse {% if app.request.attributes.get('_route') in [ 'index_achat' , 'add_achat'] %} show {% endif %}" data-parent="#iq-sidebar-toggle">
-                <li class="{% if app.request.attributes.get('_route') in [ 'index_achat' ] %} active {% endif %}">
-                    <a href="{{ path('index_achat') }}">
-                        <i class="las la-minus"></i><span>Liste des achats</span>
-                    </a>
-                </li>
-            </ul>        <ul id="achat" class="iq-submenu collapse {% if app.request.attributes.get('_route') in [ 'index_achat' , 'add_achat'] %} show {% endif %}" data-parent="#iq-sidebar-toggle">
-                <li class="{% if app.request.attributes.get('_route') in [ 'add_achat' ] %} active {% endif %}">
-                    <a href="{{ path('add_achat') }}">
-                        <i style="font-size: 22px;" class="las la-minus"></i><span>Nouvelle Achat</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <li class="{% if app.request.attributes.get('_route') in [ 'index_stock'] %} active {% endif %}">
-            <a href="{{ path('index_stock') }}" class="svg-icon">
-                <i style="font-size: 22px;" class="fa fa-3x fa-archive"></i>
-
-                <span class="ml-4">Stocks</span>
-            </a>
-        </li>
-        <li class="{% if app.request.attributes.get('_route') in [ 'index_prix'] %} active {% endif %}">
-            <a href="{{ path('index_prix') }}" class="svg-icon">
-                <i style="font-size: 22px;" class="fa fa-3x fa-money-bill"></i>
-
-                <span class="ml-4">Prix</span>
-            </a>
-        </li>
-        <li class="{% if app.request.attributes.get('_route') in [ 'detail_articles'] %} active {% endif %}">
-            <a href="{{ path('detail_articles') }}" class="svg-icon">
-                <i style="font-size: 22px;" class="fa fa-3x fa-bars"></i>
-
-                <span class="ml-4">Détail Articles</span>
-            </a>
-        </li>
-
-        <li class="">
-            <a href="#" class="svg-icon">
-                <svg class="svg-icon" id="p-dash3" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                     stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                </svg>
-                <span class="ml-4">Inventaire</span>
-            </a>
-        </li>
-
-
-
-
-{#        <li class="{% if app.request.attributes.get('_route') in [ 'index_fournisseur' , 'add_fournisseur'] %} active {% endif %}">#}
-{#            <a href="{{ path('index_fournisseur') }}" class="svg-icon">#}
-{#                <svg class="svg-icon" id="p-dash8" width="20" height="20" xmlns="http://www.w3.org/2000/svg"#}
-{#                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"#}
-{#                     stroke-linecap="round" stroke-linejoin="round">#}
-{#                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>#}
-{#                    <circle cx="9" cy="7" r="4"></circle>#}
-{#                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>#}
-{#                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>#}
-{#                </svg>#}
-{#                <span class="ml-4">Fournisseurs</span>#}
-{#            </a>#}
-{#        </li>#}
-
-{#        <li class="{% if app.request.attributes.get('_route') in [ 'index_produit' , 'add_produit'] %} active {% endif %}">#}
-{#            <a href="{{ path('index_produit') }}" class="svg-icon">#}
-{#                <svg class="svg-icon" id="p-dash8" width="20" height="20" xmlns="http://www.w3.org/2000/svg"#}
-{#                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"#}
-{#                     stroke-linecap="round" stroke-linejoin="round">#}
-{#                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>#}
-{#                    <circle cx="9" cy="7" r="4"></circle>#}
-{#                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>#}
-{#                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>#}
-{#                </svg>#}
-{#                <span class="ml-4">Produits</span>#}
-{#            </a>#}
-{#        </li>#}
-
-
-{#        <li class="{% if app.request.attributes.get('_route') in [ 'index_user' , 'add_user'] %} active {% endif %}">#}
-{#            <a href="{{ path('index_user') }}" class="svg-icon">#}
-{#                <svg class="svg-icon" id="p-dash8" width="20" height="20" xmlns="http://www.w3.org/2000/svg"#}
-{#                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"#}
-{#                     stroke-linecap="round" stroke-linejoin="round">#}
-{#                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>#}
-{#                    <circle cx="9" cy="7" r="4"></circle>#}
-{#                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>#}
-{#                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>#}
-{#                </svg>#}
-{#                <span class="ml-4">Utilisateurs</span>#}
-{#            </a>#}
-{#        </li>#}
-
-    </ul>
-</nav>
+</ul>

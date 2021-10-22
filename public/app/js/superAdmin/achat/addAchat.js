@@ -48,9 +48,9 @@ function addLigneAchat() {
                     $('.tbodyLingeAchat').append(`
        <tr class="ligne_achat">
                                                 <th scope="row">
-                                                    <button class="badge bg-danger mr-2 delete_ligneAchat_${index}" data-toggle="tooltip" type="button"
+                                                    <button class="btn btn-danger mr-2 delete_ligneAchat_${index}" data-toggle="tooltip" type="button"
                                                        data-placement="top" title="" data-original-title="Supprimer"><i
-                                                                class="ri-delete-bin-line mr-0"></i></button></th>
+                                                                class="fa fa-trash"></i></button></th>
                                                 <td>
                                                     <select class="js-example-basic-single selectArticle_${index}" name="article[]">
                                                         <option value="0" selected readonly>Coisir un article</option>
@@ -63,7 +63,7 @@ function addLigneAchat() {
                                                     <input type="text" name="puhtnet[]" data-index = "${index}" value="0.000" class="form-control  puhtnet puhtnet_${index}">
                                                 </td>
                                                 <td>
-                                                    <input type="number" min="1" name="qte[]" data-index = "${index}" value="0.000" class="form-control qte_${index}">
+                                                    <input type="number" min="1" name="qte[]" data-index = "${index}" value="0" class="form-control qte_${index}">
 
                                                 </td>
                                                 <td>

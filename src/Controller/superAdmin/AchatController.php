@@ -268,6 +268,7 @@ class AchatController extends AbstractController
         $fournisseurs = $this->fournisseurRepository->findAll();
         $articles = $this->articleRepository->findAll();
         $achatObjet = $this->achatRepository->getDetailAchat($achat);
+//        dd($achatObjet);
 
         return $this->render('superAdmin/Achat/detail.html.twig', [
             'fournisseurs' => $fournisseurs,

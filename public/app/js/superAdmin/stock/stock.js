@@ -11,7 +11,7 @@ $(document).ready(function ()  {
         var totalQte = 0 ;
 
         if ($('#majQte_'+id_article).val() == '') {
-            toastr.error('Saisir le quantite');
+            toastr.error('Pas de quantité entrer');
             return false ;
         }
         $.ajax({
@@ -24,38 +24,38 @@ $(document).ready(function ()  {
                         $('.old_qte_'+id_article).text(newQte + oldqte);
                         totalQte = oldqte + newQte ;
                         if (parseInt(totalQte) > 10) {
-                            $('#status_'+id_article).removeClass('badge badge-warning').addClass('badge badge-success');
-                            $('#status_'+id_article).removeClass('badge badge-danger').addClass('badge badge-success');
+                            $('#status_'+id_article).removeClass('bg-warning').addClass('bg-success');
+                            $('#status_'+id_article).removeClass('bg-danger').addClass('bg-success');
                             $('#status_'+id_article).text('En stock');
-                        }else if (parseInt(totalQte) <= 10) {
-                            $('#status_'+id_article).removeClass('badge badge-success').addClass('badge badge-warning');
-                            $('#status_'+id_article).removeClass('badge badge-danger').addClass('badge badge-warning');
+                        }else if (parseInt(totalQte) > 0 && parseInt(totalQte) < 10) {
+                            $('#status_'+id_article).removeClass('bg-success').addClass('bg-warning');
+                            $('#status_'+id_article).removeClass('bg-danger').addClass('bg-warning');
                             $('#status_'+id_article).text('Pré epuisée');
                         }else if(parseInt(totalQte) == 0 ) {
-                            $('#status_'+id_article).removeClass('badge badge-success').addClass('badge badge-danger');
-                            $('#status_'+id_article).removeClass('badge badge-warning').addClass('badge badge-danger');
+                            $('#status_'+id_article).removeClass('bg-success').addClass('bg-danger');
+                            $('#status_'+id_article).removeClass('bg-warning').addClass('bg-danger');
                             $('#status_'+id_article).text('Epuisée');
 
                         }
 
                     }else{
                         if (newQte > oldqte) {
-                            toastr.error('le quatite depasser la quatite de base');
+                            toastr.error('La quantité est supérieur de la quantité du base');
                             return false ;
                         }else{
                             $('.old_qte_'+id_article).text(oldqte - newQte);
                             totalQte = oldqte - newQte ;
                             if (parseInt(totalQte) > 10) {
-                                $('#status_'+id_article).removeClass('badge badge-warning').addClass('badge badge-success');
-                                $('#status_'+id_article).removeClass('badge badge-danger').addClass('badge badge-success');
+                                $('#status_'+id_article).removeClass('bg-warning').addClass('bg-success');
+                                $('#status_'+id_article).removeClass('bg-danger').addClass('bg-success');
                                 $('#status_'+id_article).text('En stock');
-                            }else if (parseInt(totalQte) <= 10) {
-                                $('#status_'+id_article).removeClass('badge badge-success').addClass('badge badge-warning');
-                                $('#status_'+id_article).removeClass('badge badge-danger').addClass('badge badge-warning');
+                            } else if (parseInt(totalQte) > 0 && parseInt(totalQte) < 10)  {
+                                $('#status_'+id_article).removeClass('bg-success').addClass('bg-warning');
+                                $('#status_'+id_article).removeClass('bg-danger').addClass('bg-warning');
                                 $('#status_'+id_article).text('Pré epuisée');
                             }else if(parseInt(totalQte) == 0 ) {
-                                $('#status_'+id_article).removeClass('badge badge-success').addClass('badge badge-danger');
-                                $('#status_'+id_article).removeClass('badge badge-warning').addClass('badge badge-danger');
+                                $('#status_'+id_article).removeClass('bg-success').addClass('bg-danger');
+                                $('#status_'+id_article).removeClass('bg-warning').addClass('bg-danger');
                                 $('#status_'+id_article).text('Epuisée');
 
                             }
