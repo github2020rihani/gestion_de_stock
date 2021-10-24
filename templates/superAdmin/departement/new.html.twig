@@ -23,6 +23,7 @@
         {% block content %}
 <div class="element-wrapper">
     <div class="element-box">
+
         {% if departement %}
             {{ form_start(form,{'method': 'post', 'action': path('edit_departement', {id: departement.id}),'attr': {'class': 'needs-validation' , 'novalidate' : 'novalidate' , 'id' : 'formValidate' }}) }}
 
@@ -34,6 +35,8 @@
             {% if departement %} Modifier {% else %}  Ajouter {% endif %}un département
         </h5>
         <div class="form-desc">
+            {{ include('default/FlashBag/flashBag.html.twig') }}
+
         </div>
         <div class="form-group">
             <label>Code de département *</label>
@@ -50,7 +53,7 @@
             </div>
         </div>
         <div class="form-buttons-w">
-            <button type="submit" class="btn btn-primary mr-2">{%  if departement %} Modifier {% else%}  Sauvargarder {% endif %}</button>
+            <button type="submit" class="btn btn-primary mr-2">{%  if departement %} Modifier {% else%}  Enregistrer {% endif %}</button>
             <button type="reset" class="btn btn-danger">Annuler</button>
         </div>
         {{ form_end(form) }}

@@ -27,6 +27,7 @@ class FournisseurType extends AbstractType
             ->add('adresse',TextType::class)
             ->add('country', EntityType::class, [
                     'class' => Country::class,
+                    'placeholder' => 'choisir une pays',
                     'choice_label' => 'name',
                     'attr' => [
                         'class' => 'form-control'

@@ -27,6 +27,18 @@ class StockRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    public function findArticleJoinPrix($id_article) {
+        return $this->createQueryBuilder('s')
+            ->select('s', 'a', 'p')
+            ->leftJoin('s.article', 'a')
+            ->leftJoin('a.prixes', 'p')
+            ->where('s.article = :id_article')
+            ->setParameter('id_article', $id_article)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     // /**
     //  * @return stock[] Returns an array of stock objects
     //  */

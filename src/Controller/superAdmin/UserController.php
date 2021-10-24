@@ -43,7 +43,10 @@ class UserController extends AbstractController
             $emailExiste = $this->userRepository->findBy(array('email' => $email));
             if ($emailExiste) {
                 $this->addFlash('error', 'Email existe déja  ');
-                exit;
+                return $this->render('superAdmin/user/new.html.twig', [
+                    'form' => $form->createView(),
+                    'user' => ''
+                ]);
             }
             $role = $form->get('roles')->getData();
             $user->setRoles($role);
@@ -53,6 +56,7 @@ class UserController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            $user->setDepartemnt($departementRepository->find(2));
             $this->em->persist($user);
             $this->em->flush();
             $this->addFlash('success', 'Ajout effectué avec succés');
@@ -96,7 +100,11 @@ class UserController extends AbstractController
                 $emailExiste = $this->userRepository->findBy(array('email' => $email));
                 if ($emailExiste) {
                     $this->addFlash('error', 'Email existe déja  ');
-                    exit;
+                    return $this->render('superAdmin/user/edit.html.twig', [
+                        'form' => $form->createView(),
+                        'user' => $user,
+                        'departements' => $departements
+                    ]);
                 }
 
                 $user->setEmail($email);
@@ -104,17 +112,7 @@ class UserController extends AbstractController
             $role = $request->request->get('roles');
             //new password
 
-//            dump($request->request->get('password'));
-            dump($user->getPassword());
-            dump(     $user->setPassword(
-                $passwordEncoder->hashPassword(
-                    $user,
-                    '123456'
-                )
-            ));
             $password = $request->request->get('password');
-
-
 
             if ($password && $password != $user->getPassword()) {
                 $user->setPassword(

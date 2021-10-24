@@ -10,10 +10,10 @@
        {% block smenu %}
            <ul class="breadcrumb">
                <li class="breadcrumb-item">
-                   <a href="index.html">Tableau de bord</a>
+                   <a href="{{ path('dashboard_super_admin') }}">Tableau de bord</a>
                </li>
                <li class="breadcrumb-item">
-                   <a href="index.html">comptes</a>
+                   <a href="{{ path('index_user') }}">comptes</a>
                </li>
                <li class="breadcrumb-item">
                    <span> {% if user %} Modifier {% else %}  Ajouter {% endif %}</span>
@@ -111,16 +111,16 @@
                                 <div class="help-block form-text with-errors form-control-feedback"></div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Département *</label>
-                                {{ form_widget(form.departemnt ) }}
-                                <div class="invalid-feedback">
-                                    s'il vous plaît choisir un département
-                                </div>
-                                <div class="help-block form-text with-errors form-control-feedback"></div>
-                            </div>
-                        </div>
+{#                        <div class="col-md-6">#}
+{#                            <div class="form-group">#}
+{#                                <label>Département *</label>#}
+{#                                {{ form_widget(form.departemnt ) }}#}
+{#                                <div class="invalid-feedback">#}
+{#                                    s'il vous plaît choisir un département#}
+{#                                </div>#}
+{#                                <div class="help-block form-text with-errors form-control-feedback"></div>#}
+{#                            </div>#}
+{#                        </div>#}
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Role *</label>
@@ -156,7 +156,7 @@
 
                     <div class="form-buttons-w">
                         <button type="submit"
-                                class="btn btn-primary mr-2">{% if user %} Modifier {% else %}  Sauvargarder {% endif %}</button>
+                                class="btn btn-primary mr-2">{% if user %} Modifier {% else %}  Enregistrer {% endif %}</button>
                         <button type="reset" class="btn btn-danger">Annuler</button>
                     </div>
                     {{ form_end(form) }}

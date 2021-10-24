@@ -6,54 +6,117 @@ $(document).ready(function () {
     var qte = 0;
     var url = window.location.href;
     var id = url.substring(url.lastIndexOf('/') + 1);
+    var error = false;
+
     getArticlesAchat(id);
     removeArticle();
     changePUHTNET();
     changePVenteTTC();
     addLigneAchat();
-    $('.editAchat').click(function () {
-        var sommepuhtnet = 0;
-        //calculer totalHT totaltva totalttc
-        $('.puhtnet').each(function (index) {
-            totalHt += (parseFloat($(this).val()) *parseInt( $('.qte_'+(index+1)).val()));
-        })
-        totalTVA = (totalHt * 1.19) ;
-        totalTTC = (totalHt+totalTVA+timbre);
-        $('.total_ht').text(totalHt.toFixed(3))
-        $('.total_tva').text(totalTVA.toFixed(3))
-        $('.total_ttc').text(totalTTC.toFixed(3))
+    CheckedFodec();
 
-        setTimeout(function () {
+    $('.editAchat').click(function () {
+        if (countArticle == 0) {
+            toastr.error('Aucun Article Ajouter');
+            return false;
+        }
+
+        $('.numero_achat').each(function () {
+            if ($(this).val() == '') {
+                error = true;
+
+                toastr.error('Veuillez Entrer numéro d\'achat');
+
+                return true;
+            }
+        })
+        $('.date_creation').each(function () {
+            if ($(this).val() == '') {
+                error = true;
+
+                toastr.error('Veuillez Entrer la date du création');
+
+                return true;
+            }
+        })
+        $('.article').each(function () {
+            if ($(this).val() == 0) {
+                error = true;
+
+                toastr.error('Veuillez Choisir un article');
+
+                return true;
+            }
+        })
+        $('.puhtnet').each(function () {
+            if ($(this).attr('value') == 0.000) {
+                error = true;
+
+                toastr.error('Veuillez remplir tous les champs puhtnet');
+
+                return true;
+
+            }
+        })
+        $('.pventettc').each(function () {
+            if ($(this).attr('value') == 0.000) {
+                error = true;
+
+                toastr.error('Veuillez remplir tous les champs pventettc');
+                return true;
+            }
+        })
+        if (error) {
+            return false;
+        } else {
+            $(this).hide();
             $('.formEditAchat').submit();
 
-        }, 3000)
-
-
-
+        }
 
     })
-
-
-
 });
 var puttc = 0
 var marge = 0
 var selectAricle = [];
 var articleToDelete = [];
-
+var resTotalHt = 0 ;
+var countArticle = 0 ;
 function removeArticle() {
     $(".delete_ligneAchat").click(function (event) {
-        const indexArticle = selectAricle[0].indexOf( $(this).data('id_article'));
+        var index = $(this).data('index');
+
+        const indexArticle = selectAricle[0].indexOf($(this).data('id_article'));
         if (indexArticle > -1) {
             selectAricle[0].splice(indexArticle, 1);
         }
+        var totalHtOld = parseFloat($('.total_ht').text());
+        if ($('input.fodec').is(':checked')) {
+             resTotalHt = (parseFloat(($('.puhtnet_' + index).val()) * parseInt($('.qte_' + (index)).val())) * 0.99).toFixed(3);
+        }else{
+            resTotalHt = (parseFloat(($('.puhtnet_' + index).val()) * parseInt($('.qte_' + (index)).val()))).toFixed(3);
+        }
+
+        totalHtNew = (totalHtOld - parseFloat(resTotalHt).toFixed(3)).toFixed(3);
+
+        var totalTVA = 0;
+        var totalTTC = 0;
+        var timbre = 0.600;
+        var remise = parseFloat($('.remise').text());
+        var transport = parseFloat($('.transport').text());
+
+        totalTVA = (totalHtNew * 1.19);
+        totalTTC = parseFloat(totalHtNew + totalTVA + timbre + remise + transport).toFixed(3);
+        $('.total_ht').text(totalHtNew)
+        $('.total_tva').text(totalTVA.toFixed(3))
+        $('.total_ttc').text(totalTTC)
         $(this).parent().parent().remove();
         articleToDelete.push($(this).data('id_article'));
-       $(this).attr('data-original-title', '');
-       $('.articleToDelete').val(articleToDelete);
-        console.log(articleToDelete);
+        $(this).attr('data-original-title', '');
+        $('.articleToDelete').val(articleToDelete);
     });
 }
+
 function getArticlesAchat(id) {
     $.ajax({
         url: Routing.generate('get_articles_achat'),
@@ -63,7 +126,6 @@ function getArticlesAchat(id) {
             if (data) {
                 console.log(data)
                 selectAricle.push(data);
-
 
 
             }
@@ -77,6 +139,8 @@ function getArticlesAchat(id) {
 
 function addLigneAchat() {
     $('.addLingeAchat').click(function () {
+        countArticle++;
+
         var index = ($('.ligne_achat').length);
         var contentListArticle = '';
         index++;
@@ -94,11 +158,13 @@ function addLigneAchat() {
                     $('.tbodyLingeAchat').append(`
        <tr class="ligne_achat">
                                                 <th scope="row">
-                                                    <button class="badge bg-danger mr-2 delete_ligneAchat_${index}" data-toggle="tooltip" type="button"
+                                                  
+                                                                    <button class="btn btn-danger mr-2 delete_ligneAchat_${index}" data-toggle="tooltip" type="button" data-index = "${index}"
                                                        data-placement="top" title="" data-original-title="Supprimer"><i
-                                                                class="ri-delete-bin-line mr-0"></i></button></th>
+                                                                class="fa fa-trash"></i></button>
+                                                                </th>
                                                 <td>
-                                                    <select class="js-example-basic-single selectArticle_${index}" name="article[]">
+                                                    <select class="js-example-basic-single article selectArticle_${index}" name="article[]">
                                                         <option value="0" selected readonly>Coisir un article</option>
                                                        ${contentListArticle}
 
@@ -106,22 +172,22 @@ function addLigneAchat() {
                                                 </td>
                                                 <td class="descriptionarticle_${index}"></td>
                                                 <td>
-                                                    <input type="text" name="puhtnet[]" data-index = "${index}" value="0.000" class="form-control  puhtnet puhtnet_${index}">
+                                                    <input type="text" name="puhtnet[]" data-index = "${index}" value="0.000" class="form-control puhtnet puhtnet_${index}">
                                                 </td>
                                                 <td>
-                                                    <input type="number" min="1" name="qte[]" data-index = "${index}" value="0" class="form-control qte_${index}">
+                                                    <input type="text" min="1" name="qte[]" data-index = "${index}" value="1" class="form-control  qte qte_${index}">
 
                                                 </td>
                                                 <td>
-                                                    <input type="text" value="19.0" name="tva[]" data-index = "${index}"  class="form-control tva_${index}" readonly>
+                                                    <input type="text" value="19.0" name="tva[]" data-index = "${index}"  class="form-control tva tva_${index}" readonly>
 
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="puttc[]" value="0.000" data-index = "${index}" class="form-control puttc_${index}" readonly>
+                                                    <input type="text" name="puttc[]" value="0.000" data-index = "${index}" class="form-control puttc puttc_${index}" readonly>
 
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="marge[]" value="0.000" data-index = "${index}" class="form-control marge_${index}" readonly>
+                                                    <input type="text" name="marge[]" value="0.000" data-index = "${index}" class="form-control marge marge_${index}" readonly>
 
                                                 </td>
                                                 <td>
@@ -132,11 +198,29 @@ function addLigneAchat() {
                     $('.js-example-basic-single').select2();
                     //remove ligne achat
                     $(".delete_ligneAchat_" + index).click(function (event) {
-                        const indexArticle = selectAricle[0].indexOf( $('.selectArticle_' + index).val());
+                        const indexArticle = selectAricle[0].indexOf($('.selectArticle_' + index).val());
                         if (indexArticle > -1) {
                             selectAricle[0].splice(indexArticle, 1);
                         }
+                        var totalHtOld = parseFloat($('.total_ht').text());
+                        if ($('input.fodec').is(':checked')) {
+                            resTotalHt = (parseFloat(($('.puhtnet_' + index).val()) * parseInt($('.qte_' + (index)).val())) * 0.99).toFixed(3);
+                        }else{
+                            resTotalHt = (parseFloat(($('.puhtnet_' + index).val()) * parseInt($('.qte_' + (index)).val()))).toFixed(3);
+                        }
 
+                        var totalHtNew = (totalHtOld - (parseFloat(resTotalHt)).toFixed(3)).toFixed(3);
+                        var totalTVA = 0;
+                        var totalTTC = 0;
+                        var timbre = 0.600;
+                        var remise = parseFloat($('.remise').text());
+                        var transport = parseFloat($('.transport').text());
+
+                        totalTVA = (totalHtNew * 1.19);
+                        totalTTC = parseFloat(totalHtNew + totalTVA + timbre + remise + transport).toFixed(3);
+                        $('.total_ht').text(totalHtNew)
+                        $('.total_tva').text(totalTVA.toFixed(3))
+                        $('.total_ttc').text(totalTTC)
 
                         $(this).parent().parent().remove();
                     });
@@ -145,6 +229,8 @@ function addLigneAchat() {
                     //changePUHTnET
                     changePUHTNET();
                     changePVenteTTC();
+                    changeQte();
+
                 }
 
             },
@@ -160,11 +246,33 @@ function addLigneAchat() {
 
 function selectArticle(index) {
     $('.selectArticle_' + index).change(function () {
-        console.log(selectAricle);
-        if (selectAricle[0].includes(parseInt($(this).val()))){
+        if (selectAricle[0].includes(parseInt($(this).val()))) {
             toastr.error('cet article a été choisir , veuillez choisir un autre');
+
+            //check calculer
+            var totalHtOld = parseFloat($('.total_ht').text());
+            if ($('input.fodec').is(':checked')) {
+                resTotalHt = (parseFloat(($('.puhtnet_' + index).val()) * parseInt($('.qte_' + (index)).val())) * 0.99).toFixed(3);
+            } else {
+                resTotalHt = (parseFloat(($('.puhtnet_' + index).val()) * parseInt($('.qte_' + (index)).val()))).toFixed(3);
+            }
+
+            var totalHtNew = (totalHtOld - (parseFloat(resTotalHt)).toFixed(3)).toFixed(3);
+            var totalTVA = 0;
+            var totalTTC = 0;
+            var timbre = 0.600;
+            var remise = parseFloat($('.remise').text());
+            var transport = parseFloat($('.transport').text());
+
+            totalTVA = (totalHtNew * 1.19);
+            totalTTC = parseFloat(totalHtNew + totalTVA + timbre + remise + transport).toFixed(3);
+            $('.total_ht').text(totalHtNew)
+            $('.total_tva').text(totalTVA.toFixed(3))
+            $('.total_ttc').text(totalTTC)
+
+
             $(this).parent().parent().remove();
-            return false ;
+            return false;
         }
         selectAricle[0].push(parseInt($(this).val()));
         console.log(selectAricle[0]);
@@ -193,35 +301,126 @@ function selectArticle(index) {
 
 function changePUHTNET() {
     var tva = 1.19;
-    puttc = 0 ;
+    puttc = 0;
 
-    $('.puhtnet').keyup("input", function(e) {
+    $('.puhtnet').keyup("input", function (e) {
+        $(this).attr('value', $(this).val())
         var index = $(this).data('index');
-        var pventettc =  $('.pventettc_'+index).val();
+        var pventettc = $('.pventettc_' + index).val();
         puttc = (parseFloat($(this).val() * tva).toFixed(3));
-        $('.puttc_'+index).val((puttc));
+        $('.puttc_' + index).val((puttc));
         console.log(pventettc);
         if (pventettc) {
-            marge =  (((pventettc - puttc) / puttc) * 100).toFixed(2);
-            $('.marge_'+index).val(marge);
+            marge = (((pventettc - puttc) / puttc) * 100).toFixed(2);
+            $('.marge_' + index).val(marge);
         }
+        calculerTotal();
+
     })
 
 }
+
 function changePVenteTTC() {
 
-    $('.pventettc').keyup("input", function(e) {
+    $('.pventettc').keyup("input", function (e) {
+        $(this).attr('value', $(this).val())
+
         var index = $(this).data('index');
 
-        puttc =   $('.puttc_'+index).val();
+        puttc = $('.puttc_' + index).val();
         console.log(puttc);
 
 
-        marge =  ((($(this).val() - puttc) / puttc) * 100).toFixed(2);
+        marge = ((($(this).val() - puttc) / puttc) * 100).toFixed(2);
 
 
-        $('.marge_'+index).val(marge);
+        $('.marge_' + index).val(marge);
+        calculerTotal();
+
     })
+
+}
+
+function changeQte() {
+    $('.qte').keyup("input", function (e) {
+        $(this).attr('value', $(this).val())
+        var index = $(this).data('index');
+        calculerTotal();
+
+    })
+}
+
+
+function calculerTotal() {
+    var totalHt = 0;
+    var totalTVA = 0;
+    var timbre = 0.600;
+    var remise = parseFloat($('.remise').text());
+    var transport = parseFloat($('.transport').text());
+    var totalTTC = 0;
+    var qte = 0
+    var sommepuhtnet = 0;
+    var totalHtNew = 0;
+    //calculer totalHT totaltva totalttc
+    $('.puhtnet').each(function (index) {
+        totalHt += (parseFloat($(this).val()) * parseInt($('.qte_' + (index + 1)).val()));
+    })
+    if ($('input.fodec').is(':checked')) {
+
+        totalHtNew = parseFloat((totalHt * 0.99)).toFixed(3);
+    } else {
+
+        totalHtNew = totalHt;
+
+    }
+
+    totalTVA = (totalHtNew * 1.19);
+    totalTTC = (totalHtNew + totalTVA + timbre + remise + transport);
+    $('.total_ht').text(totalHtNew)
+    $('.total_tva').text(totalTVA.toFixed(3))
+    $('.total_ttc').text(totalTTC.toFixed(3))
+}
+
+function CheckedFodec() {
+
+
+    $('input.fodec').change(function () {
+            var totalTVA = 0;
+            var totalTTC = 0;
+            var totalHtNew = 0;
+            var timbre = 0.600;
+            $(this).attr('value', true);
+            var remise = parseFloat($('.remise').text());
+            var transport = parseFloat($('.transport').text());
+            var totalHtOld = parseFloat($('.total_ht').text());
+            if (parseFloat(totalHtOld) == 0) {
+                toastr.info('Veuiller entrer tous les prix et les quantité');
+                return false;
+            }
+
+            if ($('input.fodec').is(':checked')) {
+                $(this).attr('value', true);
+                $('.fodecChecked').val(true);
+
+
+                totalHtNew = parseFloat((totalHtOld * 0.99)).toFixed(3);
+            } else {
+                $('.fodecChecked').val(false);
+
+
+                totalHtNew = parseFloat((totalHtOld / 0.99)).toFixed(3);
+
+            }
+            totalTVA = (totalHtNew * 1.19);
+
+            totalTTC = parseFloat(parseFloat(totalHtNew) + totalTVA + timbre + remise + transport).toFixed(3);
+            $('.total_ht').text(totalHtNew)
+            $('.total_tva').text(totalTVA.toFixed(3))
+            $('.total_ttc').text(totalTTC);
+
+        }
+    )
+
 
 }
 

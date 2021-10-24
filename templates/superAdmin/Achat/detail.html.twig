@@ -3,15 +3,67 @@
 {% block title %} Détail d'achat {% endblock %}
 
 {% block stylesheets %}
+    <style>
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .container:hover input ~ .checkmark {
+            background-color: #ccc;
+        }
+
+        /* When the checkbox is checked, add a blue background */
+        .container input:checked ~ .checkmark {
+            background-color: #2196F3;
+        }
+
+        /* Create the checkmark/indicator (hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the checkmark when checked */
+        .container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        /* Style the checkmark/indicator */
+        .container .checkmark:after {
+            left: 9px;
+            top: 5px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+        .container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+    </style>
 
 {% endblock %}
        {% block smenu %}
            <ul class="breadcrumb">
                <li class="breadcrumb-item">
-                   <a href="index.html">Tableau de bord</a>
+                   <a href="{{ path('dashboard_super_admin') }}">Tableau de bord</a>
                </li>
                <li class="breadcrumb-item">
-                   <a href="index.html">achat</a>
+                   <a href="{{ path('index_achat')}}">achats</a>
                </li>
                <li class="breadcrumb-item">
                    <span>Détail</span>
@@ -33,7 +85,7 @@
                                         <span>Numéro d'achat #</span><strong>{{ achat['numero'] }}</strong>
                                     </div>
                                     <div class="order-sub-info">
-                                        <span>Date création</span><strong>{{ achat['createdAt']|date('now') }}</strong>
+                                        <span>Date de création</span><strong>{{ achat['createdAt']|date('d/m/Y') }}</strong>
                                     </div>
                                 </div>
                                 <div class="order-items-table">
@@ -108,14 +160,30 @@
                                         </div>
                                         <div class="col-md-5 offset-md-1">
                                             <h5 class="order-section-heading">
-                                                Order Summary
                                             </h5>
                                             <div class="order-summary-row">
+                                                <div class="form-check">
+                                                    <label class="container"><b style="font-size: 18px">Fodec</b>
+                                                        <input type="checkbox"  class="fodec" name="fodec" value="" {% if achat['fodec'] %} checked {% endif %}>
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
+                                            </div>        <div class="order-summary-row">
                                                 <div class="order-summary-label">
                                                     <span>Total HT</span>
                                                 </div>
                                                 <div class="order-summary-value">
-                                                    {% if achat['totalHT'] %} {{ achat['totalHT'] }} {% else %} 0.000 {% endif %}
+                                                    {% if achat['totalHT'] %} {{ achat['totalHT']|number_format(3) }} {% else %} 0.000 {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="order-summary-row">
+
+
+                                                <div class="order-summary-label">
+                                                    <span>Remise</span>
+                                                </div>
+                                                <div class="order-summary-value">
+                                                    {% if achat['remise'] %} {{ achat['remise']|number_format(3) }} {% else %} 0.000 {% endif %}
                                                 </div>
                                             </div>
                                             <div class="order-summary-row">
@@ -123,30 +191,27 @@
                                                     <span>Total TVA</span>
                                                 </div>
                                                 <div class="order-summary-value">
-                                                    {% if achat['totalTVA'] %} {{ achat['totalTVA'] }} {% else %} 0.000 {% endif %}
+                                                    {% if achat['totalTVA'] %} {{ achat['totalTVA']|number_format(3) }} {% else %} 0.000 {% endif %}
                                                 </div>
                                             </div>
+
                                             <div class="order-summary-row">
                                                 <div class="order-summary-label">
                                                     <span>Timbre</span>
                                                 </div>
                                                 <div class="order-summary-value">
-                                                    {% if achat['timbre'] %} {{ achat['timbre'] }} {% else %} 0.600 {% endif %}
+                                                    {% if achat['timbre'] %} {{ achat['timbre'] |number_format(3)}} {% else %} 0.600 {% endif %}
                                                 </div>
                                             </div>
                                             <div class="order-summary-row">
                                                 <div class="order-summary-label">
-                                                    <div class="custom-control custom-checkbox custom-control-inline">
-                                                        <input type="checkbox" class="custom-control-input" DISABLED
-                                                               name="fodec" {% if achat['fodec'] %} checked {% endif %}
-                                                               id="customCheck5">
-                                                        <label class="custom-control-label"
-                                                               for="customCheck5">Fodec</label>
-                                                    </div>                                                </div>
-
-
-
+                                                    <span>Transport</span>
+                                                </div>
+                                                <div class="order-summary-value">
+                                                    {% if achat['tronsport'] %} {{ achat['tronsport']|number_format(3) }} {% else %} 0.000 {% endif %}
+                                                </div>
                                             </div>
+
 
 
                                             <div class="order-summary-row as-total">
@@ -154,7 +219,7 @@
                                                     <span>Total TTC</span>
                                                 </div>
                                                 <div class="order-summary-value">
-                                                    {% if achat['totalTTC'] %} {{ achat['totalTTC'] }} {% else %} 0.000 {% endif %}
+                                                    {% if achat['totalTTC'] %} {{ achat['totalTTC']|number_format(3) }} {% else %} 0.000 {% endif %}
                                                 </div>
                                             </div>
                                         </div>
@@ -201,8 +266,7 @@
                                         </div>
                                         <div class="sub-info-value">
                                             {{ achat['fournisseur']['adresse'] }}
-                                            <br>{{ achat['fournisseur']['adresse'] }}
-                                            , {{ achat['fournisseur']['adresse'] }}
+                                            <br>
                                         </div>
                                     </div>
                                 </div>

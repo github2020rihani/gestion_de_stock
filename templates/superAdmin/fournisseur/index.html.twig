@@ -8,10 +8,10 @@
        {% block smenu %}
            <ul class="breadcrumb">
                <li class="breadcrumb-item">
-                   <a href="index.html">Tableau de bord</a>
+                   <a href="{{ path('dashboard_super_admin') }}">Tableau de bord</a>
                </li>
                <li class="breadcrumb-item">
-                   <a href="index.html">fournisseurs</a>
+                   <a href="#">fournisseurs</a>
                </li>
                <li class="breadcrumb-item">
                    <span>Liste</span>
@@ -46,7 +46,7 @@
                             <tr>
                                 <th>Code</th>
                                 <th>Nom</th>
-                                <th>Prenom</th>
+                                <th>Prénom</th>
                                 <th>Adresse</th>
                                 <th>Telephone</th>
                                 <th>Email</th>
@@ -57,9 +57,9 @@
                             <tr>
                                 <th>Code</th>
                                 <th>Nom</th>
-                                <th>Prenom</th>
+                                <th>Prénom</th>
                                 <th>Adresse</th>
-                                <th>Telephone</th>
+                                <th>Téléphone</th>
                                 <th>Email</th>
                                 <th>Actions</th>
                             </tr>
@@ -91,6 +91,8 @@
                                                data-toggle="tooltip"
                                                data-placement="top" title="" data-original-title="Supprimer"
                                                style="color: white"
+                                               onclick=" return confirm('Vous éte sur suprimer ce fournisseur')"
+
                                                href="{{ path('delete_fournisseur', {id: f.id}) }}"
                                             >
                                                 <i class="fa fa-trash"></i>

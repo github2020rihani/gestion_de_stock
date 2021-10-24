@@ -43,15 +43,15 @@ class UserType extends AbstractType
                 ],
             ])
             ->add('function', TextType::class)
-            ->add('departemnt', EntityType::class, [
-                // looks for choices from this entity
-                'class' => Departement::class,
-                'placeholder'=> 'Choisir un département',
-                'choice_label' => 'libelle',
-                'choice_value' => 'codeDeppart',
-                'expanded' => false,
-                'attr' => ['class' => 'form-control'],
-            ])
+//            ->add('departemnt', EntityType::class, [
+//                // looks for choices from this entity
+//                'class' => Departement::class,
+//                'placeholder'=> 'Choisir un département',
+//                'choice_label' => 'libelle',
+//                'choice_value' => 'codeDeppart',
+//                'expanded' => false,
+//                'attr' => ['class' => 'form-control'],
+//            ])
             ->add('plainPassword',RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options'  => ['label' => 'mot de passe',

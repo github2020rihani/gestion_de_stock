@@ -42,6 +42,17 @@ class Stock
      */
     private $article;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $inventer;
+
+    public function __construct()
+    {
+        $this->inventer = false ;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +114,18 @@ class Stock
     public function setArticle(?Article $article): self
     {
         $this->article = $article;
+
+        return $this;
+    }
+
+    public function getInventer(): ?bool
+    {
+        return $this->inventer;
+    }
+
+    public function setInventer(bool $inventer): self
+    {
+        $this->inventer = $inventer;
 
         return $this;
     }

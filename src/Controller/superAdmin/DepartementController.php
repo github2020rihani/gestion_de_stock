@@ -35,6 +35,15 @@ class DepartementController extends AbstractController
         $form = $this->createForm(DepartementType::class,$departement);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            $departementExiste = $this->departementRepository->findBy(array('codeDeppart' => $form->get('codeDeppart')->getData() ));
+            if ($departementExiste) {
+                $this->addFlash('error','Un département Existe avec ce code'.$form->get('codeDeppart')->getData()  );
+
+                return $this->render('superAdmin/departement/new.html.twig',[
+                    'form' => $form->createView(),
+                    'departement' => ''
+                ]);
+            }
             $this->em->persist($departement);
             $this->em->flush();
             $this->addFlash('success','Ajout effectué avec succés');
@@ -58,6 +67,15 @@ class DepartementController extends AbstractController
         $form = $this->createForm(DepartementType::class,$departement);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            $departementExiste = $this->departementRepository->findBy(array('codeDeppart' => $form->get('codeDeppart')->getData() ));
+            if ($departementExiste) {
+                $this->addFlash('error','Un département Existe avec ce code '. $form->get('codeDeppart')->getData()  );
+
+                return $this->render('superAdmin/departement/new.html.twig',[
+                    'form' => $form->createView(),
+                    'departement' => $departement
+                ]);
+            }
             $this->em->persist($departement);
             $this->em->flush();
             $this->addFlash('success','Modifier effectué avec succés');

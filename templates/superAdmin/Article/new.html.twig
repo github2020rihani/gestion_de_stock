@@ -8,10 +8,10 @@
        {% block smenu %}
            <ul class="breadcrumb">
                <li class="breadcrumb-item">
-                   <a href="index.html">Tableau de bord</a>
+                   <a href="{{ path('dashboard_super_admin') }}">Tableau de bord</a>
                </li>
                <li class="breadcrumb-item">
-                   <a href="index.html">articles</a>
+                   <a href="{{ path('index_article') }}">articles</a>
                </li>
                <li class="breadcrumb-item">
                    <span>{% if article %} Modifier {% else %}  Ajouter {% endif %}</span>
@@ -34,11 +34,13 @@
                                 {% if article %} Modifier {% else %}  Ajouter {% endif %}un article
                             </h5>
                             <div class="form-desc">
+                                {{ include('default/FlashBag/flashBag.html.twig') }}
+
                             </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Ref article *</label>
+                                    <label>Réf d'article *</label>
                                     {{ form_widget(form.ref ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter la reference de l\'article'}}) }}
                                     <div class="invalid-feedback">
                                         s'il vous plaît entre la reference de l\'article
@@ -61,7 +63,7 @@
                                     <label>Catégorie *</label>
                                     {{ form_widget(form.categorie , {'attr': {'class' : 'form-control'}}) }}
                                     <div class="invalid-feedback">
-                                        s'il vous plaît Choisir une categorie
+                                        s'il vous plaît Choisir une catégorie
                                     </div>
                                     <div class="help-block form-text with-errors form-control-feedback"></div>
                                 </div>

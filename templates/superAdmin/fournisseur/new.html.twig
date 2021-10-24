@@ -8,13 +8,14 @@
       {% block smenu %}
           <ul class="breadcrumb">
               <li class="breadcrumb-item">
-                  <a href="index.html">Tableau de bord</a>
+                  <a href="{{ path('dashboard_super_admin') }}">Tableau de bord</a>
               </li>
               <li class="breadcrumb-item">
-                  <a href="index.html">fournisseurs</a>
+                  <a href="{{path('index_fournisseur')}}">fournisseurs</a>
               </li>
               <li class="breadcrumb-item">
                   <span>{%  if fournisseur %} Modifier {% else%}  Ajouter {% endif %}</span>
+
               </li>
           </ul>
       {% endblock %}
@@ -29,8 +30,11 @@
                                 {{ form_start(form,{'method': 'post', 'action': path('add_fournisseur'),'attr': {'id': 'formValidate'}}) }}
                             {% endif %}
                             <h5 class="form-header">
-                                {%  if fournisseur %} Modifier {% else%}  Ajouter {% endif %}un fournisseur                            </h5>
+                                {%  if fournisseur %} Modifier {% else%}  Ajouter {% endif %}un fournisseur
+                            </h5>
                             <div class="form-desc">
+                                {{ include('default/FlashBag/flashBag.html.twig') }}
+
                             </div>
                         <div class="row">
                             <div class="form-group col-md-6">
@@ -50,7 +54,7 @@
 
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="lname">Prenom:</label>
+                                <label for="lname">Prénom:</label>
                                 {{ form_widget(form.prenom ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter Prenom'}}) }}
                                 <div class="help-block form-text with-errors form-control-feedback"></div>
 
@@ -75,7 +79,7 @@
 
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="add2">Telephone:</label>
+                                <label for="add2">Téléphone:</label>
                                 {{ form_widget(form.telephone ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter telephone'}}) }}
                                 <div class="help-block form-text with-errors form-control-feedback"></div>
 
@@ -84,6 +88,7 @@
                                 <label for="email">Email:</label>
                                 {{ form_widget(form.email ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter email'}}) }}
                                 <div class="help-block form-text with-errors form-control-feedback"></div>
+
 
                             </div>
 
@@ -94,10 +99,10 @@
 
                             <div class="form-buttons-w">
 
-                                <button type="submit" class="btn btn-primary mr-2">{%  if fournisseur %} Modifier {% else%}  Sauvargarder {% endif %}</button>
+                                <button type="submit" class="btn btn-primary mr-2">{%  if fournisseur %} Modifier {% else%}  Enregistrer {% endif %}</button>
                                 <button type="reset" class="btn btn-danger">Annuler</button>
                             </div>
-                        </form>
+                        {{ form_end(form) }}
                     </div>
                 </div>
             </div>

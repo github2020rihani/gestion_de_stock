@@ -3,15 +3,67 @@
 {% block title %} Modifier un achat {% endblock %}
 
 {% block stylesheets %}
+    <style>
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .container:hover input ~ .checkmark {
+            background-color: #ccc;
+        }
+
+        /* When the checkbox is checked, add a blue background */
+        .container input:checked ~ .checkmark {
+            background-color: #2196F3;
+        }
+
+        /* Create the checkmark/indicator (hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the checkmark when checked */
+        .container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        /* Style the checkmark/indicator */
+        .container .checkmark:after {
+            left: 9px;
+            top: 5px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+        .container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+    </style>
 
 {% endblock %}
     {% block smenu %}
         <ul class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="index.html">Tableau de bord</a>
+                <a href="{{ path('dashboard_super_admin') }}">Tableau de bord</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="index.html">achat</a>
+                <a href="{{ path('index_achat')}}">achats</a>
             </li>
             <li class="breadcrumb-item">
                 <span>Modifier</span>
@@ -21,7 +73,7 @@
         {% block content %}
             <div class="content-box">
                 <div class="row">
-                    <div class="col-sm-10 col-xxxl-10">
+                    <div class="col-sm-9 col-xxxl-9">
                         <div class="element-wrapper">
                             <h6 class="element-header">
                                 Modifier un  achat
@@ -29,11 +81,13 @@
                             <div class="element-box" style="min-height: 360px" >
                                 <form method="post" action="{{ path('edit_achat' , {id: achat['id']}) }}"
                                       class="formEditAchat">
+                                    <input type="hidden" class="fodecChecked" name="fodecChecked" value="{% if achat['fodec'] %} true  {% else %} false {% endif %}">
+
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="validationCustom01">Fournisseur</label>
-                                            <select name="fournisseur" class="form-control js-example-basic-single">
-                                                <option value="" selected disabled>Choisir un fournisseur</option>
+                                            <select name="fournisseur" class="form-control fournisseur js-example-basic-single">
+                                                <option value="0" selected disabled>Choisir un fournisseur</option>
                                                 {% for f in fournisseurs %}
                                                     <option value="{{ f.id }}" {% if achat['fournisseur']['id'] == f.id %} selected {% endif %}>{{ f.nom }} {{ f.prenom }}</option>
                                                 {% endfor %}
@@ -41,16 +95,16 @@
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="validationCustom01">N achat</label>
-                                            <input type="text" class="form-control" value="{{ achat['numero'] }}"
+                                            <input type="text" class="form-control numero_achat" value="{{ achat['numero'] }}"
                                                    id="validationCustom01" required=""
                                                    name="numero_achat">
                                         </div>
                                         <div class="col-md-4 mb-3">
-                                            <label for="">Date creation</label>
+                                            <label for="">Date du création</label>
 
-                                            <input type="date" id="myDate" class="form-control"
+                                            <input type="date" id="myDate" class="form-control date_creation"
                                                    value="{{ achat['createdAt']|date('Y-m-d') }}"
-                                                   min="{{ achat['createdAt']|date('d/m/Y') }}
+                                                   min="{{ achat['createdAt']|date('d/m/Y') }}" disabled
                                                     placeholder="{{ achat['createdAt']|date('d/m/Y') }}" id=""
                                             required=""
                                             name="date_creation">
@@ -87,15 +141,15 @@
 
                                                 <tr class="ligne_achat">
                                                     <th scope="row">
-                                                        <button class="badge bg-danger mr-2 delete_ligneAchat delete_ligneAchat_{{ loop.index }}"
+                                                        <button class="btn btn-danger mr-2 delete_ligneAchat delete_ligneAchat_{{ loop.index }}"
                                                                 data-id_article="{{ article['article']['id'] }}"
-                                                                data-toggle="tooltip" type="button"
+                                                                data-toggle="tooltip" type="button" data-index="{{ loop.index }}"
                                                                 title=""><i
-                                                                    class="ri-delete-bin-line mr-0"></i></button>
+                                                                    class="fa fa-trash"></i></button>
                                                     </th>
                                                     <td>
 
-                                                        <select class="js-example-basic-single selectArticle_{{ loop.index }}"
+                                                        <select class="js-example-basic-single article selectArticle_{{ loop.index }}"
                                                                 name="article[]">
 
                                                             {% for a in articles %}
@@ -116,20 +170,20 @@
                                                         <input type="number" min="1" name="qte[]"
                                                                value="{{ article['qte'] }}"
                                                                data-index="{{ loop.index }}"
-                                                               class="form-control qte_{{ loop.index }}">
+                                                               class="form-control qte qte_{{ loop.index }}">
 
                                                     </td>
                                                     <td>
                                                         <input type="text" value="19" name="tva[]"
                                                                data-index="{{ loop.index }}"
-                                                               class="form-control tva_{{ loop.index }}" readonly>
+                                                               class="form-control  tva tva_{{ loop.index }}" readonly>
 
                                                     </td>
                                                     <td>
                                                         <input type="text" name="puttc[]"
                                                                value="{{ article['puttc']|number_format(3) }}"
                                                                data-index="{{ loop.index }}"
-                                                               class="form-control  puttc_{{ loop.index }}"
+                                                               class="form-control puttc  puttc_{{ loop.index }}"
                                                                readonly>
 
                                                     </td>
@@ -137,7 +191,7 @@
                                                         <input type="text" name="marge[]"
                                                                value="{{ article['marge']|number_format(2) }}"
                                                                data-index="{{ loop.index }}"
-                                                               class="form-control marge_{{ loop.index }}" readonly>
+                                                               class="form-control marge marge_{{ loop.index }}" readonly>
 
                                                     </td>
                                                     <td>
@@ -167,28 +221,35 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-2 col-xxxl-2">
+                    <div class="col-sm-3 col-xxxl-3">
                         <!--START - Top Selling Chart-->
                         <div class="element-wrapper">
                             <h6 class="element-header">
-                                Top Selling Today
+                              Total
                             </h6>
-                            <div class="element-box">
-                                <h4 class="card-title">Total HT</h4>
-                                <p class="card-text total_ht">{% if achat['totalHT'] %} {{ achat['totalHT'] }} {% else %} 0.000 {% endif %}</p>
-                                <h4 class="card-title">Total TVA</h4>
-                                <p class="card-text total_tva">{% if achat['totalTVA'] %} {{ achat['totalTVA'] }} {% else %} 0.000 {% endif %}</p>
-                                <h4 class="card-title">Timbre</h4>
-                                <p class="card-text timbre">{% if achat['timbre'] %} {{ achat['timbre'] }} {% else %} 0.600 {% endif %}</p>
-                                <h4 class="card-title">Total TTC</h4>
-                                <p class="card-text total_ttc">{% if achat['totalTTC'] %} {{ achat['totalTTC'] }} {% else %} 0.000 {% endif %}</p>
-                                <div class="custom-control custom-checkbox custom-control-inline">
-                                    <input type="checkbox" class="custom-control-input"
-                                           name="fodec" {% if achat['fodec'] %} checked {% endif %}
-                                           id="customCheck5">
-                                    <label class="custom-control-label"
-                                           for="customCheck5">Fodec</label>
+                            <div class="element-box" style="background-color: rgba(12,12,12,0.25)">
+
+                                <div class="form-check">
+                                    <label class="container"><b style="font-size: 18px">Fodec</b>
+                                        <input type="checkbox"  class="fodec" name="fodec" value="" {% if achat['fodec'] %} checked {% endif %}>
+                                        <span class="checkmark"></span>
+                                    </label>
                                 </div>
+                                <hr>
+                                <h4 class="card-title">Total HT</h4>
+                                <p class="card-text total_ht">{% if achat['totalHT'] %} {{ achat['totalHT']|number_format(3) }} {% else %} 0.000 {% endif %}</p>
+                                <h4 class="card-title">Remise</h4>
+                                <p class="card-text remise">0.00</p>
+                                <h4 class="card-title">Total TVA</h4>
+                                <p class="card-text total_tva">{% if achat['totalTVA'] %} {{ achat['totalTVA'] |number_format(3)}} {% else %} 0.000 {% endif %}</p>
+                                <h4 class="card-title">Timbre</h4>
+                                <p class="card-text timbre">{% if achat['timbre'] %} {{ achat['timbre']|number_format(3) }} {% else %} 0.600 {% endif %}</p>
+                                <h4 class="card-title">Transports</h4>
+                                <p class="card-text transport">0.00</p>
+                                <hr>
+                                <h4 class="card-title">Total TTC</h4>
+                                <p class="card-text total_ttc">{% if achat['totalTTC'] %} {{ achat['totalTTC']|number_format(3) }} {% else %} 0.000 {% endif %}0</p>
+
                             </div>
                         </div>
                         <!--END - Top Selling Chart-->

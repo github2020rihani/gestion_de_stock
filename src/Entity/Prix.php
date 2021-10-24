@@ -62,6 +62,11 @@ class Prix
      */
     private $puVenteTTC;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $qte;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
@@ -176,6 +181,18 @@ class Prix
     public function setPuVenteTTC(?float $puVenteTTC): self
     {
         $this->puVenteTTC = $puVenteTTC;
+
+        return $this;
+    }
+
+    public function getQte(): ?float
+    {
+        return $this->qte;
+    }
+
+    public function setQte(?float $qte): self
+    {
+        $this->qte = $qte;
 
         return $this;
     }

@@ -35,7 +35,7 @@
             <div class="menu-and-user">
                 <div class="logged-user-w">
                     <div class="avatar-w">
-                        <img alt="" src="{{ asset("app/assetes/img/avatar1.jpg")}}">
+                        <img alt="" src="{{ asset("app/assetes/img/avatar1.png")}}">
                     </div>
                     <div class="logged-user-info-w">
                         <div class="logged-user-name">
@@ -68,7 +68,7 @@
             <div class="logged-user-w avatar-inline">
                 <div class="logged-user-i">
                     <div class="avatar-w">
-                        <img alt="" src="{{asset("app/assetes/img/avatar1.jpg")}}">
+                        <img alt="" src="{{asset("app/assetes/img/avatar1.png")}}">
                     </div>
                     <div class="logged-user-info-w">
                         <div class="logged-user-name">
@@ -84,7 +84,7 @@
                     <div class="logged-user-menu color-style-bright">
                         <div class="logged-user-avatar-info">
                             <div class="avatar-w">
-                                <img alt="" src="{{asset("app/assetes/img/avatar1.jpg")}}">
+                                <img alt="" src="{{asset("app/assetes/img/avatar1.png")}}">
                             </div>
                             <div class="logged-user-info-w">
                                 <div class="logged-user-name">
@@ -100,10 +100,10 @@
                         </div>
                         <ul>
                             <li>
-                                <a href="users_profile_big.html"><i class="os-icon os-icon-user-male-circle2"></i><span>Profile Details</span></a>
+                                <a href="{{ path('profile') }}"><i class="os-icon os-icon-user-male-circle2"></i><span>Profil</span></a>
                             </li>
                             <li>
-                                <a href=""><i class="os-icon os-icon-signs-11"></i><span>Logout</span></a>
+                                <a href="{{ path('logout') }}"><i class="os-icon os-icon-signs-11"></i><span>Deconexion</span></a>
                             </li>
                         </ul>
                     </div>
@@ -166,16 +166,16 @@
                     <div class="logged-user-w">
                         <div class="logged-user-i">
                             <div class="avatar-w">
-                                <img alt="" src="{{asset("app/assetes/img/avatar1.jpg")}}">
+                                <img alt="" src="{{asset("app/assetes/img/avatar1.png")}}">
                             </div>
                             <div class="logged-user-menu color-style-bright">
                                 <div class="logged-user-avatar-info">
                                     <div class="avatar-w">
-                                        <img alt="" src="{{asset("app/assetes/img/avatar1.jpg")}}">
+                                        <img alt="" src="{{asset("app/assetes/img/avatar1.png")}}">
                                     </div>
                                     <div class="logged-user-info-w">
                                         <div class="logged-user-name">
-                                            Maria Gomez
+                                            {{ app.user.firstName }}   {{ app.user.lastName }}
                                         </div>
                                         <div class="logged-user-role">
                                             Administrator
@@ -187,11 +187,11 @@
                                 </div>
                                 <ul>
                                     <li>
-                                        <a href="users_profile_big.html"><i
-                                                    class="os-icon os-icon-user-male-circle2"></i><span>Profile Details</span></a>
+                                        <a href="{{ path('profile') }}"><i
+                                                    class="os-icon os-icon-user-male-circle2"></i><span>Profile</span></a>
                                     </li>
                                     <li>
-                                        <a href="#"><i class="os-icon os-icon-signs-11"></i><span>Logout</span></a>
+                                        <a href="{{ path('logout') }}"><i class="os-icon os-icon-signs-11"></i><span>Deconexion</span></a>
                                     </li>
                                 </ul>
                             </div>

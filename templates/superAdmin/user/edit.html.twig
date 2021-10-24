@@ -10,10 +10,10 @@
        {% block smenu %}
            <ul class="breadcrumb">
                <li class="breadcrumb-item">
-                   <a href="index.html">Tableau de bord</a>
+                   <a href="{{ path('dashboard_super_admin') }}">Tableau de bord</a>
                </li>
                <li class="breadcrumb-item">
-                   <a href="index.html">comptes</a>
+                   <a href="{{ path('index_user') }}">comptes</a>
                </li>
                <li class="breadcrumb-item">
                    <span> {% if user %} Modifier {% else %}  Ajouter {% endif %}</span>
@@ -111,20 +111,20 @@
                                 <div class="help-block form-text with-errors form-control-feedback"></div>
                             </div>
                         </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Département *</label>
-                            <select name="departement" class="form-control">
-                                <option value="" disabled >Coisir un département</option>
-                                {%  for d in departements %}
-                                <option value="{{ d.id }}" {%  if user.departemnt.id  == d.id %} selected {% endif %}>{{ d.libelle }}</option>
-                                {% endfor %}
-                            </select>
-                            <div class="help-block form-text with-errors form-control-feedback"></div>
-                        </div>
+{#                    <div class="col-md-6">#}
+{#                        <div class="form-group">#}
+{#                            <label>Département *</label>#}
+{#                            <select name="departement" class="form-control">#}
+{#                                <option value="" disabled >Coisir un département</option>#}
+{#                                {%  for d in departements %}#}
+{#                                <option value="{{ d.id }}" {%  if user.departemnt.id  == d.id %} selected {% endif %}>{{ d.libelle }}</option>#}
+{#                                {% endfor %}#}
+{#                            </select>#}
+{#                            <div class="help-block form-text with-errors form-control-feedback"></div>#}
+{#                        </div>#}
 
 
-                    </div>
+{#                    </div>#}
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Role *</label>

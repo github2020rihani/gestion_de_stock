@@ -74,6 +74,16 @@ class Achat
      */
     private $stocker;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $remise;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $tronsport;
+
     public function __construct()
     {
         $this->achatArticles = new ArrayCollection();
@@ -231,6 +241,30 @@ class Achat
     public function setStocker(?bool $stocker): self
     {
         $this->stocker = $stocker;
+
+        return $this;
+    }
+
+    public function getRemise(): ?float
+    {
+        return $this->remise;
+    }
+
+    public function setRemise(?float $remise): self
+    {
+        $this->remise = $remise;
+
+        return $this;
+    }
+
+    public function getTronsport(): ?float
+    {
+        return $this->tronsport;
+    }
+
+    public function setTronsport(?float $tronsport): self
+    {
+        $this->tronsport = $tronsport;
 
         return $this;
     }

@@ -19,14 +19,14 @@
             <span>Catégories</span></a>
 
     </li>
-    <li class="{% if app.request.attributes.get('_route') in [ 'index_departement' , 'add_departement' , 'edit_departement' ] %} selected {% endif %}">
-        <a href="{{ path('index_departement') }}">
-            <div class="icon-w">
-                <div class="icon-screen-tablet {% if app.request.attributes.get('_route') in ['index_departement' , 'add_departement' , 'edit_departement'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
-            </div>
-            <span>Département</span></a>
+{#    <li class="{% if app.request.attributes.get('_route') in [ 'index_departement' , 'add_departement' , 'edit_departement' ] %} selected {% endif %}">#}
+{#        <a href="{{ path('index_departement') }}">#}
+{#            <div class="icon-w">#}
+{#                <div class="icon-screen-tablet {% if app.request.attributes.get('_route') in ['index_departement' , 'add_departement' , 'edit_departement'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>#}
+{#            </div>#}
+{#            <span>Département</span></a>#}
 
-    </li>
+{#    </li>#}
     <li class="{% if app.request.attributes.get('_route') in [ 'index_user' , 'edit_user' , 'add_user' ] %} selected {% endif %}">
         <a href="{{ path('index_user') }}">
             <div class="icon-w">
@@ -120,10 +120,10 @@
         </div>
     </li>
 
-    <li class="">
-        <a href="">
+    <li class="{% if app.request.attributes.get('_route') in [ 'index_inventaire'] %} selected {% endif %} has-sub-menu">
+        <a href="{{ path('index_inventaire') }}">
             <div class="icon-w">
-                <div class="icon-note"></div>
+                <div class="icon-note {% if app.request.attributes.get('_route') in ['index_stock'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
             </div>
             <span>Inventaire</span></a>
 

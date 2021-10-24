@@ -8,10 +8,10 @@
        {% block smenu %}
            <ul class="breadcrumb">
                <li class="breadcrumb-item">
-                   <a href="index.html">Tableau de bord</a>
+                   <a href="{{ path('dashboard_super_admin') }}">Tableau de bord</a>
                </li>
                <li class="breadcrumb-item">
-                   <a href="index.html">prixs</a>
+                   <a href="#">prixs</a>
                </li>
                <li class="breadcrumb-item">
                    <span>Liste</span>
@@ -26,13 +26,14 @@
                     Liste des prix
                 </h6>
                 {{ include('default/FlashBag/flashBag.html.twig') }}
+                {{ include('superAdmin/prix/_modalConfireChangePrix.html.twig') }}
 
                 <div class="element-box">
 
 
                     <div class="table-responsive">
 
-                        <table id="dataTable1" width="100%" class="table table-striped table-lightfont">
+                        <table id="dataTable1" width="100%" class="table table_prix table-striped table-lightfont">
                             <thead>
                             <tr>
                                 <th>Réf article</th>
@@ -40,7 +41,7 @@
                                 <th>Pu achat HT</th>
                                 <th>Pu achat TTC</th>
                                 <th>Pu vente HT</th>
-                                <th>Pu vente HT</th>
+                                <th>Pu vente TTC</th>
                                 <th>Tva</th>
                                 <th>Taux benefice</th>
                                 <th>Actions</th>
@@ -53,7 +54,7 @@
                                 <th>Pu achat HT</th>
                                 <th>Pu achat TTC</th>
                                 <th>Pu vente HT</th>
-                                <th>Pu vente HT</th>
+                                <th>Pu vente TTC</th>
                                 <th>Tva</th>
                                 <th>Taux benefice</th>
                                 <th>Actions</th>
@@ -64,22 +65,24 @@
                                 <tr>
                                     <td>{{ p.article.ref }}</td>
                                     <td>{{ p.article.description }}</td>
-                                    <td><input type="number" class="form-control" id="puAchaHT_{{ p.id }}"
+                                    <td width="10%"><input type="text" class="form-control pachatnet pachatnet_{{ loop.index }}" id="puAchaHT_{{ p.id }}" data-index="{{ loop.index }}"
                                                value="{{ p.puAchaHT|number_format(3) }}"></td>
-                                    <td width="8%"><input type="number" class="form-control" id="phAchatTTC_{{ p.id }}"
+                                    <td width="10%"><input type="text" class="form-control pachatttc_{{ loop.index }}" id="phAchatTTC_{{ p.id }}" disabled
                                                           value="{{ p.phAchatTTC|number_format(3) }}"></td>
-                                    <td><input type="number" class="form-control" id="puVenteHT_{{ p.id }}"
+                                    <td width="10%"><input type="text" class="form-control pventeht_{{ loop.index }}" id="puVenteHT_{{ p.id }}" disabled
                                                value="{{ p.puVenteHT|number_format(3) }}"></td>
-                                    <td><input type="number" class="form-control" id="puVenteTTC_{{ p.id }}"
+                                    <td width="10%"><input type="text" class="form-control pventettc pventettc_{{ loop.index }}" id="puVenteTTC_{{ p.id }}" data-index="{{ loop.index }}"
                                                value="{{ p.puVenteTTC|number_format(3) }}"></td>
-                                    <td><input type="text" class="form-control" id="tva_{{ p.id }}"
+                                    <td width="10%"><input type="text" class="form-control" id="tva_{{ p.id }}" disabled
                                                value="{{ p.tva|number_format(1) }}" readonly></td>
-                                    <td><input type="number" class="form-control" id="taux_{{ p.id }}"
+                                    <td width="10%"><input type="text" class="form-control taux_{{ loop.index }}" id="taux_{{ p.id }}" disabled
                                                value="{{ p.taux|number_format(3) }}"></td>
-                                    <td>
+                                    <td width="5%">
                                         <div class="d-flex align-items-center list-action">
-                                            <a class="  btn btn-sm btn-icon btn-success"
+                                            <a class="  btn btn-sm btn-icon btn-success modifierPrix"
                                                data-toggle="tooltip"
+                                               data-id_article = "{{  p.article.id}}"
+                                               data-index="{{ loop.index }}"
                                                data-placement="top" title="" data-original-title="Modifier"
                                                style="color: white"
                                                href="#"
@@ -87,9 +90,11 @@
                                                 <i class="fa fa-edit"></i>
                                             </a>
 
-                                            <a class="  btn btn-sm btn-icon btn-danger"
+                                            <a class="  btn btn-sm btn-icon btn-danger AnnulerModif"
                                                data-toggle="tooltip"
                                                data-placement="top" title="" data-original-title="Annuler"
+                                               data-id_article =" {{  p.article.id}}"
+
                                                style="color: white"
                                                href="#"
                                             >

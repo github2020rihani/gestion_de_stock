@@ -44,7 +44,10 @@ class ArticleController extends AbstractController
 
             }else{
                 $this->addFlash('error','Il y a un article existe avec ce reference ');
-
+                return $this->render('superAdmin/Article/new.html.twig',[
+                    'form' => $form->createView(),
+                    'article' => ''
+                ]);
             }
 
 
@@ -91,19 +94,17 @@ class ArticleController extends AbstractController
                 }else{
                     $this->addFlash('error','Il y a un article existe avec ce reference ');
 
+                    return $this->render('superAdmin/Article/new.html.twig',[
+                        'form' => $form->createView(),
+                        'article' => $article
+                    ]);
                 }
             }else{
                 $article->setAddedBy($this->getUser());
-
                 $this->em->persist($article);
                 $this->em->flush();
                 $this->addFlash('success','Modifier effectué avec succés');
             }
-
-
-
-
-
 
             return $this->redirectToRoute('index_article');
         }

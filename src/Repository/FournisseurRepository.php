@@ -19,6 +19,36 @@ class FournisseurRepository extends ServiceEntityRepository
         parent::__construct($registry, Fournisseur::class);
     }
 
+
+    public function findByCodeAndEmail($email , $code) {
+        return $this->createQueryBuilder('f')
+            ->where('f.email = :email')
+            ->orWhere('f.code = :code')
+            ->setParameter('code', $code)
+            ->setParameter('email', $email)
+            ->orderBy('f.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+    public function findByCode($code) {
+        return $this->createQueryBuilder('f')
+            ->where('f.code = :code')
+            ->setParameter('code', $code)
+            ->orderBy('f.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+    public function findByEmail($email) {
+        return $this->createQueryBuilder('f')
+            ->where('f.email = :email')
+            ->setParameter('email', $email)
+            ->orderBy('f.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     // /**
     //  * @return Fournisseur[] Returns an array of Fournisseur objects
     //  */

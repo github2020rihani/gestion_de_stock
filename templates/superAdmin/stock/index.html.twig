@@ -9,10 +9,10 @@
        {% block smenu %}
            <ul class="breadcrumb">
                <li class="breadcrumb-item">
-                   <a href="index.html">Tableau de bord</a>
+                   <a href="{{ path('dashboard_super_admin') }}">Tableau de bord</a>
                </li>
                <li class="breadcrumb-item">
-                   <a href="index.html">stock</a>
+                   <a href="#">stock</a>
                </li>
                <li class="breadcrumb-item">
                    <span>Liste</span>
@@ -24,9 +24,10 @@
 
             <div class="element-wrapper">
                 <h6 class="element-header">
-                    Liste des articles
+                    Liste de stock
                 </h6>
                 {{ include('default/FlashBag/flashBag.html.twig') }}
+                {{ include('superAdmin/stock/_modalInventaire.html.twig') }}
 
                 <div class="element-box">
 
@@ -35,30 +36,32 @@
                         <table id="dataTable1" width="100%" class="table table_stock table-striped table-lightfont">
                             <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Réf article</th>
-                                <th>Designation</th>
+                                <th>Réf d'article</th>
+                                <th>Désignation</th>
                                 <th>Stock</th>
                                 <th>Statut</th>
-                                <th>MAJ</th>
+                                <th>MAJ qte</th>
+                                <th>Inventé</th>
                                 <th>Actions</th>
+
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>Date</th>
                                 <th>Réf article</th>
                                 <th>Designation</th>
                                 <th>Stock</th>
                                 <th>Statut</th>
-                                <th>MAJ</th>
+                                <th>MAJ qte</th>
+                                <th>Inventé</th>
                                 <th>Actions</th>
+
+
                             </tr>
                             </tfoot>
                             <tbody class="ligth-body">
                             {% for s in stocks %}
                                 <tr>
-                                    <td>{{ s.dateEntree|date('d/m/Y') }}</td>
                                     <td>{{ s.article.ref }}</td>
                                     <td>{{ s.article.description }}</td>
                                     <td class="old_qte_{{ s.article.id }}">{{ s.qte }}</td>
@@ -85,7 +88,22 @@
                                     </td>
                                     <td width="10%"><input type="text" class="form-control"
                                                            id="majQte_{{ s.article.id }}"></td>
-                                    <td>
+                                    <td width="10%" id="statutInventer_{{ s.article.id }}">
+                                        {%  if s.inventer %}
+
+                                            <span id="status_{{ s.article.id }}"
+                                                  class="badge badge-success">
+                                                        Inventé
+                                                    </span>
+                                        {% else %}
+                                            <span id="status_{{ s.article.id }}"
+                                                  class="badge badge-warning">En
+                                                        En Attente
+                                                    </span>
+                                            {% endif %}
+                                    </td>
+
+                                    <td width="12%">
                                         <div class="flex align-items-center list-user-action">
                                             <a class=" btn_majQte btn btn-sm btn-icon btn-success"
                                                data-toggle="tooltip"
@@ -103,6 +121,14 @@
                                                data-type="moin"
                                             >
                                                 <i class="icon-minus"></i>
+                                            </a>
+                                            <a class="verifierQte btn btn-sm btn-icon btn-dark"
+                                               type="button"
+                                               data-toggle="tooltip" style="color: white"
+                                               data-placement="top" title="" data-original-title="Vérifier"
+                                               data-id="{{ s.article.id }}"
+                                            >
+                                                <i class="icon-check"></i>
                                             </a>
                                         </div>
                                     </td>

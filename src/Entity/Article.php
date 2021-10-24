@@ -60,30 +60,8 @@ class Article
         $this->description = $description;
     }
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $qte;
 
-    /**
-     * @ORM\Column(type="float" , nullable=true)
-     */
-    private $tva;
 
-    /**
-     * @ORM\Column(type="float" , nullable=true)
-     */
-    private $puTTC;
-
-    /**
-     * @ORM\Column(type="float" , nullable=true)
-     */
-    private $marge;
-
-    /**
-     * @ORM\Column(type="float" , nullable=true)
-     */
-    private $prixVente;
 
     /**
      * @ORM\Column(type="datetime")
@@ -120,12 +98,18 @@ class Article
      */
     private $prixes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=InventaireArticle::class, mappedBy="article")
+     */
+    private $inventaireArticles;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
         $this->achatArticles = new ArrayCollection();
         $this->stocks = new ArrayCollection();
         $this->prixes = new ArrayCollection();
+        $this->inventaireArticles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -133,65 +117,7 @@ class Article
         return $this->id;
     }
 
-    public function getQte(): ?int
-    {
-        return $this->qte;
-    }
 
-    public function setQte(int $qte): self
-    {
-        $this->qte = $qte;
-
-        return $this;
-    }
-
-    public function getTva(): ?float
-    {
-        return $this->tva;
-    }
-
-    public function setTva(float $tva): self
-    {
-        $this->tva = $tva;
-
-        return $this;
-    }
-
-    public function getPuTTC(): ?float
-    {
-        return $this->puTTC;
-    }
-
-    public function setPuTTC(float $puTTC): self
-    {
-        $this->puTTC = $puTTC;
-
-        return $this;
-    }
-
-    public function getMarge(): ?float
-    {
-        return $this->marge;
-    }
-
-    public function setMarge(float $marge): self
-    {
-        $this->marge = $marge;
-
-        return $this;
-    }
-
-    public function getPrixVente(): ?float
-    {
-        return $this->prixVente;
-    }
-
-    public function setPrixVente(float $prixVente): self
-    {
-        $this->prixVente = $prixVente;
-
-        return $this;
-    }
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
@@ -325,6 +251,36 @@ class Article
             // set the owning side to null (unless already changed)
             if ($prix->getArticle() === $this) {
                 $prix->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|InventaireArticle[]
+     */
+    public function getInventaireArticles(): Collection
+    {
+        return $this->inventaireArticles;
+    }
+
+    public function addInventaireArticle(InventaireArticle $inventaireArticle): self
+    {
+        if (!$this->inventaireArticles->contains($inventaireArticle)) {
+            $this->inventaireArticles[] = $inventaireArticle;
+            $inventaireArticle->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInventaireArticle(InventaireArticle $inventaireArticle): self
+    {
+        if ($this->inventaireArticles->removeElement($inventaireArticle)) {
+            // set the owning side to null (unless already changed)
+            if ($inventaireArticle->getArticle() === $this) {
+                $inventaireArticle->setArticle(null);
             }
         }
 

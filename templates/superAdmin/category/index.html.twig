@@ -8,10 +8,10 @@
        {% block smenu %}
            <ul class="breadcrumb">
                <li class="breadcrumb-item">
-                   <a href="index.html">Tableau de bord</a>
+                   <a href="{{ path('dashboard_super_admin') }}">Tableau de bord</a>
                </li>
                <li class="breadcrumb-item">
-                   <a href="index.html">Catégorie</a>
+                   <a href="#">Catégorie</a>
                </li>
                <li class="breadcrumb-item">
                    <span>Liste</span>
@@ -30,7 +30,7 @@
                 <div class="element-box">
                     <h5 class="form-header">
                         <a href="{{ path('add_category') }}" class="btn btn-primary add-list float-right mb-2"><i
-                                    class="las la-plus mr-3"></i>Ajouter un categorie </a>
+                                    class="las la-plus mr-3"></i>Ajouter une catégorie </a>
 
                     </h5>
 
@@ -80,6 +80,7 @@
                                                data-toggle="tooltip"
                                                data-placement="top" title="" data-original-title="Supprimer"
                                                style="color: white"
+                                               onclick=" return confirm('Vous éte sur suprimer cet catégorie')"
                                                href="{{ path('delete_category', {id: c.id}) }}"
                                                data-type="add"
                                             >

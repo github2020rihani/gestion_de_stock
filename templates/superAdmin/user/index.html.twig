@@ -8,10 +8,10 @@
        {% block smenu %}
            <ul class="breadcrumb">
                <li class="breadcrumb-item">
-                   <a href="index.html">Tableau de bord</a>
+                   <a href="{{ path('dashboard_super_admin') }}">Tableau de bord</a>
                </li>
                <li class="breadcrumb-item">
-                   <a href="index.html">comptes</a>
+                   <a href="#">comptes</a>
                </li>
                <li class="breadcrumb-item">
                    <span>Liste</span>
@@ -118,9 +118,7 @@
                                                 </a>
 
                                             {% else %}
-                                                <a  id="btn_statusUser_{{ u.id }}" class="btn btn-sm btn-warning btn_changeStatus mr-2"
-                                                    title="Activer" data-id="{{ u.id }}"
-                                                ><i class="fa fa-edit"></i></a>
+
 
 
                                                 <a id="btn_statusUser_{{ u.id }}" class="btn btn-sm btn-danger btn_changeStatus mr-2"
@@ -128,7 +126,7 @@
                                                    data-placement="top" title="" data-original-title="Activer" data-id="{{ u.id }}"
                                                    style="color: white"
                                                 >
-                                                    <i class="fa fa-unlock"></i>|
+                                                    <i class="fa fa-unlock"></i>
                                                 </a>
                                             {% endif %}
                                         </div>

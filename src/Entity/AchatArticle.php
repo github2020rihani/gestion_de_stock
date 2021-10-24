@@ -72,6 +72,11 @@ class AchatArticle
      */
     private $typePrix;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $pventeHT;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -205,6 +210,18 @@ class AchatArticle
     public function setTypePrix(string $typePrix): self
     {
         $this->typePrix = $typePrix;
+
+        return $this;
+    }
+
+    public function getPventeHT(): ?float
+    {
+        return $this->pventeHT;
+    }
+
+    public function setPventeHT(?float $pventeHT): self
+    {
+        $this->pventeHT = $pventeHT;
 
         return $this;
     }
