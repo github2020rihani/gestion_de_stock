@@ -59,7 +59,7 @@ class InventaireController extends AbstractController
                     'lastInv' => $dataInv));
         } else {
 
-            return $this->redirectToRoute('dashboard_super_admin');
+            return $this->redirectToRoute('dashboard_achat');
         }
 
     }

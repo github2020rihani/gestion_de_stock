@@ -42,12 +42,11 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: '^/super_admin/', roles: [ ROLE_SUPER_ADMIN ,  IS_AUTHENTICATED_FULLY] }
-        - { path: '^/admin/', roles: [ ROLE_ADMIN ,  IS_AUTHENTICATED_FULLY] }
-        - { path: '^/responsable/', roles: [ ROLE_RESPONSABLE ,  IS_AUTHENTICATED_FULLY] }
-        - { path: '^/gerant/', roles: [ ROLE_GERANT ,  IS_AUTHENTICATED_FULLY] }
-        - { path: '^/magasinier/', roles: [ ROLE_MAGASINIER ,  IS_AUTHENTICATED_FULLY] }
-        - { path: '^/personelle/', roles: [ ROLE_PERSONELLE ,  IS_AUTHENTICATED_FULLY] }
-        - { path: '^/achat/', roles: [ ROLE_ACHAT ,  IS_AUTHENTICATED_FULLY] }
-        - { path: '^/api/', roles: [ ROLE_ACHAT , ROLE_SUPER_ADMIN ,  IS_AUTHENTICATED_FULLY] }
+        - { path: '^/super_admin/', roles: [ ROLE_SUPER_ADMIN ] }
+        - { path: '^/admin/', roles: [ ROLE_ADMIN ] }
+        - { path: '^/responsable/', roles: [ ROLE_RESPONSABLE ] }
+        - { path: '^/gerant/', roles: [ ROLE_GERANT ] }
+        - { path: '^/magasinier/', roles: [ ROLE_MAGASINIER ] }
+        - { path: '^/achat/', roles: [ ROLE_ACHAT ] }
+        - { path: '^/api/', roles: [ ROLE_ACHAT , ROLE_SUPER_ADMIN ] }
 
