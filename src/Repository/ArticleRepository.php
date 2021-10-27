@@ -34,6 +34,7 @@ class ArticleRepository extends ServiceEntityRepository
             ->getArrayResult()
             ;
     }
+
     // /**
     //  * @return Article[] Returns an array of Article objects
     //  */

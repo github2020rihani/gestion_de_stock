@@ -37,10 +37,6 @@ class Category
     private $createdAt;
 
 
-    /**
-     * @ORM\OneToMany(targetEntity=Produit::class, mappedBy="category")
-     */
-    private $produits;
 
     /**
      * @ORM\OneToMany(targetEntity=Fournisseur::class, mappedBy="category")
@@ -57,26 +53,10 @@ class Category
         return $this->title;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getProduits()
-    {
-        return $this->produits;
-    }
-
-    /**
-     * @param mixed $produits
-     */
-    public function setProduits($produits): void
-    {
-        $this->produits = $produits;
-    }
 
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
-        $this->produits = new ArrayCollection();
         $this->fournisseurs = new ArrayCollection();
         $this->articles = new ArrayCollection();
     }
@@ -122,27 +102,7 @@ class Category
         return $this;
     }
 
-    public function addProduit(Produit $produit): self
-    {
-        if (!$this->produits->contains($produit)) {
-            $this->produits[] = $produit;
-            $produit->setCategory($this);
-        }
 
-        return $this;
-    }
-
-    public function removeProduit(Produit $produit): self
-    {
-        if ($this->produits->removeElement($produit)) {
-            // set the owning side to null (unless already changed)
-            if ($produit->getCategory() === $this) {
-                $produit->setCategory(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Fournisseur[]

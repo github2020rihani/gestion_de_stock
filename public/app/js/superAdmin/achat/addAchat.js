@@ -223,14 +223,14 @@ function selectArticle(index) {
             return false;
         }
         selectAricle.push($(this).val());
-        console.log(selectAricle);
+        // console.log(selectAricle);
 
         $.ajax({
             url: Routing.generate('get_articles_byId'),
             type: "POST",
             data: {id_article: $(this).val()},
             success: function (data) {
-                console.log(data)
+                // console.log(data)
                 if (data) {
                     $('.descriptionarticle_' + index).text(data[0].description);
 
@@ -259,7 +259,7 @@ function changePUHTNET() {
         var pventettc = $('.pventettc_' + index).val();
         puttc = (parseFloat($(this).val() * tva).toFixed(3));
         $('.puttc_' + index).val((puttc));
-        console.log(pventettc);
+        // console.log(pventettc);
         if (pventettc) {
             marge = (((pventettc - puttc) / puttc) * 100).toFixed(2);
             $('.marge_' + index).val(marge);
@@ -281,7 +281,7 @@ function changePVenteTTC() {
         var index = $(this).data('index');
 
         puttc = $('.puttc_' + index).val();
-        console.log(puttc);
+        // console.log(puttc);
 
 
         marge = ((($(this).val() - puttc) / puttc) * 100).toFixed(2);

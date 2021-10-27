@@ -34,6 +34,7 @@ class UserType extends AbstractType
                         'Gerant' =>  'ROLE_GERANT',
                         'Magasinier' =>  'ROLE_MAGASINIER',
                         'Personelle' =>  'ROLE_PERSONELLE',
+                        'Achat' =>  'ROLE_ACHAT',
                     ],
 
                     'attr' => ['class' => 'form-control'],

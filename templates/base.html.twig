@@ -42,7 +42,20 @@
                             {{ app.user.firstName }}   {{ app.user.lastName }}
                         </div>
                         <div class="logged-user-role">
-                            Administrator
+                            {% if  app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
+                                SuperAdmin
+
+                            {% elseif  app.user.roles[0] == 'ROLE_ADMIN' %}
+                                Administrateur
+
+                            {% elseif  app.user.roles[0] == 'ROLE_ACHAT' %}
+                                Achat
+                            {% elseif  app.user.roles[0] == 'ROLE_GERANT' %}
+                                Gérant
+
+                            {% else %}
+                                Responsable
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -58,7 +71,13 @@
         -------------------->
         <div class="menu-w color-scheme-dark color-style-bright menu-position-top menu-layout-compact sub-menu-style-over sub-menu-color-bright selected-menu-color-light menu-activated-on-hover menu-with-image menu-has-selected-link">
             <div class="logo-w">
-                <a class="logo" href="index.html">
+                {% if  app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
+
+                <a class="logo" href="{{ path('dashboard_super_admin') }}">
+                    {% elseif  app.user.roles[0] == 'ROLE_ACHAT' %}
+                    <a class="logo" href="{{ path('dashboard_achat') }}">
+                        {% endif %}
+
                     <img alt="" src="{{asset("app/images/logo-soffal.png")}}">
                     <div class="logo-label">
                         SOFFAL
@@ -75,7 +94,20 @@
                             {{ app.user.firstName }}   {{ app.user.lastName }}
                         </div>
                         <div class="logged-user-role">
-                            Administrator
+                            {% if  app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
+                                SuperAdmin
+
+                            {% elseif  app.user.roles[0] == 'ROLE_ADMIN' %}
+                                Administrateur
+
+                            {% elseif  app.user.roles[0] == 'ROLE_ACHAT' %}
+                                Achat
+                            {% elseif  app.user.roles[0] == 'ROLE_GERANT' %}
+                                Gérant
+
+                            {% else %}
+                                Responsable
+                            {% endif %}
                         </div>
                     </div>
                     <div class="logged-user-toggler-arrow">
@@ -91,7 +123,20 @@
                                     {{ app.user.firstName }}   {{ app.user.lastName }}
                                 </div>
                                 <div class="logged-user-role">
-                                    Administrator
+                                    {% if  app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
+                                        SuperAdmin
+
+                                    {% elseif  app.user.roles[0] == 'ROLE_ADMIN' %}
+                                        Administrateur
+
+                                    {% elseif  app.user.roles[0] == 'ROLE_ACHAT' %}
+                                        Achat
+                                    {% elseif  app.user.roles[0] == 'ROLE_GERANT' %}
+                                        Gérant
+
+                                    {% else %}
+                                        Responsable
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -100,10 +145,10 @@
                         </div>
                         <ul>
                             <li>
-                                <a href="{{ path('profile') }}"><i class="os-icon os-icon-user-male-circle2"></i><span>Profil</span></a>
+                                <a href="{{ path('profile') }}"><i class="os-icon os-icon-user-male-circle2"></i><span>Profile</span></a>
                             </li>
                             <li>
-                                <a href="{{ path('logout') }}"><i class="os-icon os-icon-signs-11"></i><span>Deconexion</span></a>
+                                <a href="{{ path('logout') }}"><i class="os-icon os-icon-signs-11"></i><span>Déconnexion</span></a>
                             </li>
                         </ul>
                     </div>
@@ -113,7 +158,20 @@
 {#            <h1 class="menu-page-header">#}
 {#             Espace Achat#}
 {#            </h1>#}
-            {{ include('default/menu/menu.html.twig') }}
+            {% if  app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
+                {{ include('default/menu/menu.html.twig') }}
+
+            {% elseif  app.user.roles[0] == 'ROLE_ADMIN' %}
+                {{ include('default/menu/menu.html.twig') }}
+
+            {% elseif  app.user.roles[0] == 'ROLE_ACHAT' %}
+                {{ include('default/menu/menu_achat.html.twig') }}
+            {% elseif  app.user.roles[0] == 'ROLE_GERANT' %}
+                {{ include('default/menu/menu.html.twig') }}
+
+            {% else %}
+                {{ include('default/menu/menu.html.twig') }}
+            {% endif %}
 
 
         </div>
@@ -149,11 +207,10 @@
                             </div>
                             <ul>
                                 <li>
-                                    <a href="users_profile_small.html"><i class="os-icon os-icon-ui-49"></i><span>Profile Settings</span></a>
+                                    <a href="{{ path('profile') }}"><i class="os-icon os-icon-user-male-circle2"></i><span>Profile</span></a>
                                 </li>
-
                                 <li>
-                                    <a href="users_profile_small.html"><i class="os-icon os-icon-ui-15"></i><span>Cancel Account</span></a>
+                                    <a href="{{ path('logout') }}"><i class="os-icon os-icon-signs-11"></i><span>Déconnexion</span></a>
                                 </li>
                             </ul>
                         </div>
@@ -178,7 +235,20 @@
                                             {{ app.user.firstName }}   {{ app.user.lastName }}
                                         </div>
                                         <div class="logged-user-role">
-                                            Administrator
+                                            {% if  app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
+                                                SuperAdmin
+
+                                            {% elseif  app.user.roles[0] == 'ROLE_ADMIN' %}
+                                                Administrateur
+
+                                            {% elseif  app.user.roles[0] == 'ROLE_ACHAT' %}
+                                                Achat
+                                            {% elseif  app.user.roles[0] == 'ROLE_GERANT' %}
+                                                Gérant
+
+                                            {% else %}
+                                                Responsable
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -191,7 +261,7 @@
                                                     class="os-icon os-icon-user-male-circle2"></i><span>Profile</span></a>
                                     </li>
                                     <li>
-                                        <a href="{{ path('logout') }}"><i class="os-icon os-icon-signs-11"></i><span>Deconexion</span></a>
+                                        <a href="{{ path('logout') }}"><i class="os-icon os-icon-signs-11"></i><span>Déconnexion</span></a>
                                     </li>
                                 </ul>
                             </div>

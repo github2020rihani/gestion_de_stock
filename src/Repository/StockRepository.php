@@ -39,6 +39,28 @@ class StockRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    public function getArticleWhereQte() {
+        return $this->createQueryBuilder('s')
+            ->select('s', 'a')
+            ->leftJoin('s.article', 'a')
+            ->where('s.qte < 10')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function getArticleWhereQteAndMot($value) {
+        return $this->createQueryBuilder('s')
+            ->select('s', 'a')
+            ->leftJoin('s.article', 'a')
+            ->where('s.qte < 10')
+            ->andWhere('a.ref LIKE :ref')
+            ->setParameter('ref', '%'.$value.'%')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     // /**
     //  * @return stock[] Returns an array of stock objects
     //  */

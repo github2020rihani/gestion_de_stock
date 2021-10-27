@@ -70,7 +70,7 @@ function changeStock() {
 
                     //change status dynamique
                     $('#statutInventer_'+id_article).html(`     <span id="status_${id_article}"
-                                                  class="badge badge-warning">En
+                                                  class="badge badge-warning">
                                                         En Attente
                                                     </span>`);
 
@@ -86,7 +86,7 @@ function changeStock() {
                                     toastr.success(data.message);
                                     //change status dynamique
                                     $('#statutInventer_'+id_article).html(`     <span id="status_${id_article}"
-                                                  class="badge badge-warning">En
+                                                  class="badge badge-warning">
                                                         En Attente
                                                     </span>`);
 
@@ -133,7 +133,7 @@ function verifierStock() {
                     toastr.success(data.message);
                     //change status dynamique
                     $('#statutInventer_'+id_article).html(`     <span id="status_${id_article}"
-                                                  class="badge badge-success">En
+                                                  class="badge badge-success">
                                                         Inventé
                                                     </span>`);
 

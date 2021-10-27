@@ -1,0 +1,37 @@
+<table class="table table-bordered table-lg table-v2 table-striped">
+    <thead>
+    <tr>
+        <th>
+            Réference
+        </th>
+        <th>
+            Désignation
+        </th>
+        <th>
+            PU ACHAT HT
+        </th>
+        <th>
+            PU ACHAT TTC
+        </th>
+        <th>
+            PU VENTE HT
+        </th>
+        <th>
+            PU VENTE TTC
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    {%  for p in prixs %}
+        <tr>
+            <td>{{ p.article.ref }}</td>
+            <td>{{ p.article.description }}</td>
+            <td>{{ p.puAchaHT }}</td>
+            <td>{{ p.phAchatTTC }}</td>
+            <td>{{ p.puVenteHT }}</td>
+            <td>{{ p.puVenteTTC }}</td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>

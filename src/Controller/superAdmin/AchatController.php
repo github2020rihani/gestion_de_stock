@@ -98,7 +98,7 @@ class AchatController extends AbstractController
             }
 
             $totalTva =   $totalHt * $_ENV['TVA_ARTICLE'];
-            $totalTTC=  (float)$totalHt + (float)$totalTva+ (float)$remise + (float)$_ENV['TIMBRE'] + (float)$transport ;
+            $totalTTC=  (float)$totalHt + (float)$totalTva+ (float)$remise + $_ENV['TIMBRE'] + (float)$transport ;
             $achat->setTotalHT((float)number_format($totalHt , 3));
             $achat->setTotalTVA((float)number_format($totalTva , 3));
             $achat->setTotalTTC((float)number_format($totalTTC , 3));
@@ -296,7 +296,6 @@ class AchatController extends AbstractController
         $fournisseurs = $this->fournisseurRepository->findAll();
         $articles = $this->articleRepository->findAll();
         $achatObjet = $this->achatRepository->getDetailAchat($achat);
-//        dd($achatObjet);
 
         return $this->render('superAdmin/Achat/detail.html.twig', [
             'fournisseurs' => $fournisseurs,
@@ -362,7 +361,6 @@ class AchatController extends AbstractController
             $this->em->persist($achat);
             $this->em->flush();
 
-//            dd($achatexiste[0]['achatArticles']);
             foreach ($achatexiste[0]['achatArticles'] as $key=>$value){
                 //save in stock
                 $articleinStock = $this->stockRepository->findArticleInStockById($value['article']['id']);

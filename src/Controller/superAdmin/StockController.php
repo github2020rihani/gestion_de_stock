@@ -126,7 +126,7 @@ class StockController extends AbstractController
         $id_article = $request->get('id_article');
         $articleExiste = $this->articleRepository->find($id_article);
         $articleStocked = $this->stockRepository->findArticleInStockById($id_article);
-        $numeInv = 'Inv_' . date('m' . '_' . date('Y'));
+        $numeInv = 'INV_' . date('m' . '_' . date('Y'));
         $deleteOldTotalTTCQte =0 ;
         $deleteOldTotalTTCPrix = 0 ;
         $deleteOldTotalTTCTotal = 0 ;

@@ -48,4 +48,6 @@ security:
         - { path: '^/gerant/', roles: [ ROLE_GERANT ,  IS_AUTHENTICATED_FULLY] }
         - { path: '^/magasinier/', roles: [ ROLE_MAGASINIER ,  IS_AUTHENTICATED_FULLY] }
         - { path: '^/personelle/', roles: [ ROLE_PERSONELLE ,  IS_AUTHENTICATED_FULLY] }
+        - { path: '^/achat/', roles: [ ROLE_ACHAT ,  IS_AUTHENTICATED_FULLY] }
+        - { path: '^/api/', roles: [ ROLE_ACHAT , ROLE_SUPER_ADMIN ,  IS_AUTHENTICATED_FULLY] }
 

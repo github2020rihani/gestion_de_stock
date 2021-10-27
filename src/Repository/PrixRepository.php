@@ -31,4 +31,16 @@ class PrixRepository extends ServiceEntityRepository
             ;
     }
 
+    public function getPrixArticlesWithMot($value)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p', 'article')
+            ->leftJoin('p.article', 'article')
+            ->where('article.ref LIKE :ref')
+            ->setParameter('ref', '%'.$value.'%')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

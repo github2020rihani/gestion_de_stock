@@ -28,13 +28,14 @@ class InventaireRepository extends ServiceEntityRepository
             ;
     }
 
-    public function getDataInventaire($numInv) {
+    public function getDataInventaire($idInv) {
         return $this->createQueryBuilder('i')
-            ->select('i', 'invArt', 'article')
+            ->select('i', 'invArt', 'article', 'user')
             ->leftJoin('i.inventaireArticles', 'invArt')
             ->leftJoin('invArt.article' , 'article')
-            ->where('i.numero = :num')
-            ->setParameter('num', $numInv)
+            ->leftJoin('i.addedBy' , 'user')
+            ->where('i.id = :idInv')
+            ->setParameter('idInv', $idInv)
             ->getQuery()
             ->getArrayResult()
             ;

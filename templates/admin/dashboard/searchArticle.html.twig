@@ -1,0 +1,21 @@
+<table class="table table-bordered table-lg table-v2 table-striped">
+    <thead>
+    <tr>
+        <th>
+            Réference
+        </th>
+        <th>
+            Désignation
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for ar in articles %}
+        <tr>
+            <td>{{ ar.article.ref }}</td>
+            <td>{{ ar.article.description }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

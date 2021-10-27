@@ -44,6 +44,16 @@ class Inventaire
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $filePdf;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $fileExel;
+
     public function __construct()
     {
         $this->inventaireArticles = new ArrayCollection();
@@ -132,6 +142,30 @@ class Inventaire
     public function setCreatedAt(\Datetime $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getFilePdf(): ?string
+    {
+        return $this->filePdf;
+    }
+
+    public function setFilePdf(string $filePdf): self
+    {
+        $this->filePdf = $filePdf;
+
+        return $this;
+    }
+
+    public function getFileExel(): ?string
+    {
+        return $this->fileExel;
+    }
+
+    public function setFileExel(string $fileExel): self
+    {
+        $this->fileExel = $fileExel;
 
         return $this;
     }

@@ -67,6 +67,7 @@ class FournisseurType extends AbstractType
             $form->add('city', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => City::class,
+                'row_attr' => ['class' => 'js-example-basic-single'],
                 'placeholder' => false,
                 'choices' => $cities
             ]);

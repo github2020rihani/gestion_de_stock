@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -51,6 +55,52 @@ class SecurityController extends AbstractController
     {
         $user = $this->getUser();
         return $this->render('default/profile.html.twig', array('user' => $user));
+
+
+    }
+
+    /**
+     * @Route("/edit_profile", name="edit_profile")
+     */
+
+    public function editProfile(Request $request, UserRepository $userRepository, EntityManagerInterface $em, UserPasswordHasherInterface $passwordEncoder)
+    {
+
+$currentUser = $this->getUser();
+        if ($request->isMethod('POST')) {
+            $firstName = $request->get('firstName');
+            $lastName = $request->get('lastName');
+            $password = $request->get('password');
+            $email = $request->get('email');
+
+
+            $oldEmail = $this->getUser()->getEmail();
+            if ($oldEmail != $email) {
+                $emailExiste = $userRepository->findBy(array('email' => $email));
+                if ($emailExiste) {
+                    $this->addFlash('error', 'Email existe déja  ');
+                    return $this->render('superAdmin/default/profile.html.twig', [
+                    ]);
+                }
+
+            }
+
+
+            if ($password && $password !=$currentUser->getPassword()) {
+                $this->getUser()->setPassword(
+                    $passwordEncoder->hashPassword(
+                        $currentUser,
+                        $password
+                    )
+                );
+            }
+            $currentUser->setFirstName($firstName);
+            $currentUser->setLastName($lastName);
+            $em->persist($currentUser);
+            $em->flush();
+            $this->addFlash('success', 'Modifier effectué avec succés');
+            return $this->redirectToRoute('profile');
+        }
 
 
     }

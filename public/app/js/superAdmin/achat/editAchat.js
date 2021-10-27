@@ -16,7 +16,7 @@ $(document).ready(function () {
     CheckedFodec();
 
     $('.editAchat').click(function () {
-        if (countArticle == 0) {
+        if ($('.ligne_achat').length == 0) {
             toastr.error('Aucun Article Ajouter');
             return false;
         }
@@ -124,7 +124,6 @@ function getArticlesAchat(id) {
         data: {id_achat: id},
         success: function (data) {
             if (data) {
-                console.log(data)
                 selectAricle.push(data);
 
 
@@ -275,14 +274,12 @@ function selectArticle(index) {
             return false;
         }
         selectAricle[0].push(parseInt($(this).val()));
-        console.log(selectAricle[0]);
 
         $.ajax({
             url: Routing.generate('get_articles_byId'),
             type: "POST",
             data: {id_article: $(this).val()},
             success: function (data) {
-                console.log(data)
                 if (data) {
                     $('.descriptionarticle_' + index).text(data[0].description);
 
@@ -309,7 +306,6 @@ function changePUHTNET() {
         var pventettc = $('.pventettc_' + index).val();
         puttc = (parseFloat($(this).val() * tva).toFixed(3));
         $('.puttc_' + index).val((puttc));
-        console.log(pventettc);
         if (pventettc) {
             marge = (((pventettc - puttc) / puttc) * 100).toFixed(2);
             $('.marge_' + index).val(marge);
@@ -328,7 +324,6 @@ function changePVenteTTC() {
         var index = $(this).data('index');
 
         puttc = $('.puttc_' + index).val();
-        console.log(puttc);
 
 
         marge = ((($(this).val() - puttc) / puttc) * 100).toFixed(2);

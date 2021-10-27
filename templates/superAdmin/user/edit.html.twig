@@ -140,6 +140,9 @@
                                 <option value="ROLE_GERANT" {% if user.roles[0] == 'ROLE_GERANT' %} selected {% endif %} >
                                     Gérant
                                 </option>
+                                <option value="ROLE_ACHAT" {% if user.roles[0] == 'ROLE_ACHAT' %} selected {% endif %} >
+                                    Achat
+                                </option>
                             </select>
                             <div class="help-block form-text with-errors form-control-feedback"></div>
                         </div>

@@ -21,6 +21,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public const ROLE_GERANT = 'ROLE_GERANT';
     public const ROLE_MAGASINIER = 'ROLE_MAGASINIER';
     public const ROLE_PERSONELLE = 'ROLE_PERSONELLE';
+    public const ROLE_ACHAT = 'ROLE_ACHAT';
 
     /**
      * @ORM\Id
