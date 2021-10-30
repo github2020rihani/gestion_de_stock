@@ -57,8 +57,8 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($this->urlGenerator->generate('dashboard_super_admin'));
       elseif  (in_array(USER::ROLE_ADMIN, $rolesTab, true) && $status)
             return new RedirectResponse($this->urlGenerator->generate('dashboard_admin'));
-        elseif (in_array(USER::ROLE_RESPONSABLE, $rolesTab, true) && $status)
-            return new RedirectResponse($this->urlGenerator->generate('dashboard_responsable'));
+        elseif (in_array(USER::ROLE_PERSONELLE, $rolesTab, true) && $status)
+            return new RedirectResponse($this->urlGenerator->generate('dashboard_personelle'));
         elseif (in_array(USER::ROLE_GERANT, $rolesTab, true) && $status)
             return new RedirectResponse($this->urlGenerator->generate('dashboard_gerant'));
         elseif (in_array(USER::ROLE_ACHAT, $rolesTab, true) && $status)

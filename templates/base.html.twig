@@ -20,50 +20,16 @@
         <!--------------------
         START - Mobile Menu
         -------------------->
-        <div class="menu-mobile menu-activated-on-click color-scheme-dark">
-            <div class="mm-logo-buttons-w">
-                <a class="mm-logo" href=""><img src="{{ asset('app/images/logo-soffal.png') }}"><span></span></a>
-                <div class="mm-buttons">
-                    <div class="content-panel-open">
-                        <div class="os-icon os-icon-grid-circles"></div>
-                    </div>
-                    <div class="mobile-menu-trigger">
-                        <div class="os-icon os-icon-hamburger-menu-1"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="menu-and-user">
-                <div class="logged-user-w">
-                    <div class="avatar-w">
-                        <img alt="" src="{{ asset("app/assetes/img/avatar1.png")}}">
-                    </div>
-                    <div class="logged-user-info-w">
-                        <div class="logged-user-name">
-                            {{ app.user.firstName }}   {{ app.user.lastName }}
-                        </div>
-                        <div class="logged-user-role">
-                            {% if  app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
-                                SuperAdmin
+        {% if  app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
+            {{ include('default/menu/menuMobile.html.twig') }}
 
-                            {% elseif  app.user.roles[0] == 'ROLE_ADMIN' %}
-                                Administrateur
+        {% elseif  app.user.roles[0] == 'ROLE_ACHAT' %}
+            {{ include('default/menu/menuMobileAchat.html.twig') }}
+        {% else %}
+            {{ include('default/menu/menuMobilePerso.html.twig') }}
+        {% endif %}
 
-                            {% elseif  app.user.roles[0] == 'ROLE_ACHAT' %}
-                                Achat
-                            {% elseif  app.user.roles[0] == 'ROLE_GERANT' %}
-                                Gérant
 
-                            {% else %}
-                                Responsable
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-
-                {{ include('default/menu/menuMobile.html.twig') }}
-
-            </div>
-        </div>
         <!--------------------
         END - Mobile Menu
         --------------------><!--------------------
@@ -78,16 +44,17 @@
                     <a class="logo" href="{{ path('dashboard_achat') }}">
                         {% endif %}
 
-                    <img alt="" src="{{asset("app/images/logo-soffal.png")}}">
-                    <div class="logo-label">
-                        SOFFAL
-                    </div>
+                        <img alt="" src="{{ asset("app/images/logo-soffal.png") }}">
+                        <div class="logo-label">
+                            SOFFAL
+                        </div>
+                    </a>
                 </a>
             </div>
             <div class="logged-user-w avatar-inline">
                 <div class="logged-user-i">
                     <div class="avatar-w">
-                        <img alt="" src="{{asset("app/assetes/img/avatar1.png")}}">
+                        <img alt="" src="{{ asset("app/assetes/img/avatar1.png") }}">
                     </div>
                     <div class="logged-user-info-w">
                         <div class="logged-user-name">
@@ -116,7 +83,7 @@
                     <div class="logged-user-menu color-style-bright">
                         <div class="logged-user-avatar-info">
                             <div class="avatar-w">
-                                <img alt="" src="{{asset("app/assetes/img/avatar1.png")}}">
+                                <img alt="" src="{{ asset("app/assetes/img/avatar1.png") }}">
                             </div>
                             <div class="logged-user-info-w">
                                 <div class="logged-user-name">
@@ -148,29 +115,25 @@
                                 <a href="{{ path('profile') }}"><i class="os-icon os-icon-user-male-circle2"></i><span>Profile</span></a>
                             </li>
                             <li>
-                                <a href="{{ path('logout') }}"><i class="os-icon os-icon-signs-11"></i><span>Déconnexion</span></a>
+                                <a href="{{ path('logout') }}"><i
+                                            class="os-icon os-icon-signs-11"></i><span>Déconnexion</span></a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-{#            <h1 class="menu-page-header">#}
-{#             Espace Achat#}
-{#            </h1>#}
+            {#            <h1 class="menu-page-header">#}
+            {#             Espace Achat#}
+            {#            </h1>#}
             {% if  app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
-                {{ include('default/menu/menu.html.twig') }}
-
-            {% elseif  app.user.roles[0] == 'ROLE_ADMIN' %}
                 {{ include('default/menu/menu.html.twig') }}
 
             {% elseif  app.user.roles[0] == 'ROLE_ACHAT' %}
                 {{ include('default/menu/menu_achat.html.twig') }}
-            {% elseif  app.user.roles[0] == 'ROLE_GERANT' %}
-                {{ include('default/menu/menu.html.twig') }}
 
             {% else %}
-                {{ include('default/menu/menu.html.twig') }}
+                {{ include('default/menu/menu_perso.html.twig') }}
             {% endif %}
 
 
@@ -207,7 +170,8 @@
                             </div>
                             <ul>
                                 <li>
-                                    <a href="{{ path('profile') }}"><i class="os-icon os-icon-user-male-circle2"></i><span>Profile</span></a>
+                                    <a href="{{ path('profile') }}"><i
+                                                class="os-icon os-icon-user-male-circle2"></i><span>Profile</span></a>
                                 </li>
                                 <li>
                                     <a href="{{ path('logout') }}"><i class="os-icon os-icon-signs-11"></i><span>Déconnexion</span></a>
@@ -223,12 +187,12 @@
                     <div class="logged-user-w">
                         <div class="logged-user-i">
                             <div class="avatar-w">
-                                <img alt="" src="{{asset("app/assetes/img/avatar1.png")}}">
+                                <img alt="" src="{{ asset("app/assetes/img/avatar1.png") }}">
                             </div>
                             <div class="logged-user-menu color-style-bright">
                                 <div class="logged-user-avatar-info">
                                     <div class="avatar-w">
-                                        <img alt="" src="{{asset("app/assetes/img/avatar1.png")}}">
+                                        <img alt="" src="{{ asset("app/assetes/img/avatar1.png") }}">
                                     </div>
                                     <div class="logged-user-info-w">
                                         <div class="logged-user-name">
@@ -272,7 +236,7 @@
 
             </div>
 
-       {%  block smenu %} {% endblock %}
+            {% block smenu %} {% endblock %}
             <div class="content-i" style="    min-height: 753px;">
                 <div class="content-box">
 

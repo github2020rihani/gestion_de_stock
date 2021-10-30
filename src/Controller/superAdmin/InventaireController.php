@@ -201,8 +201,10 @@ class InventaireController extends AbstractController
     {
         $startRow = 2;
         $row = $startRow;
+        $count_invArt = 0 ;
         foreach ($data['inventaireArticles'] as $key => $value) {
             $i = $row++;
+            $count_invArt = $row++ ;
             $sheet->setCellValue("A{$i}", $value['article']['ref']);
             $sheet->setCellValue("B{$i}", $value['article']['description']);
             $sheet->setCellValue("C{$i}", $value['prAchatHT']);
@@ -211,6 +213,10 @@ class InventaireController extends AbstractController
             $sheet->setCellValue("F{$i}", $value['totalTTC']);
 
         }
+//        $sheet->setCellValue("A{$count_invArt}:E{$count_invArt}", $value['totalTTC']);
+//        $sheet->getStyle("A{$count_invArt}:F{$count_invArt}")->getFont()->setBold(true);
+//
+//        $sheet->getStyle("A{$count_invArt}:F{$count_invArt}")->getBorders()->setDiagonalDirection(true);
     }
 
 

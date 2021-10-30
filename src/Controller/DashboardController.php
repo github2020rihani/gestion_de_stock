@@ -64,12 +64,12 @@ class DashboardController extends AbstractController
     }
 
     /**
-     * @Route("/responsable", name="dashboard_responsable")
+     * @Route("/personelle", name="dashboard_personelle")
      */
     public function dashboardResponsable()
     {
 
-        return $this->render('dashboard/dashboard_responsable.html.twig');
+        return $this->render('dashboard/dashboard_personelle.html.twig');
     }
 
     /**
