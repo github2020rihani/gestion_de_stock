@@ -88,6 +88,7 @@ class Article
      */
     private $achatArticles;
 
+
     /**
      * @ORM\OneToMany(targetEntity=Stock::class, mappedBy="article")
      */
@@ -103,6 +104,11 @@ class Article
      */
     private $inventaireArticles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=DevisArticle::class, mappedBy="articles")
+     */
+    private $devisArticles;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
@@ -110,6 +116,7 @@ class Article
         $this->stocks = new ArrayCollection();
         $this->prixes = new ArrayCollection();
         $this->inventaireArticles = new ArrayCollection();
+        $this->devisArticles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -281,6 +288,36 @@ class Article
             // set the owning side to null (unless already changed)
             if ($inventaireArticle->getArticle() === $this) {
                 $inventaireArticle->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DevisArticle[]
+     */
+    public function getDevisArticles(): Collection
+    {
+        return $this->devisArticles;
+    }
+
+    public function addDevisArticle(DevisArticle $devisArticle): self
+    {
+        if (!$this->devisArticles->contains($devisArticle)) {
+            $this->devisArticles[] = $devisArticle;
+            $devisArticle->setArticles($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevisArticle(DevisArticle $devisArticle): self
+    {
+        if ($this->devisArticles->removeElement($devisArticle)) {
+            // set the owning side to null (unless already changed)
+            if ($devisArticle->getArticles() === $this) {
+                $devisArticle->setArticles(null);
             }
         }
 

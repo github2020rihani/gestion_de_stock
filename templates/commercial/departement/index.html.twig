@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Liste des fournisseurs {% endblock %}
+{% block title %} Liste des départements {% endblock %}
 
 {% block stylesheets %}
 
@@ -8,10 +8,10 @@
        {% block smenu %}
            <ul class="breadcrumb">
                <li class="breadcrumb-item">
-                   <a href="{{ path('dashboard_personelle') }}">Tableau de bord</a>
+                   <a href="index.html">Tableau de bord</a>
                </li>
                <li class="breadcrumb-item">
-                   <a href="#">clients</a>
+                   <a href="index.html">départements</a>
                </li>
                <li class="breadcrumb-item">
                    <span>Liste</span>
@@ -23,14 +23,14 @@
 
             <div class="element-wrapper">
                 <h6 class="element-header">
-                    Liste des clients
+                    Liste des départements
                 </h6>
                 {{ include('default/FlashBag/flashBag.html.twig') }}
 
                 <div class="element-box">
                     <h5 class="form-header">
-                        <a href="{{ path('perso_add_client') }}" class="btn btn-primary add-list float-right mb-2"><i
-                                    class="las la-plus mr-3"></i>Ajouter un client </a>
+                        <a href="{{ path('add_departement') }}" class="btn btn-primary add-list float-right mb-2"><i
+                                    class="las la-plus mr-3"></i>Ajouter un département </a>
 
                     </h5>
 
@@ -45,59 +45,33 @@
                             <thead>
                             <tr>
                                 <th>Code</th>
-                                <th>TVA/CIN</th>
-                                <th>Nom</th>
-                                <th>Prénom</th>
-                                <th>Adresse</th>
-                                <th>Telephone</th>
+                                <th>Libelle</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
                                 <th>Code</th>
-                                <th>TVA/CIN</th>
-                                <th>Nom</th>
-                                <th>Prénom</th>
-                                <th>Adresse</th>
-                                <th>Telephone</th>
+                                <th>Libelle</th>
                                 <th>Actions</th>
                             </tr>
                             </tfoot>
-                            <tbody class="ligth-body">
-                            {% for cl in clients %}
+                            <tbody class="">
+                            {% for d in departemets %}
                                 <tr>
-                                    <td>{{ cl.code }}</td>
-                                    <td>{{ cl.codeTVA }}</td>
-                                    <td>{{ cl.nom }}</td>
-                                    <td>{{ cl.prenom }}</td>
-                                    <td>{{ cl.adresse }}</td>
-                                    <td>{{ cl.telephone }}</td>
+                                    <td>{{ d.codeDeppart }}</td>
+                                    <td>{{ d.libelle }}</td>
                                     <td width="5%">
-
                                         <div class="d-flex align-items-center list-action">
-
 
                                             <a class="  btn btn-sm btn-icon btn-success"
                                                data-toggle="tooltip"
                                                data-placement="top" title="" data-original-title="Modifier"
                                                style="color: white"
-                                               href="{{ path('perso_edit_client', {id: f.id}) }}"
+                                               href="{{ path('edit_departement', {id: d.id}) }}"
                                             >
                                                 <i class="fa fa-edit"></i>
                                             </a>
-
-                                            <a class="  btn btn-sm btn-icon btn-danger"
-                                               data-toggle="tooltip"
-                                               data-placement="top" title="" data-original-title="Supprimer"
-                                               style="color: white"
-                                               onclick=" return confirm('Vous éte sur suprimer ce fournisseur')"
-
-                                               href="{{ path('perso_delete_client', {id: f.id}) }}"
-                                            >
-                                                <i class="fa fa-trash"></i>
-                                            </a>
-
                                         </div>
                                     </td>
 

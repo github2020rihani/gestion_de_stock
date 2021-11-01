@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\commercial;
 use App\Entity\Client;
 use App\Form\ClientType;
 use App\Repository\ClientRepository;
@@ -12,14 +12,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @Route("/super_admin/client")
+ * @Route("/commercial/client")
  */
 class ClientController extends AbstractController
 {
 
 
     /**
-     * @Route("/new", name="add_client")
+     * @Route("/new", name="perso_add_client")
      */
     public function add(Request $request , EntityManagerInterface $em): Response
     {
@@ -36,12 +36,12 @@ class ClientController extends AbstractController
             $em->flush();
             $this->addFlash('success',' Successfully added');
 
-            return $this->redirectToRoute('index_client');
+            return $this->redirectToRoute('perso_index_client');
         }
 
 
 
-        return $this->render('admin/client/new.html.twig',[
+        return $this->render('commercial/client/new.html.twig',[
             'form' => $form->createView(),
             'client' => ''
         ]);
@@ -49,18 +49,18 @@ class ClientController extends AbstractController
 
 
     /**
-     * @Route("/", name="index_client")
+     * @Route("/", name="perso_index_client")
      */
     public function index( Request $request , EntityManagerInterface $em, ClientRepository $clientRepository): Response
     {
         $clients = $clientRepository->findAll();
-        return $this->render('admin/client/index.html.twig',[
+        return $this->render('commercial/client/index.html.twig',[
             'clients' =>$clients
         ]);
     }
 
     /**
-     * @Route("/{id<\d+>}", name="delete_client")
+     * @Route("/{id<\d+>}", name="perso_delete_client")
      */
     public function delete(Client $clients, EntityManagerInterface $em, ClientRepository $clientRepository): Response
     {
@@ -71,7 +71,7 @@ class ClientController extends AbstractController
         }else{
             $this->addFlash('error',' error deleted');
         }
-        return $this->redirectToRoute('index_client');
+        return $this->redirectToRoute('perso_index_client');
     }
 
 
@@ -91,7 +91,7 @@ class ClientController extends AbstractController
             return $this->redirectToRoute('index_client');
         }
 
-        return $this->render('admin/client/new.html.twig',[
+        return $this->render('commercial/client/new.html.twig',[
             'form' => $form->createView(),
             'client' => $client
         ]);

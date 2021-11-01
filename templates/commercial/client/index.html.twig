@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Liste des fournisseurs {% endblock %}
+{% block title %} Liste des clients {% endblock %}
 
 {% block stylesheets %}
 
@@ -60,7 +60,8 @@
                                 <th>Nom</th>
                                 <th>Prénom</th>
                                 <th>Adresse</th>
-                                <th>Telephone</th>
+                                <th>Téléphone</th>
+
                                 <th>Actions</th>
                             </tr>
                             </tfoot>
@@ -73,6 +74,7 @@
                                     <td>{{ cl.prenom }}</td>
                                     <td>{{ cl.adresse }}</td>
                                     <td>{{ cl.telephone }}</td>
+
                                     <td width="5%">
 
                                         <div class="d-flex align-items-center list-action">
@@ -82,7 +84,7 @@
                                                data-toggle="tooltip"
                                                data-placement="top" title="" data-original-title="Modifier"
                                                style="color: white"
-                                               href="{{ path('perso_edit_client', {id: f.id}) }}"
+                                               href="{{ path('perso_edit_client', {id: cl.id}) }}"
                                             >
                                                 <i class="fa fa-edit"></i>
                                             </a>
@@ -91,9 +93,9 @@
                                                data-toggle="tooltip"
                                                data-placement="top" title="" data-original-title="Supprimer"
                                                style="color: white"
-                                               onclick=" return confirm('Vous éte sur suprimer ce fournisseur')"
+                                               onclick=" return confirm('Vous éte sur suprimer ce client')"
 
-                                               href="{{ path('perso_delete_client', {id: f.id}) }}"
+                                               href="{{ path('perso_delete_client', {id: cl.id}) }}"
                                             >
                                                 <i class="fa fa-trash"></i>
                                             </a>

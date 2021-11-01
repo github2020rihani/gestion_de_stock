@@ -8,10 +8,10 @@
        {% block smenu %}
            <ul class="breadcrumb">
                <li class="breadcrumb-item">
-                   <a href="{{ path('dashboard_personelle') }}">Tableau de bord</a>
+                   <a href="{{ path('dashboard_super_admin') }}">Tableau de bord</a>
                </li>
                <li class="breadcrumb-item">
-                   <a href="#">clients</a>
+                   <a href="#">fournisseurs</a>
                </li>
                <li class="breadcrumb-item">
                    <span>Liste</span>
@@ -23,14 +23,14 @@
 
             <div class="element-wrapper">
                 <h6 class="element-header">
-                    Liste des clients
+                    Liste des fournisseurs
                 </h6>
                 {{ include('default/FlashBag/flashBag.html.twig') }}
 
                 <div class="element-box">
                     <h5 class="form-header">
-                        <a href="{{ path('perso_add_client') }}" class="btn btn-primary add-list float-right mb-2"><i
-                                    class="las la-plus mr-3"></i>Ajouter un client </a>
+                        <a href="{{ path('add_fournisseur') }}" class="btn btn-primary add-list float-right mb-2"><i
+                                    class="las la-plus mr-3"></i>Ajouter un fournisseur </a>
 
                     </h5>
 
@@ -45,34 +45,34 @@
                             <thead>
                             <tr>
                                 <th>Code</th>
-                                <th>TVA/CIN</th>
                                 <th>Nom</th>
                                 <th>Prénom</th>
                                 <th>Adresse</th>
                                 <th>Telephone</th>
+                                <th>Email</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
                                 <th>Code</th>
-                                <th>TVA/CIN</th>
                                 <th>Nom</th>
                                 <th>Prénom</th>
                                 <th>Adresse</th>
-                                <th>Telephone</th>
+                                <th>Téléphone</th>
+                                <th>Email</th>
                                 <th>Actions</th>
                             </tr>
                             </tfoot>
                             <tbody class="ligth-body">
-                            {% for cl in clients %}
+                            {% for f in fournisseurs %}
                                 <tr>
-                                    <td>{{ cl.code }}</td>
-                                    <td>{{ cl.codeTVA }}</td>
-                                    <td>{{ cl.nom }}</td>
-                                    <td>{{ cl.prenom }}</td>
-                                    <td>{{ cl.adresse }}</td>
-                                    <td>{{ cl.telephone }}</td>
+                                    <td>{{ f.code }}</td>
+                                    <td>{{ f.nom }}</td>
+                                    <td>{{ f.prenom }}</td>
+                                    <td>{{ f.adresse }}</td>
+                                    <td>{{ f.telephone }}</td>
+                                    <td>{{ f.email }}</td>
                                     <td width="5%">
 
                                         <div class="d-flex align-items-center list-action">
@@ -82,7 +82,7 @@
                                                data-toggle="tooltip"
                                                data-placement="top" title="" data-original-title="Modifier"
                                                style="color: white"
-                                               href="{{ path('perso_edit_client', {id: f.id}) }}"
+                                               href="{{ path('edit_fournisseur', {id: f.id}) }}"
                                             >
                                                 <i class="fa fa-edit"></i>
                                             </a>
@@ -93,7 +93,7 @@
                                                style="color: white"
                                                onclick=" return confirm('Vous éte sur suprimer ce fournisseur')"
 
-                                               href="{{ path('perso_delete_client', {id: f.id}) }}"
+                                               href="{{ path('delete_fournisseur', {id: f.id}) }}"
                                             >
                                                 <i class="fa fa-trash"></i>
                                             </a>
