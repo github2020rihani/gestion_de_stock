@@ -44,7 +44,7 @@ security:
     access_control:
         - { path: '^/super_admin/', roles: [ ROLE_SUPER_ADMIN ] }
         - { path: '^/admin/', roles: [ ROLE_ADMIN ] }
-        - { path: '^/responsable/', roles: [ ROLE_RESPONSABLE ] }
+        - { path: '^/personelle/', roles: [ ROLE_PERSONELLE ] }
         - { path: '^/gerant/', roles: [ ROLE_GERANT ] }
         - { path: '^/magasinier/', roles: [ ROLE_MAGASINIER ] }
         - { path: '^/achat/', roles: [ ROLE_ACHAT ] }

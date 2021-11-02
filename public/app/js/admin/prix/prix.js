@@ -82,6 +82,7 @@ function onchangePrixVenteTTC() {
         var index = $(this).data('index');
         oldPuVenteHT = $('.pventeht_' + index).val();
         newPventeTTc = parseFloat($(this).val());
+        newPAchatHT = $('.pachatnet_'+index).val();
 
         $(this).attr('value', $(this).val());
         $('.pventeht_' + index).val(parseFloat($(this).val() / 1.19).toFixed(3));

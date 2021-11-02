@@ -5,6 +5,8 @@ namespace App\Controller\superAdmin;
 use App\Entity\Inventaire;
 use App\Entity\InventaireArticle;
 use App\Repository\ArticleRepository;
+use App\Repository\DevisArticleRepository;
+use App\Repository\DevisRepository;
 use App\Repository\InventaireArticleRepository;
 use App\Repository\InventaireRepository;
 use App\Repository\PrixRepository;
@@ -58,7 +60,7 @@ class StockController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @Route("/maj/stock", name="maj_stock" , options={"expose" =true})
      */
-    public function updateQteArticle(Request $request)
+    public function updateQteArticle(Request $request, DevisRepository $devisRepository, DevisArticleRepository $devisArticleRepository)
     {
         $newQte = $request->get('qte');
         $type = $request->get('type');
@@ -96,6 +98,22 @@ class StockController extends AbstractController
                 $prixArticle[0]->setQte((int)$prixArticle[0]->getQte() + (int)$newQte);
                 $this->em->persist($prixArticle[0]);
                 $this->em->flush();
+
+
+                //update devis article if existe
+                $articleDevis = $devisArticleRepository->findBy(array('article' => $article));
+
+                if ($articleDevis) {
+                    foreach ($articleDevis as $key => $art) {
+                        $devis = $devisRepository->findBy(array('id' => $art->getDevi()->getId(), 'status' => false));
+                        if ($devis && $devis[0]){
+                            $devis[0]->setStatusMaj(true);
+                            $this->em->persist($devis[0]);
+                            $this->em->flush();
+                        }
+
+                    }
+                }
 
             } else {
                 $message = 'Article n\'exste pas ';

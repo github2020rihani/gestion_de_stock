@@ -5,6 +5,8 @@ namespace App\Controller\Admin;
 
 
 use App\Repository\AchatArticleRepository;
+use App\Repository\DevisArticleRepository;
+use App\Repository\DevisRepository;
 use App\Repository\PrixRepository;
 use App\Repository\StockRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -57,7 +59,9 @@ class prixController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @Route("/confirme/prix", name="achat_confirmeUpdatePrix" , options={"expose" =true})
      */
-    public function confirmeUpdatePrix(Request $request, StockRepository $stockRepository) {
+    public function confirmeUpdatePrix(Request $request, StockRepository $stockRepository, DevisRepository $devisRepository,
+                                       DevisArticleRepository $devisArticleRepository
+    ) {
         $id_article_prix = $request->get('id_article_prix');
         $pachatht =(float)number_format($request->get('pachatht'),3) ;
         $pventettc =(float)number_format($request->get('pventettc'),3) ;
@@ -78,6 +82,21 @@ class prixController extends AbstractController
                 $articleStocked[0]->setInventer(false);
                 $this->em->persist($articleStocked[0]);
                 $this->em->flush();
+
+                //update devis article if existe
+                $articleDevis = $devisArticleRepository->findBy(array('article' => $id_article_prix));
+
+                if ($articleDevis) {
+                    foreach ($articleDevis as $key => $art) {
+                        $devis = $devisRepository->findBy(array('id' => $art->getDevi()->getId(), 'status' => false));
+                        if ($devis && $devis[0]){
+                            $devis[0]->setStatusMaj(true);
+                            $this->em->persist($devis[0]);
+                            $this->em->flush();
+                        }
+
+                    }
+                }
 
             }else{
                 $message = 'Article \'existe pas';

@@ -42,5 +42,25 @@ class PrixRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+    public function getArticleWithPrix()
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p', 'article')
+            ->leftJoin('p.article', 'article')
+            ->getQuery()
+            ->getArrayResult()
+            ;
+    }
+    public function getArticleById($idArticle)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p', 'article')
+            ->leftJoin('p.article', 'article')
+            ->where('article.id = :idArt')
+            ->setParameter('idArt', $idArticle)
+            ->getQuery()
+            ->getArrayResult()
+            ;
+    }
 
 }

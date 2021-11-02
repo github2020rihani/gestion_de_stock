@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Commercial;
 
 use App\Entity\Inventaire;
 use App\Entity\InventaireArticle;
 use App\Repository\ArticleRepository;
-use App\Repository\DevisArticleRepository;
-use App\Repository\DevisRepository;
 use App\Repository\InventaireArticleRepository;
 use App\Repository\InventaireRepository;
 use App\Repository\PrixRepository;
@@ -18,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 /**
- * @Route("/achat/stock")
+ * @Route("/personelle/stock")
  */
 class StockController extends AbstractController
 {
@@ -47,20 +45,20 @@ class StockController extends AbstractController
 
     /**
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/", name="achat_index_stock")
+     * @Route("/", name="perso_index_stock")
      */
     public function index()
     {
         $stocks = $this->stockRepository->findAll();
-        return $this->render('admin/stock/index.html.twig', array('stocks' => $stocks));
+        return $this->render('commercial/stock/index.html.twig', array('stocks' => $stocks));
     }
 
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
-     * @Route("/maj/stock", name="achat_maj_stock" , options={"expose" =true})
+     * @Route("/maj/stock", name="maj_stock" , options={"expose" =true})
      */
-    public function updateQteArticle(Request $request, DevisArticleRepository $devisArticleRepository , DevisRepository $devisRepository)
+    public function updateQteArticle(Request $request)
     {
         $newQte = $request->get('qte');
         $type = $request->get('type');
@@ -99,21 +97,6 @@ class StockController extends AbstractController
                 $this->em->persist($prixArticle[0]);
                 $this->em->flush();
 
-                //update devis article if existe
-                $articleDevis = $devisArticleRepository->findBy(array('article' => $article));
-
-                if ($articleDevis) {
-                    foreach ($articleDevis as $key => $art) {
-                        $devis = $devisRepository->findBy(array('id' => $art->getDevi()->getId(), 'status' => false));
-                        if ($devis && $devis[0]){
-                            $devis[0]->setStatusMaj(true);
-                            $this->em->persist($devis[0]);
-                            $this->em->flush();
-                        }
-
-                    }
-                }
-
             } else {
                 $message = 'Article n\'exste pas ';
                 return $this->json(array('message' => $message, 'success' => false));
@@ -136,7 +119,7 @@ class StockController extends AbstractController
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
-     * @Route("/verifier/stock", name="achat_verifier_stock" , options={"expose" =true})
+     * @Route("/verifier/stock", name="verifier_stock" , options={"expose" =true})
      */
     public function verifierStock(Request $request)
     {

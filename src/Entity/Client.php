@@ -4,6 +4,8 @@
 namespace App\Entity;
 
 use App\Repository\ClientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -103,11 +105,17 @@ class  Client
      */
     private $city;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Devis::class, mappedBy="client")
+     */
+    private $devis;
+
 
 
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
+        $this->devis = new ArrayCollection();
     }
 
     /**
@@ -258,6 +266,36 @@ class  Client
     public function setCity(?City $city): self
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Devis[]
+     */
+    public function getDevis(): Collection
+    {
+        return $this->devis;
+    }
+
+    public function addDevi(Devis $devi): self
+    {
+        if (!$this->devis->contains($devi)) {
+            $this->devis[] = $devi;
+            $devi->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevi(Devis $devi): self
+    {
+        if ($this->devis->removeElement($devi)) {
+            // set the owning side to null (unless already changed)
+            if ($devi->getClient() === $this) {
+                $devi->setClient(null);
+            }
+        }
 
         return $this;
     }
