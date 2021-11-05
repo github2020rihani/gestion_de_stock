@@ -110,12 +110,18 @@ class  Client
      */
     private $devis;
 
+    /**
+     * @ORM\OneToMany(targetEntity=BondLivraison::class, mappedBy="customer")
+     */
+    private $bondLivraisons;
+
 
 
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
         $this->devis = new ArrayCollection();
+        $this->bondLivraisons = new ArrayCollection();
     }
 
     /**
@@ -294,6 +300,36 @@ class  Client
             // set the owning side to null (unless already changed)
             if ($devi->getClient() === $this) {
                 $devi->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BondLivraison[]
+     */
+    public function getBondLivraisons(): Collection
+    {
+        return $this->bondLivraisons;
+    }
+
+    public function addBondLivraison(BondLivraison $bondLivraison): self
+    {
+        if (!$this->bondLivraisons->contains($bondLivraison)) {
+            $this->bondLivraisons[] = $bondLivraison;
+            $bondLivraison->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBondLivraison(BondLivraison $bondLivraison): self
+    {
+        if ($this->bondLivraisons->removeElement($bondLivraison)) {
+            // set the owning side to null (unless already changed)
+            if ($bondLivraison->getCustomer() === $this) {
+                $bondLivraison->setCustomer(null);
             }
         }
 

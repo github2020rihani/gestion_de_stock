@@ -44,5 +44,13 @@ $(document).ready(function () {
             }
         })
     })
+    $('.table_devis').on('click', '.transfertDevis', function () {
+        var id_devis = $(this).data('id_devis');
+        //show Modal
+        $('#modalConfirmTransfer').modal('show');
+        $('#confirme').attr('href' , 'http://localhost:8000/personelle/BL/transfert/'+id_devis)
+
+
+    })
 
 })

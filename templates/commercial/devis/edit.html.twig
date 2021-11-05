@@ -19,6 +19,8 @@
        {% endblock %}
 
         {% block content %}
+            {{ include('commercial/devis/include/_modal_confirm_transfertDevis.html.twig') }}
+
             <div class="content-box">
                 <div class="row">
                     <div class="col-sm-12 col-xxxl-9">
@@ -134,11 +136,14 @@
                                     ><i
                                                 class="fa fa-save"></i>Modifier
                                     </button>
+                                    {% if devi['statusMaj'] == 1 %}
 
-                                    <button type="button" class="mt-5 btn btn-primary transfertToBl w-100"
+                                    <button type="button" class="mt-5 btn btn-primary transfertDevis w-100"  data-id_devis= {{ devi['id'] }}
                                     ><i
-                                                class="fa fa-file"></i>Transfert vers BL
+                                                class="fa fa-share"></i>Transfert vers BL
                                     </button>
+
+                                    {% endif %}
                                 </form>
                             </div>
                         </div>

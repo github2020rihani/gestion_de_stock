@@ -38,7 +38,7 @@
 
                     </div>
 
-
+                    {{ include('commercial/devis/include/_modal_confirm_transfertDevis.html.twig') }}
                     <div class="table-responsive">
 
                         <table id="dataTable1" width="100%" class="table table-striped table-lightfont table_devis">
@@ -72,14 +72,14 @@
                                     <td>
                                         {% if d.status %}
                                             <span class="mr-2 mb-2 badge badge-success"
-                                                  type="button"> Bond livraison  </span>
+                                                  type="button"> Bon de livraison  </span>
 
                                         {% else %}
                                             <span class="mr-2 mb-2 badge badge-warning"
                                                   type="button"> En Attente  </span>
                                         {% endif %}
                                     </td>
-                                    <td width="15%">
+                                    <td width="20%">
                                         {% if d.statusMaj == 0 %}
                                             <a class="  btn btn-sm btn-icon btn-info"
                                                data-toggle="tooltip"
@@ -98,7 +98,7 @@
                                                data-placement="top" title="" data-original-title="Modifier"
                                                style="color: white"
                                                href="{{ path('perso_edit_devis', {id: d.id}) }}"
-{#                                                    href="{{ path('perso_print_devis2') }}"#}
+                                                    {#                                                    href="{{ path('perso_print_devis2') }}"#}
                                             >
                                                 <i class="fa fa-edit"></i>
                                             </a>
@@ -106,17 +106,29 @@
 
                                         {% if d.statusMaj == 0 %}
                                             <button class="  btn btn-sm btn-icon btn-danger printDevis"
-                                               data-toggle="tooltip"
+                                                    data-toggle="tooltip"
                                                     type="button"
-                                               data-id_devis = {{ d.id }}
-                                               data-placement="top" title="" data-original-title="Imprimer"
-                                               style="color: white"
-                                               href=""
+                                                    data-id_devis= {{ d.id }}
+                                                    data-placement="top" title="" data-original-title="Imprimer"
+                                                    style="color: white"
+                                                    href=""
                                             >
                                                 <i class="fa fa-print"></i>
                                             </button>
                                         {% endif %}
-
+                                        {% if d.statusMaj == 0 and d.status == 0 %}
+                                            <button class="  btn btn-sm btn-icon btn-dark transfertDevis"
+                                                    data-toggle="tooltip"
+                                                    type="button"
+                                                    data-id_devis= {{ d.id }}
+                                                    data-placement="top" title=""
+                                                    data-original-title="Tarasfert vers BL"
+                                                    style="color: white"
+                                                    href=""
+                                            >
+                                                <i class="fa fa-share"></i>
+                                            </button>
+                                        {% endif %}
                                     </td>
                                 </tr>
                             {% endfor %}

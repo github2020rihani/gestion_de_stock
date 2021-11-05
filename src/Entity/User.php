@@ -139,6 +139,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $devis;
 
+    /**
+     * @ORM\OneToMany(targetEntity=BondLivraison::class, mappedBy="createdBy")
+     */
+    private $bondLivraisons;
+
 
 
     public function __construct()
@@ -152,6 +157,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->prixes = new ArrayCollection();
         $this->inventaires = new ArrayCollection();
         $this->devis = new ArrayCollection();
+        $this->bondLivraisons = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -525,6 +531,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($devi->getCreadetBy() === $this) {
                 $devi->setCreadetBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BondLivraison[]
+     */
+    public function getBondLivraisons(): Collection
+    {
+        return $this->bondLivraisons;
+    }
+
+    public function addBondLivraison(BondLivraison $bondLivraison): self
+    {
+        if (!$this->bondLivraisons->contains($bondLivraison)) {
+            $this->bondLivraisons[] = $bondLivraison;
+            $bondLivraison->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBondLivraison(BondLivraison $bondLivraison): self
+    {
+        if ($this->bondLivraisons->removeElement($bondLivraison)) {
+            // set the owning side to null (unless already changed)
+            if ($bondLivraison->getCreatedBy() === $this) {
+                $bondLivraison->setCreatedBy(null);
             }
         }
 

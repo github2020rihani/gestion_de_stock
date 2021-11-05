@@ -1,0 +1,226 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Détail de facture {% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+       {% block smenu %}
+           <ul class="breadcrumb">
+               <li class="breadcrumb-item">
+                   <a href="{{ path('dashboard_personelle') }}">Tableau de bord</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <a href="{{ path('perso_index_invoice') }}">Facture</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <span>Détail</span>
+               </li>
+           </ul>
+       {% endblock %}
+
+        {% block content %}
+            <div class="content-box">
+                <div class="row">
+                    <div class="col-sm-9 col-xxxl-9">
+                        <div class="element-wrapper">
+                            <h6 class="element-header">
+                                Informations des articles
+                            </h6>
+                            <div class="order-box">
+                                <div class="order-details-box">
+                                    <div class="order-main-info">
+                                        <span>Numéro de Facture #</span><strong></strong>
+                                    </div>
+                                    <div class="order-sub-info">
+                                        <span>Date de création</span><strong></strong>
+                                    </div>
+                                </div>
+                                <div class="order-items-table">
+                                    <div class="table-responsive">
+                                        <table class="table table-lightborder">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Réference</th>
+                                                <th scope="col">PU HT</th>
+                                                <th scope="col">Qte</th>
+                                                <th scope="col">REMISE (%)</th>
+                                                <th scope="col">PU HT Net</th>
+                                                <th scope="col">TAXE (%)</th>
+                                                <th scope="col">PU TTC</th>
+                                                <th scope="col">TOTAL TTC</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {#                                            {% for article in achat['achatArticles'] %}#}
+
+
+                                            {#                                                <tr class="ligne_achat">#}
+
+                                            {#                                                    <td>#}
+                                            {#                                                        <div class="product-name">#}
+                                            {#                                                            {{ article['article']['ref'] }}#}
+                                            {#                                                        </div>#}
+                                            {#                                                        <div class="product-details">#}
+                                            {#                                                            <span></span><strong> {{ article['article']['description'] }}</strong>#}
+                                            {#                                                        </div>#}
+                                            {#                                                    </td>#}
+
+                                            {#                                                    <td>#}
+                                            {#                                                        {{ article['puhtnet']|number_format(3) }}#}
+                                            {#                                                    </td>#}
+                                            {#                                                    <td>#}
+                                            {#                                                        {{ article['qte'] }}#}
+
+                                            {#                                                    </td>#}
+                                            {#                                                    <td>#}
+                                            {#                                                        19#}
+
+                                            {#                                                    </td>#}
+                                            {#                                                    <td>#}
+                                            {#                                                        {{ article['puttc']|number_format(3) }}#}
+
+                                            {#                                                    </td>#}
+                                            {#                                                    <td>#}
+                                            {#                                                        {{ article['marge']|number_format(2) }}#}
+
+                                            {#                                                    </td>#}
+                                            {#                                                    <td>#}
+                                            {#                                                        {{ article['pventettc']|number_format(3) }}#}
+
+                                            {#                                                    </td>#}
+                                            {#                                                </tr>#}
+                                            {#                                            {% endfor %}#}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="order-foot">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-4">
+                                            {#                                            <h5>#}
+                                            {#                                                Notes#}
+                                            {#                                            </h5>#}
+                                            {#                                            <div class="form-group">#}
+                                            {#                                                <textarea class="form-control" placeholder="Enter your notes here..."></textarea>#}
+                                            {#                                            </div>#}
+                                            {#                                            <button class="btn btn-primary">Save Notes</button>#}
+                                        </div>
+                                        <div class="col-md-5 offset-md-1">
+                                            <h5 class="order-section-heading">
+                                            </h5>
+
+                                            <div class="order-summary-row">
+                                                <div class="order-summary-label">
+                                                    <span>Total HT</span>
+                                                </div>
+                                                <div class="order-summary-value">
+                                                </div>
+                                            </div>
+                                            <div class="order-summary-row">
+                                                <div class="order-summary-label">
+                                                    <span>Total HT NET</span>
+                                                </div>
+                                                <div class="order-summary-value">
+                                                </div>
+                                            </div>
+                                            <div class="order-summary-row">
+                                                <div class="order-summary-label">
+                                                    <span>Total TVA</span>
+                                                </div>
+                                                <div class="order-summary-value">
+                                                </div>
+                                            </div>
+                                            <div class="order-summary-row">
+                                                <div class="order-summary-label">
+                                                    <span>Total remise</span>
+                                                </div>
+                                                <div class="order-summary-value">
+                                                </div>
+                                            </div>
+                                            <div class="order-summary-row">
+                                                <div class="order-summary-label">
+                                                    <span>Type du paiement</span>
+                                                </div>
+                                                <div class="order-summary-value">
+                                                </div>
+                                            </div>
+                                            <div class="order-summary-row">
+                                                <div class="order-summary-label">
+                                                    <span>Timbre</span>
+                                                </div>
+                                                <div class="order-summary-value">
+                                                </div>
+                                            </div>
+
+
+                                            <div class="order-summary-row as-total">
+                                                <div class="order-summary-label">
+                                                    <span>Total TTC</span>
+                                                </div>
+                                                <div class="order-summary-value">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-xxxl-3">
+                        <!--START - Top Selling Chart-->
+                        <div class="element-wrapper">
+                            <h6 class="element-header">
+                                Information du client
+                            </h6>
+                            <div class="ecommerce-customer-info">
+                                <div class="ecommerce-customer-main-info">
+                                    <div class="ecc-name">
+                                    </div>
+                                </div>
+                                <div class="ecommerce-customer-sub-info">
+                                    <div class="ecc-sub-info-row">
+                                        <div class="sub-info-label">
+                                            Email
+                                        </div>
+                                        <div class="sub-info-value">
+                                            <a href="#">
+
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ecc-sub-info-row">
+                                        <div class="sub-info-label">
+                                            Téléphone
+                                        </div>
+                                        <div class="sub-info-value">
+                                            +216
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-content">
+                                    <div class="ecc-sub-info-row">
+                                        <div class="sub-info-label">
+                                            Address
+                                        </div>
+                                        <div class="sub-info-value">
+
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--END - Top Selling Chart-->
+                    </div>
+                </div>
+            </div>
+
+
+        {% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}

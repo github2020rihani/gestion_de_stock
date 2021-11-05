@@ -1,12 +1,14 @@
 $(document).ready(function () {
     var url = window.location.href;
     var id = url.substring(url.lastIndexOf('/') + 1);
+
+    $('.transfertDevis').hide();
     getArticlesDevis(id);
     removeArticle();
     addLingeArticle();
     changeQteInitial();
 
-
+    transfertDevis();
 
     $('.editDevis ').click(function () {
 
@@ -52,6 +54,8 @@ $(document).ready(function () {
         } else {
             $(this).hide();
             $('.formEditDevis').submit();
+            $('.transfertDevis').show();
+
 
         }
 
@@ -288,3 +292,59 @@ function getArticlesDevis(id) {
         }
     })
 }
+
+
+function transfertDevis() {
+    $('.transfertDevis').click(function () {
+
+        //validation form
+        $('.customers').each(function () {
+            if ($(this).val() == "0" || $(this).val() == null) {
+                error = true;
+
+                toastr.error('Veuillez choisir un client');
+
+                return true;
+            }
+        })
+
+        if (selectAricle.length == 0) {
+            toastr.error('Aucun Article Ajouter');
+            return false;
+        }
+
+        $('.article').each(function () {
+            if ($(this).val() == 0) {
+                error = true;
+
+                toastr.error('Veuillez Choisir un article');
+
+                return true;
+            }
+        })
+        $('.qte').each(function () {
+            if ($(this).val() == '') {
+                error = true;
+
+                toastr.error('Veuillez entrer le quantité');
+
+                return true;
+            }
+        })
+
+
+        if (error) {
+            return false;
+        } else {
+            // $(this).hide();
+
+        }
+        var id_devis = $(this).data('id_devis');
+        //show Modal
+        $('#modalConfirmTransfer').modal('show');
+        $('#confirme').attr('href' , 'http://localhost:8000/personelle/BL/transfert/'+id_devis)
+
+
+    })
+}
+

@@ -198,6 +198,9 @@ class DevisController extends AbstractController
 
                 }
                 $devisExiste->setTotalTTC($totalTTc);
+                if ($devisExiste->getStatusMaj() == true) {
+                    $devisExiste->setStatusMaj(false);
+                }
                 $this->em->persist($devisExiste);
                 $this->em->flush();
                 //delete article devis

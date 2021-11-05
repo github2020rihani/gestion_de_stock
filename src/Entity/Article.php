@@ -113,6 +113,11 @@ class Article
      */
     private $devisArticles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=BonlivraisonArticle::class, mappedBy="article")
+     */
+    private $qte;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
@@ -121,6 +126,7 @@ class Article
         $this->prixes = new ArrayCollection();
         $this->inventaireArticles = new ArrayCollection();
         $this->devisArticles = new ArrayCollection();
+        $this->qte = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -334,6 +340,36 @@ class Article
             // set the owning side to null (unless already changed)
             if ($devisArticle->getArticle() === $this) {
                 $devisArticle->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BonlivraisonArticle[]
+     */
+    public function getQte(): Collection
+    {
+        return $this->qte;
+    }
+
+    public function addQte(BonlivraisonArticle $qte): self
+    {
+        if (!$this->qte->contains($qte)) {
+            $this->qte[] = $qte;
+            $qte->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQte(BonlivraisonArticle $qte): self
+    {
+        if ($this->qte->removeElement($qte)) {
+            // set the owning side to null (unless already changed)
+            if ($qte->getArticle() === $this) {
+                $qte->setArticle(null);
             }
         }
 
