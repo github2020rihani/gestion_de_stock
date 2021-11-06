@@ -29,6 +29,7 @@ class Invoice
 
     /**
      * @ORM\ManyToOne(targetEntity=BondLivraison::class, inversedBy="invoices")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $bonLivraison;
 
@@ -47,9 +48,20 @@ class Invoice
      */
     private $totalTTC;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="invoices")
+     */
+    private $creadetBy;
+
     public function __construct()
     {
         $this->status = false;
+        $this->createdAt = new \DateTime('now');
     }
 
     public function getId(): ?int
@@ -125,6 +137,30 @@ class Invoice
     public function setTotalTTC(?float $totalTTC): self
     {
         $this->totalTTC = $totalTTC;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getCreadetBy(): ?User
+    {
+        return $this->creadetBy;
+    }
+
+    public function setCreadetBy(?User $creadetBy): self
+    {
+        $this->creadetBy = $creadetBy;
 
         return $this;
     }

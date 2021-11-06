@@ -25,7 +25,7 @@
                 <div class="element-wrapper">
                     <div class="element-box">
                         {%  if client %}
-                            {{ form_start(form,{'method': 'post', 'action': path('edit_client' , {id: client.id}),'attr': {'id': 'formValidate'}}) }}
+                            {{ form_start(form,{'method': 'post', 'action': path('perso_edit_client' , {id: client.id}),'attr': {'id': 'formValidate'}}) }}
                         {% else%}
                             {{ form_start(form,{'method': 'post', 'action': path('perso_add_client'),'attr': {'id': 'formValidate'}}) }}
                         {% endif %}

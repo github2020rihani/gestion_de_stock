@@ -19,6 +19,7 @@ class BonlivraisonArticle
 
     /**
      * @ORM\ManyToOne(targetEntity=BondLivraison::class, inversedBy="bonlivraisonArticles")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $bonLivraison;
 

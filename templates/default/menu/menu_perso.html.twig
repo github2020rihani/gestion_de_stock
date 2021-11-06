@@ -19,7 +19,7 @@
             <span>Client</span></a>
 
     </li>
-    <li class="{% if app.request.attributes.get('_route') in ['perso_index_devis' , 'perso_index_invoice',
+    <li class="{% if app.request.attributes.get('_route') in ['perso_index_devis' , 'perso_index_invoice', 'perso_detail_devis',
         'perso_add_devis', 'perso_edit_devis', 'perso_index_bl', 'perso_transfert_devi', 'perso_detail_invoice',
         'perso_add_bl',  'perso_detail_bl', 'perso_edit_bl'] %} selected {% endif %} has-sub-menu">
         <a href="{{ path('achat_index_achat') }}">
@@ -32,14 +32,17 @@
                 Ventes
             </div>
             <div class="sub-menu-icon">
-                <i class="os-icon os-icon-layers{% if app.request.attributes.get('_route') in ['perso_index_devis' , 'perso_add_devis', 'perso_edit_devis', 'perso_index_bl', 'perso_edit_bl', 'perso_detail_bl',
+                <i class="os-icon os-icon-layers{% if app.request.attributes.get('_route') in ['perso_index_devis' , 'perso_add_devis', 'perso_detail_devis',
+                    'perso_edit_devis', 'perso_index_bl', 'perso_edit_bl', 'perso_detail_bl',
                     'perso_transfert_devi', 'perso_transfert_devi', 'perso_add_bl', 'perso_index_invoice', 'perso_detail_invoice'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></i>
             </div>
             <div class="sub-menu-i">
                 <ul class="sub-menu">
                     <li>
                         <a href="{{ path('perso_index_devis') }}"
-                           style="{% if app.request.attributes.get('_route') in ['perso_index_devis' , 'perso_add_devis', 'perso_edit_devis', 'perso_transfert_devi'] %} color: #0a7cf8; font-weight: bold {% endif %}">
+                           style="{% if app.request.attributes.get('_route') in ['perso_index_devis' , 'perso_add_devis',
+                           'perso_edit_devis', 'perso_detail_devis',
+                           'perso_transfert_devi'] %} color: #0a7cf8; font-weight: bold {% endif %}">
                             Liste de devis</a>
                     </li>
                     <li>

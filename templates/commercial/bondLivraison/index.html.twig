@@ -28,11 +28,11 @@
                 {{ include('default/FlashBag/flashBag.html.twig') }}
 
                 <div class="element-box">
-                    <h5 class="form-header">
-                        <a href="{{ path('perso_add_bl') }}" class="btn btn-primary add-list float-right mb-2"><i
-                                    class="las la-plus mr-3"></i>Crée une Bon de livraison </a>
+{#                    <h5 class="form-header">#}
+{#                        <a href="{{ path('perso_add_bl') }}" class="btn btn-primary add-list float-right mb-2"><i#}
+{#                                    class="las la-plus mr-3"></i>Crée une Bon de livraison </a>#}
 
-                    </h5>
+{#                    </h5>#}
 
                     <div class="form-desc">
 
@@ -69,7 +69,7 @@
                             {% for bl in bls %}
                                 <tr>
                                     <td>{{ bl.createdAt|date('d/m/Y') }}</td>
-                                    <td>{{ bl.numero }}</td>
+                                    <td>{{ perfix_bl }}{{ bl.numero }}</td>
                                     <td>{{ bl.customer.nom }} {{ bl.customer.prenom }}</td>
                                     <td>
                                         {%  if bl.typePayement == 1 %}

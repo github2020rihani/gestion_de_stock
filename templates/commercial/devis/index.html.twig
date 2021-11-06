@@ -66,14 +66,16 @@
                             {% for d in devis %}
                                 <tr style="{% if d.statusMAJ %} background-color: rgba(255,72,0,0.52) {% endif %}">
                                     <td>{{ d.creadetAt|date('d/m/Y') }}</td>
-                                    <td>{{ d.numero }}</td>
+                                    <td>{{ perfex_devis }}{{ d.numero }}</td>
                                     <td>{{ d.client.nom }} {{ d.client.prenom }}</td>
                                     <td>{{ d.totalTTC|number_format(3) }}</td>
                                     <td>
-                                        {% if d.status %}
+                                        {% if d.status == 2 %}
                                             <span class="mr-2 mb-2 badge badge-success"
-                                                  type="button"> Bon de livraison  </span>
-
+                                                  type="button"> Livrée  </span>
+                                        {% elseif d.status == 1 %}
+                                            <span class="mr-2 mb-2 badge badge-info"
+                                                  type="button"> En cours  </span>
                                         {% else %}
                                             <span class="mr-2 mb-2 badge badge-warning"
                                                   type="button"> En Attente  </span>
@@ -90,7 +92,7 @@
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                         {% endif %}
-                                        {% if d.status %}
+                                        {% if d.status == 2 %}
 
                                         {% else %}
                                             <a class="  btn btn-sm btn-icon btn-success"

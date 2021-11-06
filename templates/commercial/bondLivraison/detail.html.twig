@@ -29,10 +29,10 @@
                             <div class="order-box">
                                 <div class="order-details-box">
                                     <div class="order-main-info">
-                                        <span>Numéro du BL #</span><strong></strong>
+                                        <span>Numéro du BL #</span><strong>{{ perfix_bl }}{{ bl.numero }}</strong>
                                     </div>
                                     <div class="order-sub-info">
-                                        <span>Date de création</span><strong></strong>
+                                        <span>Date de création</span><strong>{{ bl.createdAt|date('d/m/Y') }}</strong>
                                     </div>
                                 </div>
                                 <div class="order-items-table">
@@ -53,45 +53,18 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {#                                            {% for article in achat['achatArticles'] %}#}
-
-
-                                            {#                                                <tr class="ligne_achat">#}
-
-                                            {#                                                    <td>#}
-                                            {#                                                        <div class="product-name">#}
-                                            {#                                                            {{ article['article']['ref'] }}#}
-                                            {#                                                        </div>#}
-                                            {#                                                        <div class="product-details">#}
-                                            {#                                                            <span></span><strong> {{ article['article']['description'] }}</strong>#}
-                                            {#                                                        </div>#}
-                                            {#                                                    </td>#}
-
-                                            {#                                                    <td>#}
-                                            {#                                                        {{ article['puhtnet']|number_format(3) }}#}
-                                            {#                                                    </td>#}
-                                            {#                                                    <td>#}
-                                            {#                                                        {{ article['qte'] }}#}
-
-                                            {#                                                    </td>#}
-                                            {#                                                    <td>#}
-                                            {#                                                        19#}
-
-                                            {#                                                    </td>#}
-                                            {#                                                    <td>#}
-                                            {#                                                        {{ article['puttc']|number_format(3) }}#}
-
-                                            {#                                                    </td>#}
-                                            {#                                                    <td>#}
-                                            {#                                                        {{ article['marge']|number_format(2) }}#}
-
-                                            {#                                                    </td>#}
-                                            {#                                                    <td>#}
-                                            {#                                                        {{ article['pventettc']|number_format(3) }}#}
-
-                                            {#                                                    </td>#}
-                                            {#                                                </tr>#}
-                                            {#                                            {% endfor %}#}
+                                            {% for a in bl.bonlivraisonArticles %}
+                                                <td></td>
+                                                <td>{{ a.article.ref }}</td>
+                                                <td>{{ a.puht|number_format(3) }}</td>
+                                                <td>{{ a.qte }}</td>
+                                                <td>{{ a.remise }}</td>
+                                                <td>{{ a.puhtnet|number_format(3) }}</td>
+                                                <td>{{ a.taxe }}</td>
+                                                <td>{{ a.totalht|number_format(3) }}</td>
+                                                <td>{{ a.puttc|number_format(3) }}</td>
+                                                <td>{{ a.totalttc|number_format(3) }}</td>
+                                            {% endfor %}
 
                                             </tbody>
                                         </table>
@@ -117,33 +90,37 @@
                                                     <span>Total HT</span>
                                                 </div>
                                                 <div class="order-summary-value">
+                                                    {{ bl.totalHt|number_format(3) }}
                                                 </div>
                                             </div>
                                             <div class="order-summary-row">
                                                 <div class="order-summary-label">
-                                                    <span>Total HT NET</span>
+                                                    <span>TVA</span>
                                                 </div>
                                                 <div class="order-summary-value">
+                                                    {{ bl.totalTva|number_format(2) }}
                                                 </div>
                                             </div>
                                             <div class="order-summary-row">
                                                 <div class="order-summary-label">
-                                                    <span>Total TVA</span>
+                                                    <span>Remise</span>
                                                 </div>
                                                 <div class="order-summary-value">
+                                                    {{ bl.totalRemise|number_format(3) }}
                                                 </div>
                                             </div>
                                             <div class="order-summary-row">
-                                                <div class="order-summary-label">
-                                                    <span>Total remise</span>
-                                                </div>
-                                                <div class="order-summary-value">
-                                                </div>
-                                            </div>        <div class="order-summary-row">
                                                 <div class="order-summary-label">
                                                     <span>Type du paiement</span>
                                                 </div>
                                                 <div class="order-summary-value">
+                                                    {% if bl.typePayement == 1 %}
+                                                        Espece
+                                                    {% elseif  bl.typePayement == 2 %}
+                                                        Cheque
+                                                    {% else %}
+                                                        Carte
+                                                    {% endif %}
                                                 </div>
                                             </div>
 
@@ -153,7 +130,10 @@
                                                     <span>Total TTC</span>
                                                 </div>
                                                 <div class="order-summary-value">
+                                                    {{ bl.totalTtc|number_format(3) }}
+
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -171,6 +151,7 @@
                             <div class="ecommerce-customer-info">
                                 <div class="ecommerce-customer-main-info">
                                     <div class="ecc-name">
+                                        {{ bl.customer.nom  }} {{ bl.customer.prenom  }}
                                     </div>
                                 </div>
                                 <div class="ecommerce-customer-sub-info">
@@ -180,7 +161,7 @@
                                         </div>
                                         <div class="sub-info-value">
                                             <a href="#">
-
+                                                {{ bl.customer.email  }}
                                             </a>
                                         </div>
                                     </div>
@@ -189,7 +170,7 @@
                                             Téléphone
                                         </div>
                                         <div class="sub-info-value">
-                                            +216
+                                            +216 {{ bl.customer.telephone  }}
                                         </div>
                                     </div>
                                 </div>
@@ -199,7 +180,7 @@
                                             Address
                                         </div>
                                         <div class="sub-info-value">
-
+                                            {{ bl.customer.adresse  }} ,   {{ bl.customer.city.name  }} , {{ bl.customer.country.name  }}
                                             <br>
                                         </div>
                                     </div>

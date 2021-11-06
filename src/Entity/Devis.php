@@ -45,7 +45,7 @@ class Devis
     private $totalTTC;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="integer")
      */
     private $status;
 
@@ -68,13 +68,19 @@ class Devis
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $file;
+
+    /**
+     * @ORM\OneToMany(targetEntity=BondLivraison::class, mappedBy="devi")
+     */
+    private $bondLivraisons;
     public function __construct()
     {
         $this->creadetAt = new \DateTime('now');
-        $this->status = false;
+        $this->status = 0;
         $this->finished = false;
         $this->devisArticles = new ArrayCollection();
         $this->setStatusMaj(false);
+        $this->bondLivraisons = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -142,12 +148,12 @@ class Devis
         return $this;
     }
 
-    public function getStatus(): ?bool
+    public function getStatus(): ?int
     {
         return $this->status;
     }
 
-    public function setStatus(bool $status): self
+    public function setStatus(int $status): self
     {
         $this->status = $status;
 
@@ -216,6 +222,36 @@ class Devis
     public function setFile(?string $file): self
     {
         $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BondLivraison[]
+     */
+    public function getBondLivraisons(): Collection
+    {
+        return $this->bondLivraisons;
+    }
+
+    public function addBondLivraison(BondLivraison $bondLivraison): self
+    {
+        if (!$this->bondLivraisons->contains($bondLivraison)) {
+            $this->bondLivraisons[] = $bondLivraison;
+            $bondLivraison->setDevi($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBondLivraison(BondLivraison $bondLivraison): self
+    {
+        if ($this->bondLivraisons->removeElement($bondLivraison)) {
+            // set the owning side to null (unless already changed)
+            if ($bondLivraison->getDevi() === $this) {
+                $bondLivraison->setDevi(null);
+            }
+        }
 
         return $this;
     }

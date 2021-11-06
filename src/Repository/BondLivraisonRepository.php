@@ -19,6 +19,14 @@ class BondLivraisonRepository extends ServiceEntityRepository
         parent::__construct($registry, BondLivraison::class);
     }
 
+    public function findLastBl() {
+        return $this->createQueryBuilder('b')
+            ->orderBy('b.id', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
 
     // /**

@@ -85,6 +85,7 @@ class BondLivraison
 
     /**
      * @ORM\OneToMany(targetEntity=BonlivraisonArticle::class, mappedBy="bonLivraison")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $bonlivraisonArticles;
 
@@ -95,8 +96,14 @@ class BondLivraison
 
     /**
      * @ORM\OneToMany(targetEntity=Invoice::class, mappedBy="bonLivraison")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $invoices;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Devis::class, inversedBy="bondLivraisons")
+     */
+    private $devi;
 
     public function __construct()
     {
@@ -105,6 +112,7 @@ class BondLivraison
         $this->existDevi = false ;
         $this->bonlivraisonArticles = new ArrayCollection();
         $this->invoices = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -324,6 +332,18 @@ class BondLivraison
                 $invoice->setBonLivraison(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDevi(): ?Devis
+    {
+        return $this->devi;
+    }
+
+    public function setDevi(?Devis $devi): self
+    {
+        $this->devi = $devi;
 
         return $this;
     }

@@ -91,7 +91,7 @@ class prixController extends AbstractController
 
                 if ($articleDevis) {
                     foreach ($articleDevis as $key => $art) {
-                        $devis = $devisRepository->findBy(array('id' => $art->getDevi()->getId(), 'status' => false));
+                        $devis = $devisRepository->findBy(array('id' => $art->getDevi()->getId(), 'status' => 0));
                         if ($devis && $devis[0]){
                             $devis[0]->setStatusMaj(true);
                             $this->em->persist($devis[0]);

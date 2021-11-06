@@ -6,6 +6,7 @@ namespace App\Controller\Commercial;
 use App\Entity\Devis;
 use App\Entity\DevisArticle;
 use App\Repository\ArticleRepository;
+use App\Repository\BondLivraisonRepository;
 use App\Repository\ClientRepository;
 use App\Repository\DevisArticleRepository;
 use App\Repository\DevisRepository;
@@ -30,6 +31,7 @@ class DevisController extends AbstractController
     private $prixRepository;
     private $articleRepository;
     private $devisArticleRepository;
+    private $bondLivraisonRepository;
 
     /**
      * DevisController constructor.
@@ -39,6 +41,7 @@ class DevisController extends AbstractController
      */
     public function __construct(EntityManagerInterface $em, DevisRepository $devisRepository,
                                 PrixRepository $prixRepository, ArticleRepository $articleRepository,
+                                BondLivraisonRepository $bondLivraisonRepository,
                                 DevisArticleRepository $devisArticleRepository,
                                 ClientRepository $clientRepository)
     {
@@ -48,6 +51,7 @@ class DevisController extends AbstractController
         $this->prixRepository = $prixRepository;
         $this->articleRepository = $articleRepository;
         $this->devisArticleRepository = $devisArticleRepository;
+        $this->bondLivraisonRepository = $bondLivraisonRepository;
     }
 
     /**
@@ -56,7 +60,7 @@ class DevisController extends AbstractController
     public function index()
     {
         $devis = $this->devisRepository->findAll();
-        return $this->render('commercial/devis/index.html.twig', array('devis' => $devis));
+        return $this->render('commercial/devis/index.html.twig', array('devis' => $devis, 'perfex_devis' => $_ENV['PREFIX_DEVI']));
 
     }
 
@@ -74,9 +78,9 @@ class DevisController extends AbstractController
             $lastDevis = $this->devisRepository->getLastDevis();
             if ($lastDevis) {
                 $lastId = 000 + $lastDevis->getId() + 1;
-                $numero_devis = $_ENV['PERFIX_DEVIS'] . '000' . $lastId;
+                $numero_devis =  '000' . $lastId;
             } else {
-                $numero_devis = $_ENV['PERFIX_DEVIS'] . '0001';
+                $numero_devis =  '0001';
             }
             //chek devis exite
             $devis = $this->devisRepository->findBy(array('numero' => $numero_devis));
@@ -132,7 +136,7 @@ class DevisController extends AbstractController
     {
 
         $devi = $this->devisRepository->findDetailDevi($id_devis);
-        return $this->render('commercial/devis/detail.html.twig', array('devi' => $devi[0]));
+        return $this->render('commercial/devis/detail.html.twig', array('devi' => $devi[0], 'perfex_devis' => $_ENV['PREFIX_DEVI']));
     }
 
 
@@ -200,6 +204,18 @@ class DevisController extends AbstractController
                 $devisExiste->setTotalTTC($totalTTc);
                 if ($devisExiste->getStatusMaj() == true) {
                     $devisExiste->setStatusMaj(false);
+                }
+
+                if ($devisExiste->getStatus() == 1) {
+                    $devisExiste->setStatus(0);
+                    //delete old bl and invoice
+                    $bl = $this->bondLivraisonRepository->findBy(array('devi' => $devisExiste->getId()));
+                    if ($bl && $bl[0]) {
+                        $blExiste = $this->bondLivraisonRepository->find($bl[0]->getId());
+                        $this->em->remove($blExiste);
+                        $this->em->flush();
+                    }
+
                 }
                 $this->em->persist($devisExiste);
                 $this->em->flush();

@@ -88,7 +88,7 @@ class ClientController extends AbstractController
             $em->flush();
             $this->addFlash('success',' Successfully edit');
 
-            return $this->redirectToRoute('index_client');
+            return $this->redirectToRoute('perso_index_client');
         }
 
         return $this->render('commercial/client/new.html.twig',[

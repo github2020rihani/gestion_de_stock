@@ -76,14 +76,15 @@
                                                 <tr>
                                                     <td></td>
                                                     <td>{{ art['article']['ref'] }}</td>
-                                                    <td>0.000</td>
+                                                    <td>{{ art['article']['prixes'][0]['puVenteHT']|number_format(3) }}</td>
                                                     <td>{{ art['qte'] }}</td>
                                                     <td>{{ art['article']['remise'] }}</td>
-                                                    <td>{{ art['article']['prixes'][0]['puAchaHT']|number_format(3) }}</td>
+                                                    <td>{{ art['article']['prixes'][0]['puVenteHT']|number_format(3) }}</td>
                                                     <td>{{ taxe }}</td>
-                                                    <td>0.000</td>
-                                                    <td>{{ art['article']['prixes'][0]['puVenteTTC']|number_format(3) }}</td>
-                                                    <td>0.000</td>
+                                                    <td>{{ art['totalHtArticle']|number_format(3) }}</td>
+                                                    <td>{{ art['puttcArticle']|number_format(3) }}</td>
+                                                    <td>{{ art['totalttcArticle']|number_format(3) }}</td>
+
                                                 </tr>
 
                                             {% endfor %}
@@ -95,8 +96,8 @@
 
                                     </div>
 
-                                    <button type="button"
-                                            class="mt-5 btn btn-primary addBL w-100"><i class="fa fa-save"></i>Enregistrer
+                                    <button type="button" data-id_devis="{{ devis['id'] }}"
+                                            class="mt-5 btn btn-primary addBLWithDevis w-100"><i class="fa fa-save"></i> Enregistrer
                                     </button>
                                 </form>
                             </div>
@@ -111,20 +112,18 @@
                             <div class="element-box" style="background-color: rgba(12,12,12,0.25)">
 
                                 <h4 class="card-title">Total HT</h4>
-                                <p class="card-text total_ht">0.000 </p>
-                                <h4 class="card-title">Total HT NET</h4>
-                                <p class="card-text total_ht_net">0.000 </p>
+                                <p class="card-text total_ht">{{ totalHTglobal }} </p>
                                 <h4 class="card-title">Total remise</h4>
-                                <p class="card-text remise">0.000</p>
-                                <h4 class="card-title">Total TVA</h4>
-                                <p class="card-text total_tva">0.000</p>
+                                <p class="card-text remise">{{ totalRemiseGlobal }}</p>
+                                <h4 class="card-title">TVA</h4>
+                                <p class="card-text total_tva">{{ taxe/100 }}</p>
                                 {#                                <h4 class="card-title">Timbre</h4>#}
                                 {#                                <p class="card-text timbre"> </p>#}
                                 {#                                <h4 class="card-title">Transports</h4>#}
                                 {#                                <p class="card-text transport">0.00</p>#}
                                 <hr>
                                 <h4 class="card-title">Total TTC</h4>
-                                <p class="card-text total_ttc">0.000</p>
+                                <p class="card-text total_ttc">{{ totalttcGlobal }}</p>
                                 <h4 class="card-title">Type du paiement</h4>
                                 <select name="type_payement" class="form-control type_payement">
                                     <option value="0" selected disabled>Choisir le type du paiement</option>
