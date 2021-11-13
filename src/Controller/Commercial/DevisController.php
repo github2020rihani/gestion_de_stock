@@ -157,7 +157,6 @@ class DevisController extends AbstractController
             $qte = $request->request->get('qte');
             $articlesNew = $request->request->get('article');
             //delete Articles
-            $articlesToDelete = explode(",", $request->get('articleToDelete')[0]);
             if ($devi[0]) {
                 $devisExiste = $this->devisRepository->find($devi[0]['id']);
                 //update devis existe
@@ -165,44 +164,36 @@ class DevisController extends AbstractController
                 $devisExiste->setClient($client);
                 $totalTTc = 0;
 
-                foreach ($articlesNew as $key => $value) {
-                    $articleExiste = $this->devisArticleRepository->findBy(array('article' => $value, 'devi' => $idDevis));
-                    $prixArticle = $this->prixRepository->getArticleById($value);
-                    if ($articleExiste && $articleExiste[0]) {
-                        //update last article devis
-                        //check qte
-                        if ($qte[$key] > $prixArticle[0]['qte']) {
-                            $this->addFlash('error', 'La quatité est depasser le sock ');
-                            return $this->redirectToRoute('perso_index_devis');
-                        }
-                        $articleExiste[0]->setQte($qte[$key]);
-                        $articleExiste[0]->setPventettc($prixArticle[0]['puVenteTTC']);
-                        $articleExiste[0]->setTotal((float)$prixArticle[0]['puVenteTTC'] * (int)$qte[$key]);
-                        $articleExiste[0]->setRemise($prixArticle[0]['article']['remise']);
-                        $articleExiste[0]->setArticle($this->articleRepository->find($value));
-                        $articleExiste[0]->setDevi($devisExiste);
-                        $this->em->persist($articleExiste[0]);
-                        $totalTTc = $totalTTc + (float)$articleExiste[0]->getTotal();
-
-                    } else {
-                        //save new article devis
-                        //check qte
-                        if ($qte[$key] > $prixArticle[0]['qte']) {
-                            $this->addFlash('error', 'La quatité est depasser le sock ');
-                            return $this->redirectToRoute('perso_index_devis');
-                        }
-                        $devisArticle = new DevisArticle();
-                        $devisArticle->setQte($qte[$key]);
-                        $devisArticle->setPventettc($prixArticle[0]['puVenteTTC']);
-                        $devisArticle->setTotal((float)$prixArticle[0]['puVenteTTC'] * (int)$qte[$key]);
-                        $devisArticle->setRemise($prixArticle[0]['article']['remise']);
-                        $devisArticle->setArticle($this->articleRepository->find($value));
-                        $devisArticle->setDevi($devisExiste);
-                        $this->em->persist($devisArticle);
-                        $totalTTc = $totalTTc + (float)$devisArticle->getTotal();
+                //delete old article
+                $old_articles = $this->devisArticleRepository->findBy(array('devi' =>$devi[0]['id']));
+                if ($old_articles) {
+                    foreach ($old_articles as $key => $value) {
+                        $this->em->remove($old_articles);
+                        $this->em->flush();
                     }
-
                 }
+
+
+                foreach ($articlesNew as $key => $value) {
+                    $prixArticle = $this->prixRepository->getArticleById($value);
+
+                    //save new article devis
+                    //check qte
+                    if ($qte[$key] > $prixArticle[0]['qte']) {
+                        $this->addFlash('error', 'La quatité est depasser le sock ');
+                        return $this->redirectToRoute('perso_index_devis');
+                    }
+                    $devisArticle = new DevisArticle();
+                    $devisArticle->setQte($qte[$key]);
+                    $devisArticle->setPventettc($prixArticle[0]['puVenteTTC']);
+                    $devisArticle->setTotal((float)$prixArticle[0]['puVenteTTC'] * (int)$qte[$key]);
+                    $devisArticle->setRemise($prixArticle[0]['article']['remise']);
+                    $devisArticle->setArticle($this->articleRepository->find($value));
+                    $devisArticle->setDevi($devisExiste);
+                    $this->em->persist($devisArticle);
+                    $totalTTc = $totalTTc + (float)$devisArticle->getTotal();
+                }
+
                 $devisExiste->setTotalTTC($totalTTc);
                 if ($devisExiste->getStatusMaj() == true) {
                     $devisExiste->setStatusMaj(false);
@@ -221,22 +212,11 @@ class DevisController extends AbstractController
                 }
                 $this->em->persist($devisExiste);
                 $this->em->flush();
-                //delete article devis
 
-                if ($articlesToDelete && $articlesToDelete[0]) {
-                    foreach ($articlesToDelete as $key => $item) {
-                        $articleExisteTodelete = $this->devisArticleRepository->findBy(array('article' => $item, 'devi' => $idDevis));
-                        $this->em->remove($articleExisteTodelete[0]);
-                        $this->em->flush();
 
-                    }
-                }
-
+                return $this->redirectToRoute('perso_index_devis');
 
             }
-            return $this->redirectToRoute('perso_index_devis');
-
-
         }
 
 

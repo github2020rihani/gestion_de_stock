@@ -219,7 +219,6 @@ class BondLivraisonController extends AbstractController
             try {
                 $typepayement = $request->get('typePayement');
                 $articles_selected = $request->get('article');
-                $articlesTodelete = explode(",", $request->get('articleToDelete')[0]);
                 $qte_articles = $request->get('qte');
                 $customer_id = $request->get('customers');
                 $customer = $this->clientRepository->find($customer_id);
@@ -229,17 +228,7 @@ class BondLivraisonController extends AbstractController
                     $this->em->remove($invoice);
                     $this->em->flush();
                 }
-                //delete old articles bl
-                if (!empty($articlesTodelete[0])) {
-                    foreach ($articlesTodelete as $key=> $value) {
-                        $articleDelete = $this->bonlivraisonArticleRepository->getArticleBLByIdArticle($value);
-                        if ($articleDelete) {
-                            $this->em->remove($articleDelete);
-                            $this->em->flush();
-                        }
-                }
 
-                }
 
                 //update article bl and bl
                 $id->setCustomer($customer);
@@ -249,10 +238,17 @@ class BondLivraisonController extends AbstractController
                 $id->setTypePayement((int)$typepayement);
                 $this->em->persist($id);
                 $this->em->flush();
+                //delete old article bl
+                $old_articles = $this->bonlivraisonArticleRepository->findBy(array('bonLivraison' => $id));
+                if ($old_articles) {
+                    foreach ($old_articles as $key => $value) {
+                        $this->em->remove($old_articles);
+                        $this->em->flush();
+                    }
+                }
 
                 //update articles
                 foreach ($articles_selected as $key=> $value) {
-                    $articleBl_existe = $this->bonlivraisonArticleRepository->getArticleBLByIdArticle($value);
 
                     $prixArticle = $this->prixRepository->getArticleById($value);
                     $totalHtaricle = (float)$prixArticle[0]['puVenteHT'] * $qte_articles[$key];
@@ -262,21 +258,6 @@ class BondLivraisonController extends AbstractController
                     $totalRemise = $totalRemise + (float)$prixArticle[0]['article']['remise'];
                     $totalttcGlobal = $totalttcGlobal + (float)$totalHt;
 
-                    if ($articleBl_existe) {
-                        $articleBl_existe->setBonLivraison($id);
-                        $articleBl_existe->setArticle($this->articleRepository->find($value));
-                        $articleBl_existe->setQte($qte_articles[$key]);
-                        $articleBl_existe->setPuht($prixArticle[0]['puVenteHT']);
-                        $articleBl_existe->setPuhtnet($prixArticle[0]['puVenteHT']);
-                        $articleBl_existe->setRemise($prixArticle[0]['article']['remise']);
-                        $articleBl_existe->setTaxe($prixArticle[0]['tva']);
-                        $articleBl_existe->setTotalht((float)(number_format($totalHtaricle, 3)));
-                        $articleBl_existe->setPuttc((float)(number_format($puttcArticle, 3)));
-                        $articleBl_existe->setTotalttc((float)(number_format($totalttcArticle, 3)));
-                        $this->em->persist($articleBl_existe);
-                        $this->em->flush();
-
-                    }else{
 
                         try {
                             $articleBL = new BonlivraisonArticle();
@@ -299,7 +280,7 @@ class BondLivraisonController extends AbstractController
                         }
 
 
-                    }
+
                 }
                 $id->setTotalHT((float)(number_format($totalHt, 3)));
                 $id->setTotalRemise((float)(number_format($totalRemise, 3)));

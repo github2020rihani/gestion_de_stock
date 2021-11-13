@@ -222,22 +222,19 @@ class InvoiceController extends AbstractController
                 try {
                     $typepayement = $request->get('typePayement');
                     $articles_selected = $request->get('article');
-                    $articlesTodelete = explode(",", $request->get('articleToDelete')[0]);
                     $qte_articles = $request->get('qte');
                     $customer_id = $request->get('customers');
                     $customer = $this->clientRepository->find($customer_id);
 
-                    //delete old articles invoice
-                    if (!empty($articlesTodelete[0])) {
-                        foreach ($articlesTodelete as $key=> $value) {
-                            $articleDelete = $this->invoiceArticleRepository->getArticleInvoiceByIdArticle($value);
-                            if ($articleDelete) {
-                                $this->em->remove($articleDelete);
-                                $this->em->flush();
-                            }
+                    //delete old article invoice
+                    $old_articles = $this->invoiceArticleRepository->findBy(array('invoice' => $invoice));
+                    if ($old_articles) {
+                        foreach ($old_articles as $key => $value) {
+                            $this->em->remove($old_articles);
+                            $this->em->flush();
                         }
-
                     }
+
 
                     //update article invoice and invoice
                     $invoice->setCustomer($customer);
@@ -248,7 +245,6 @@ class InvoiceController extends AbstractController
 
                     //update articles
                     foreach ($articles_selected as $key=> $value) {
-                        $articleInv_exist = $this->invoiceArticleRepository->getArticleInvoiceByIdArticle($value);
 
                         $prixArticle = $this->prixRepository->getArticleById($value);
                         $totalHtaricle = (float)$prixArticle[0]['puVenteHT'] * $qte_articles[$key];
@@ -258,21 +254,6 @@ class InvoiceController extends AbstractController
                         $totalRemise = $totalRemise + (float)$prixArticle[0]['article']['remise'];
                         $totalttcGlobal = $totalttcGlobal + (float)$totalHt;
 
-                        if ($articleInv_exist) {
-                            $articleInv_exist->setInvoice($invoice);
-                            $articleInv_exist->setArticle($this->articleRepository->find($value));
-                            $articleInv_exist->setQte($qte_articles[$key]);
-                            $articleInv_exist->setPuht($prixArticle[0]['puVenteHT']);
-                            $articleInv_exist->setPuhtnet($prixArticle[0]['puVenteHT']);
-                            $articleInv_exist->setRemise($prixArticle[0]['article']['remise']);
-                            $articleInv_exist->setTaxe($prixArticle[0]['tva']);
-                            $articleInv_exist->setTotalht((float)(number_format($totalHtaricle, 3)));
-                            $articleInv_exist->setPuttc((float)(number_format($puttcArticle, 3)));
-                            $articleInv_exist->setTotalttc((float)(number_format($totalttcArticle, 3)));
-                            $this->em->persist($articleInv_exist);
-                            $this->em->flush();
-
-                        }else{
                             try {
                                 $article_invoice = new InvoiceArticle();
                                 $article_invoice->setInvoice($invoice);
@@ -294,7 +275,7 @@ class InvoiceController extends AbstractController
                             }
 
 
-                        }
+
                     }
                     $invoice->setTotalHT((float)(number_format($totalHt, 3)));
                     $invoice->setTotalRemise((float)(number_format($totalRemise, 3)));

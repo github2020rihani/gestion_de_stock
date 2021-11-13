@@ -49,7 +49,7 @@ function addLingeArticleBlEdit() {
                                                                 class="fa fa-trash"></i></button>
                                                                 </td>
                                                 <td>
-                                                    <select class="js-example-basic-single selectArticle_${index} article" data-index="${index}" name="article[]">
+                                                    <select class="js-example-basic-single  selectArticle selectArticle_${index} article" data-index="${index}" name="article[]">
                                                         <option value="0" selected readonly>Coisir un article</option>
                                                        ${contentListArticle}
 
@@ -113,7 +113,6 @@ function addLingeArticleBlEdit() {
                         totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
                         $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
 
-console.log(selectAricle[0])
                     });
                     //select article
                     selectArticleBl2(index);
@@ -171,23 +170,24 @@ function changeQteArtBlInitial() {
 
 function selectArticleBlEditInitial() {
     $('.selectArticle').change(function () {
-        var totalHtGlobal = 0;
-        var totalTTCGlobal = 0;
         error = false;
         indexOfSelect = $(this).data('index');
 
         $('.qte_' + indexOfSelect).attr('readonly', false);
-//if new existe
-        if (selectAricle[0].includes(parseInt($(this).val()))) {
+        var articleExiste = 0;
+        var art = $(this).val();
 
-            countArticle--;
-            toastr.error('cet article a été choisir , veuillez choisir un autre');
-            //
-            const indexArticle = selectAricle[0].indexOf($(this).data('index'));
-            if (indexArticle > -1) {
-                selectAricle[0].splice(indexArticle, 1);
+
+        $('.selectArticle').each(function () {
+            if ($(this).val() == art) {
+                articleExiste ++;
             }
+        })
+        if (parseInt(articleExiste) >= 2){
+            toastr.error('cet article a été choisir , veuillez choisir un autre');
             $(this).parent().parent().remove();
+            var totalHtGlobal = 0;
+            var totalTTCGlobal = 0;
 
             //total ht global
             $('.totalht').each(function () {
@@ -198,71 +198,115 @@ function selectArticleBlEditInitial() {
             //totalttcglobal
             totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
             $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
-
-        } else {
-            selectAricle[0].push(parseInt($(this).val()));
-            //
-            if (articleToDelete.includes(parseInt($(this).data('old_article')))) {
-
-                const indexArticle = articleToDelete.indexOf($(this).data('index'));
-                if (indexArticle > -1) {
-                    articleToDelete.splice(indexArticle, 1);
-                }
-
-
-            }
-                $.ajax({
-                url: Routing.generate('perso_get_articles_byId'),
-                type: "POST",
-                data: {id_article: $(this).val()},
-                success: function (data) {
-                    if (data) {
-                        console.log(data[0])
-                        $('.puht_' + indexOfSelect).val((data[0].puVenteHT).toFixed(3));
-                        $('.stock_' + indexOfSelect).val((data[0].qte));
-                        $('.remise_' + indexOfSelect).val(data[0].article.remise);
-                        $('.puhtnet_' + indexOfSelect).val((data[0].puVenteHT).toFixed(3));
-                        $('.qte_' + indexOfSelect).val(0);
-                        $('.qte_' + indexOfSelect).val(0);
-                        $('.totalht_' + indexOfSelect).val(0.000);
-                        $('.puttc_' + indexOfSelect).val(0.000);
-                        $('.totalttc_' + indexOfSelect).val(0.000);
-                    }
-
-                    if ($('.qte_' + indexOfSelect).val() == 0) {
-                        //total ht global
-                        $('.totalht').each(function () {
-                            totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
-                            $('.total_ht_global').text((totalHtGlobal).toFixed(3))
-                        })
-
-                        //totalttcglobal
-                        totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
-                        $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
-                    }
-
-
-                },
-                error: function () {
-                    alert('something wrong')
-                }
-            })
+            return false;
         }
+//if new article  existe
+//         if (selectAricle[0].includes(parseInt($(this).val()))) {
+//
+//             countArticle--;
+//             toastr.error('cet article a été choisir , veuillez choisir un autre');
+//             if (selectAricle[0].includes(parseInt(($(this).val())))) {
+//                 const indexArticle = selectAricle[0].indexOf(parseInt($(this).val()));
+//                 if (indexArticle > -1) {
+//                     selectAricle[0].splice(indexArticle, 1);
+//                 }
+//                 articleToDelete.push(parseInt($(this).data('old_article')));
+//                 $('.articleToDelete').val(articleToDelete);
+//             }
+//
+//             $(this).parent().parent().remove();
+//             //remove old article
+//
+//
+//
+//
+//
+//             //total ht global
+//             $('.totalht').each(function () {
+//                 totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
+//                 $('.total_ht_global').text((totalHtGlobal).toFixed(3))
+//             })
+//
+//             //totalttcglobal
+//             totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
+//             $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
+//
+//             console.log('initial select checked---- '  + selectAricle[0])
+//
+//         }
+        // else {
+        //     //new article not exist
+        //
+        //     if (!articleToDelete.includes(parseInt($(this).data('old_article')))) {
+        //         articleToDelete.push(parseInt($(this).data('old_article')));
+        //         $('.articleToDelete').val(articleToDelete);
+        //     }
+        //
+        //     if (selectAricle[0].includes(parseInt($(this).data('old_article')))) {
+        //         countArticle--;
+        //         const indexArticle = selectAricle[0].indexOf(parseInt($(this).data('old_article')));
+        //         if (indexArticle > -1) {
+        //             selectAricle[0].splice(indexArticle, 1);
+        //         }
+        //     }
+        //
+        //     if (selectAricle[0].includes(parseInt($(this).val()))) {
+        //         countArticle--;
+        //         const indexArticle = selectAricle[0].indexOf(parseInt($(this).val()));
+        //         if (indexArticle > -1) {
+        //             selectAricle[0].splice(indexArticle, 1);
+        //         }
+        //     }else{
+        //         selectAricle[0].push(parseInt($(this).val()));
+        //
+        //     }
+        //
+        //
+        //     console.log(' select article delte afer change  not exist---- '  + articleToDelete)
+        //     console.log(' select article  afer change  not exist---- '  + selectAricle)
+        //         $.ajax({
+        //         url: Routing.generate('perso_get_articles_byId'),
+        //         type: "POST",
+        //         data: {id_article: $(this).val()},
+        //         success: function (data) {
+        //             if (data) {
+        //                 $('.puht_' + indexOfSelect).val((data[0].puVenteHT).toFixed(3));
+        //                 $('.stock_' + indexOfSelect).val((data[0].qte));
+        //                 $('.remise_' + indexOfSelect).val(data[0].article.remise);
+        //                 $('.puhtnet_' + indexOfSelect).val((data[0].puVenteHT).toFixed(3));
+        //                 $('.qte_' + indexOfSelect).val(0);
+        //                 $('.qte_' + indexOfSelect).val(0);
+        //                 $('.totalht_' + indexOfSelect).val(0.000);
+        //                 $('.puttc_' + indexOfSelect).val(0.000);
+        //                 $('.totalttc_' + indexOfSelect).val(0.000);
+        //             }
+        //
+        //             if ($('.qte_' + indexOfSelect).val() == 0) {
+        //                 //total ht global
+        //                 $('.totalht').each(function () {
+        //                     totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
+        //                     $('.total_ht_global').text((totalHtGlobal).toFixed(3))
+        //                 })
+        //
+        //                 //totalttcglobal
+        //                 totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
+        //                 $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
+        //             }
+        //
+        //
+        //         },
+        //         error: function () {
+        //             alert('something wrong')
+        //         }
+        //     })
+        // }
 
         //remove old article
-        articleToDelete.push(parseInt($(this).data('old_article')));
-        $('.articleToDelete').val(articleToDelete);
-
-        if (selectAricle[0].includes(parseInt($(this).data('old_article')))) {
-
-            countArticle--;
-            const indexArticle = selectAricle[0].indexOf($(this).data('index'));
-            if (indexArticle > -1) {
-                selectAricle[0].splice(indexArticle, 1);
-            }
+        // articleToDelete.push(parseInt($(this).data('old_article')));
+        // $('.articleToDelete').val(articleToDelete);
+        // console.log(' select article delte afer change exist---- '  + articleToDelete)
 
 
-        }
 
     })
 
@@ -274,12 +318,10 @@ function removeArticleInitial() {
         error = false;
 
         if (selectAricle[0].includes(parseInt($(this).data('old_article')))) {
-            alert('yes')
             var totalHtGlobal = 0;
             var totalTTCGlobal = 0;
             countArticle--;
             const indexArticle = selectAricle[0].indexOf($(this).data('old_article'));
-            alert(indexArticle);
             if (indexArticle > -1) {
                 selectAricle[0].splice(indexArticle, 1);
             }
@@ -299,8 +341,8 @@ function removeArticleInitial() {
             $('.articleToDelete').val(articleToDelete);
 
         }
-console.log('article delete ' + articleToDelete);
-console.log(selectAricle);
+        console.log(' select checked after delete ---- '  + selectAricle[0])
+
     })
 
 
@@ -382,7 +424,7 @@ function getArticlesBL(id) {
                     lingArt.push(data[k]);
 
                 }
-                console.log(selectAricle[0])
+                console.log('initial select checked---- '  + selectAricle[0])
 
 
             }
@@ -432,19 +474,20 @@ function changeQteArtBl2() {
 function selectArticleBl2(index) {
     $('.selectArticle_' + index).change(function () {
         error = false;
+        var articleExiste = 0;
+        var art = $(this).val();
 
-        $('.qte_' + index).attr('readonly', false);
-        if (selectAricle[0].includes(parseInt($(this).val()))) {
+
+        $('.selectArticle').each(function () {
+            if ($(this).val() == art) {
+                articleExiste ++;
+            }
+        })
+        if (parseInt(articleExiste) >= 2){
+            toastr.error('cet article a été choisir , veuillez choisir un autre');
+            $(this).parent().parent().remove();
             var totalHtGlobal = 0;
             var totalTTCGlobal = 0;
-            countArticle--;
-            toastr.error('cet article a été choisir , veuillez choisir un autre');
-            //
-            const indexArticle = selectAricle[0].indexOf($(this).data('index'));
-            if (indexArticle > -1) {
-                selectAricle[0].splice(indexArticle, 1);
-            }
-            $(this).parent().parent().remove();
 
             //total ht global
             $('.totalht').each(function () {
@@ -455,12 +498,38 @@ function selectArticleBl2(index) {
             //totalttcglobal
             totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
             $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
-
-
             return false;
         }
-        selectAricle[0].push(parseInt($(this).val()));
-        console.log(selectAricle[0]);
+
+        $('.qte_' + index).attr('readonly', false);
+        // if (selectAricle[0].includes(parseInt($(this).val()))) {
+        //     var totalHtGlobal = 0;
+        //     var totalTTCGlobal = 0;
+        //     countArticle--;
+        //     toastr.error('cet article a été choisir , veuillez choisir un autre');
+        //     //
+        //     // const indexArticle = selectAricle[0].indexOf(parseInt($(this).val()));
+        //     // if (indexArticle > -1) {
+        //     //     selectAricle[0].splice(indexArticle, 1);
+        //     // }
+        //     $(this).parent().parent().remove();
+        //
+        //     //total ht global
+        //     $('.totalht').each(function () {
+        //         totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
+        //         $('.total_ht_global').text((totalHtGlobal).toFixed(3))
+        //     })
+        //
+        //     //totalttcglobal
+        //     totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
+        //     $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
+        //
+        //     console.log(selectAricle[0]);
+        //
+        //     return false;
+        // }
+        // selectAricle[0].push(parseInt($(this).val()));
+        // console.log(selectAricle[0]);
 
         $.ajax({
             url: Routing.generate('perso_get_articles_byId'),

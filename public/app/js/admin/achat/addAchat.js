@@ -91,7 +91,7 @@ function addLigneAchat() {
                                                                 class="fa fa-trash"></i></button>
                                                                 </th>
                                                 <td>
-                                                    <select class="js-example-basic-single selectArticle_${index} article" name="article[]">
+                                                    <select class="js-example-basic-single selectArticle selectArticle_${index} article" name="article[]">
                                                         <option value="0" selected readonly>Coisir un article</option>
                                                        ${contentListArticle}
 
@@ -187,9 +187,16 @@ var error = false;
 function selectArticle(index) {
     $('.selectArticle_' + index).change(function () {
         error = false;
-        if (selectAricle.includes($(this).val())) {
-            toastr.error('cet article a été choisir , veuillez choisir un autre');
+        var articleExiste = 0;
+        var art = $(this).val();
 
+        $('.selectArticle').each(function () {
+            if ($(this).val() == art) {
+                articleExiste ++;
+            }
+        })
+        if (parseInt(articleExiste) >= 2){
+            toastr.error('cet article a été choisir , veuillez choisir un autre');
             //check calculer
             var totalHtOld = parseFloat($('.total_ht').text());
             if ($('input.fodec').is(':checked')) {
@@ -210,21 +217,9 @@ function selectArticle(index) {
             $('.total_ht').text(totalHtNew)
             $('.total_tva').text(totalTVA.toFixed(3))
             $('.total_ttc').text(totalTTC)
-
-
-
-
-
-
-
-
-
             $(this).parent().parent().remove();
-            return false;
+            return false;;
         }
-        selectAricle.push($(this).val());
-        // console.log(selectAricle);
-
         $.ajax({
             url: Routing.generate('achat_get_articles_byId'),
             type: "POST",

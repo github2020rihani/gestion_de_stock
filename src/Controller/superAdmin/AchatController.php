@@ -180,8 +180,6 @@ class AchatController extends AbstractController
         if ($request->isMethod('POST')) {
             $numero_achat = $request->get('numero_achat');
             $old_numero = $achat->getNumero();
-            $articlesToDelete = explode(",", $request->get('articleToDelete')[0]);
-
             if ($old_numero != $numero_achat) {
                 $achatArticleExiste = $this->achatRepository->findBy(array('numero' => $numero_achat));
                 if ($achatArticleExiste) {
@@ -217,27 +215,17 @@ class AchatController extends AbstractController
             $qte = $request->get('qte');
             $pventettc = $request->get('pventettc');
             //delete Articles
-            if (!empty($articlesToDelete[0])) {
-                $qte_article_delete = 0;
-                //delete from achat article
-                foreach ($articlesToDelete as $key => $value) {
-                    $achatArticledelete = $this->achatArticleRepository->findAchatArticleByIdAricleAndIdAchat($value, $achat);
-                    $qte_article_delete = $achatArticledelete->getQte();
-                    $this->em->remove($achatArticledelete);
+            $old_articles = $this->achatArticleRepository->findBy(array('Achat' => $achat));
+            if ($old_articles) {
+                foreach ($old_articles as $old_article) {
+                    $this->em->remove($old_article);
                     $this->em->flush();
 
-                    $article_stocked = $this->stockRepository->findArticleInStockById($value);
-                    if ($article_stocked && $article_stocked[0]) {
-                        $article_stocked[0]->setQte((int)$article_stocked[0]->getQte() - $qte_article_delete);
-                        $this->em->persist($article_stocked[0]);
-                        $this->em->flush();
-                    }
                 }
             }
+
             //insert new Article
             foreach ($ref as $key => $value) {
-                $achatArticledeleteByref = $this->achatArticleRepository->findAchatArticleByIdAricleAndIdAchat($value, $achat);
-                if (!$achatArticledeleteByref) {
                     $article = $this->articleRepository->find($value);
                     $achatArticle = new AchatArticle();
                     $achatArticle->setCreatedAt($achat->getCreatedAt());
@@ -253,26 +241,6 @@ class AchatController extends AbstractController
                     $achatArticle->setMarge((float)number_format(((($pventettc[$key] - $puttc[$key]) / $puttc[$key]) * 100), 2));
                     $this->em->persist($achatArticle);
                     $this->em->flush();
-
-
-
-                } else {
-                    $achatArticledeleteByref->setCreatedAt($achat->getCreatedAt());
-                    $achatArticledeleteByref->setAchat($achat);
-                    $achatArticledeleteByref->setAddedBy($this->getUser());
-                    $achatArticledeleteByref->setArticle($this->articleRepository->find($value));
-                    $achatArticledeleteByref->setPuhtnet((float)$puhtnet[$key]);
-                    $achatArticledeleteByref->setQte($qte[$key]);
-                    $achatArticledeleteByref->setPventettc((float)$pventettc[$key]);
-                    $achatArticledeleteByref->setTva($_ENV['TVA_ARTICLE_PERCENT']);
-                    $puttc[$key] = (float)(number_format($puhtnet[$key] * $_ENV['TVA_ARTICLE'], 3));
-                    $achatArticledeleteByref->setPuttc($puttc[$key]);
-                    $achatArticledeleteByref->setMarge((float)number_format(((($pventettc[$key] - $puttc[$key]) / $puttc[$key]) * 100), 2));
-                    $this->em->persist($achatArticledeleteByref);
-                    $this->em->flush();
-
-
-                }
 
             }
             $this->addFlash('success', 'Modifier effectué avec succés');

@@ -43,6 +43,10 @@ $(document).ready(function () {
         if (error) {
             return false;
         } else {
+            //get articles
+
+
+
             $(this).hide();
             $('.formAddDevis').submit();
 
@@ -51,6 +55,7 @@ $(document).ready(function () {
     })
 });
 
+var lingArt = [];
 
 function addLingeArticle() {
     $('.addLingneArticle').click(function () {
@@ -58,7 +63,8 @@ function addLingeArticle() {
 
         var index = ($('.ligne_article').length);
         var contentListArticle = '';
-        index++;
+        lingArt.push(1);
+        index = lingArt.length;
         $.ajax({
             url: Routing.generate('api_get_articles_from_prix'),
             type: "POST",
@@ -80,7 +86,7 @@ function addLingeArticle() {
                                                                 class="fa fa-trash"></i></button>
                                                                 </th>
                                                 <td>
-                                                    <select class="js-example-basic-single selectArticle_${index} article" name="article[]">
+                                                    <select class="js-example-basic-single selectArticle selectArticle_${index} article" name="article[]">
                                                         <option value="0" selected readonly>Coisir un article</option>
                                                        ${contentListArticle}
 
@@ -108,7 +114,6 @@ function addLingeArticle() {
                                                 </td>                                            </tr>`);
 
 
-
                     $('.js-example-basic-single').select2();
                     //remove ligne achat
                     $(".delete_ligneArticle_" + index).click(function (event) {
@@ -118,7 +123,7 @@ function addLingeArticle() {
                             selectAricle.splice(indexArticle, 1);
                         }
                         $(this).parent().parent().remove();
-                        var totalTTC = 0 ;
+                        var totalTTC = 0;
 
                         $('.total ').each(function () {
                             totalTTC = parseFloat(totalTTC) + parseFloat($(this).val());
@@ -153,14 +158,34 @@ var error = false;
 
 function selectArticle(index) {
     $('.selectArticle_' + index).change(function () {
-        $('.qte_'+index).attr('readonly', false);
+        error= false ;
+        var articleExiste = 0;
+        var art = $(this).val();
+
+        $('.qte_' + index).attr('readonly', false);
         error = false;
-        if (selectAricle.includes(parseInt($(this).val()))) {
+
+        $('.selectArticle').each(function () {
+            if ($(this).val() == art) {
+                articleExiste ++;
+            }
+        })
+        if (parseInt(articleExiste) >= 2){
             toastr.error('cet article a été choisir , veuillez choisir un autre');
             $(this).parent().parent().remove();
             return false;
         }
-        selectAricle.push(parseInt($(this).val()));
+
+        // if (selectAricle.includes(parseInt($(this).val()))) {
+        //     toastr.error('cet article a été choisir , veuillez choisir un autre');
+        //     const indexArticle = selectAricle.indexOf(parseInt($(this).val()));
+        //     if (indexArticle > -1) {
+        //         selectAricle.splice(indexArticle, 1);
+        //     }
+        //     $(this).parent().parent().remove();
+        //     return false;
+        // }
+        // selectAricle.push(parseInt($(this).val()));
 
         $.ajax({
             url: Routing.generate('perso_get_articles_byId'),
@@ -187,22 +212,21 @@ function selectArticle(index) {
 }
 
 
-
 function changeQte(index) {
     $('.qte').blur("input", function (e) {
-        var totalTTC = 0 ;
-        var total  = 0 ;
+        var totalTTC = 0;
+        var total = 0;
         console.log($(this).val())
-        console.log($('.stock_'+index).val())
-        if (($(this).val() > ($('.stock_'+index).val()))) {
+        console.log($('.stock_' + index).val())
+        if (($(this).val() > ($('.stock_' + index).val()))) {
             toastr.error('la quatité est depasser le stock');
             $(this).val('');
-            return false ;
+            return false;
         }
 
         $(this).attr('value', $(this).val())
-        total = (parseInt($(this).val()) * parseFloat($('.pventettc_'+index).val())).toFixed(3);
-        $('.total_'+index).val(parseFloat(total).toFixed(3))
+        total = (parseInt($(this).val()) * parseFloat($('.pventettc_' + index).val())).toFixed(3);
+        $('.total_' + index).val(parseFloat(total).toFixed(3))
         $('.total ').each(function () {
             totalTTC = parseFloat(totalTTC) + parseFloat($(this).val());
         })

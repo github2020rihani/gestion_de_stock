@@ -165,7 +165,7 @@ function addLigneAchat() {
                                                                 class="fa fa-trash"></i></button>
                                                                 </th>
                                                 <td>
-                                                    <select class="js-example-basic-single article selectArticle_${index}" name="article[]">
+                                                    <select class="js-example-basic-single article selectArticle selectArticle_${index}" name="article[]">
                                                         <option value="0" selected readonly>Coisir un article</option>
                                                        ${contentListArticle}
 
@@ -247,9 +247,16 @@ function addLigneAchat() {
 
 function selectArticle(index) {
     $('.selectArticle_' + index).change(function () {
-        if (selectAricle[0].includes(parseInt($(this).val()))) {
+        error = false;
+        var articleExiste = 0;
+        var art = $(this).val();
+        $('.selectArticle').each(function () {
+            if ($(this).val() == art) {
+                articleExiste ++;
+            }
+        })
+        if (parseInt(articleExiste) >= 2){
             toastr.error('cet article a été choisir , veuillez choisir un autre');
-
             //check calculer
             var totalHtOld = parseFloat($('.total_ht').text());
             if ($('input.fodec').is(':checked')) {
@@ -270,12 +277,10 @@ function selectArticle(index) {
             $('.total_ht').text(totalHtNew)
             $('.total_tva').text(totalTVA.toFixed(3))
             $('.total_ttc').text(totalTTC)
-
-
             $(this).parent().parent().remove();
-            return false;
+            return false;;
         }
-        selectAricle[0].push(parseInt($(this).val()));
+
 
         $.ajax({
             url: Routing.generate('get_articles_byId'),
@@ -426,22 +431,56 @@ var OldArt;
 
 function selectArticleInitialAchat() {
     $('.selectArticle').change(function () {
+        error = false;
+
+        var articleExiste = 0;
+        var art = $(this).val();
         indexArt = parseInt($(this).data('id_index'));
         //delete from select article
-
-        if (selectAricle[0].includes(parseInt($(this).val()))) {
+        $('.selectArticle').each(function () {
+            if ($(this).val() == art) {
+                articleExiste ++;
+            }
+        })
+        if (parseInt(articleExiste) >= 2){
             toastr.error('cet article a été choisir , veuillez choisir un autre');
-            return false;
-        } else {
-            selectAricle[0].push(parseInt($(this).val()));
-            OldArt = $('.articleAnnuler'+indexArt).val();
-            const indexArticle =  selectAricle[0].indexOf(parseInt(OldArt));
-
-            if (indexArticle > -1) {
-                selectAricle[0].splice(indexArticle, 1);
+            //check calculer
+            var totalHtOld = parseFloat($('.total_ht').text());
+            if ($('input.fodec').is(':checked')) {
+                resTotalHt = (parseFloat(($('.puhtnet_' + index).val()) * parseInt($('.qte_' + (index)).val())) * 0.99).toFixed(3);
+            } else {
+                resTotalHt = (parseFloat(($('.puhtnet_' + index).val()) * parseInt($('.qte_' + (index)).val()))).toFixed(3);
             }
 
+            var totalHtNew = (totalHtOld - (parseFloat(resTotalHt)).toFixed(3)).toFixed(3);
+            var totalTVA = 0;
+            var totalTTC = 0;
+            var timbre = 0.600;
+            var remise = parseFloat($('.remise').text());
+            var transport = parseFloat($('.transport').text());
+
+            totalTVA = (totalHtNew * 1.19);
+            totalTTC = parseFloat(totalHtNew + totalTVA + timbre + remise + transport).toFixed(3);
+            $('.total_ht').text(totalHtNew)
+            $('.total_tva').text(totalTVA.toFixed(3))
+            $('.total_ttc').text(totalTTC)
+            $(this).parent().parent().remove();
+            return false;;
         }
+
+        // if (selectAricle[0].includes(parseInt($(this).val()))) {
+        //     toastr.error('cet article a été choisir , veuillez choisir un autre');
+        //     return false;
+        // } else {
+        //     selectAricle[0].push(parseInt($(this).val()));
+        //     OldArt = $('.articleAnnuler'+indexArt).val();
+        //     const indexArticle =  selectAricle[0].indexOf(parseInt(OldArt));
+        //
+        //     if (indexArticle > -1) {
+        //         selectAricle[0].splice(indexArticle, 1);
+        //     }
+        //
+        // }
 
         $.ajax({
             url: Routing.generate('get_articles_byId'),

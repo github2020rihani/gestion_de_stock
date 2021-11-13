@@ -90,7 +90,7 @@
                                                     </th>
                                                     <td>
                                                         <input type="hidden" class="articleAnnuler{{loop.index }}" value="{{ art['article']['id']  }}">
-                                                        <select class="js-example-basic-single selectArticle selectArticle_{{loop.index}} "
+                                                        <select class="js-example-basic-single selectArticle   selectArticle_{{loop.index}} "
                                                                 data-id_index = "{{loop.index}}"  name="article[]">
                                                             <option value="0" selected readonly>Coisir un article</option>
                                                             {% for a in articles %}

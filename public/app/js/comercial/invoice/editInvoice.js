@@ -49,7 +49,7 @@ function addLingeArticleBlEdit() {
                                                                 class="fa fa-trash"></i></button>
                                                                 </td>
                                                 <td>
-                                                    <select class="js-example-basic-single selectArticle_${index} article" data-index="${index}" name="article[]">
+                                                    <select class="js-example-basic-single selectArticle selectArticle_${index} article" data-index="${index}" name="article[]">
                                                         <option value="0" selected readonly>Coisir un article</option>
                                                        ${contentListArticle}
 
@@ -170,23 +170,22 @@ function changeQteArtBlInitial() {
 
 function selectArticleBlEditInitial() {
     $('.selectArticle').change(function () {
-        var totalHtGlobal = 0;
-        var totalTTCGlobal = 0;
         error = false;
         indexOfSelect = $(this).data('index');
+        var articleExiste = 0;
+        var art = $(this).val();
 
-        $('.qte_' + indexOfSelect).attr('readonly', false);
-//if new existe
-        if (selectAricle[0].includes(parseInt($(this).val()))) {
 
-            countArticle--;
-            toastr.error('cet article a été choisir , veuillez choisir un autre');
-            //
-            const indexArticle = selectAricle[0].indexOf($(this).data('index'));
-            if (indexArticle > -1) {
-                selectAricle[0].splice(indexArticle, 1);
+        $('.selectArticle').each(function () {
+            if ($(this).val() == art) {
+                articleExiste ++;
             }
+        })
+        if (parseInt(articleExiste) >= 2){
+            toastr.error('cet article a été choisir , veuillez choisir un autre');
             $(this).parent().parent().remove();
+            var totalHtGlobal = 0;
+            var totalTTCGlobal = 0;
 
             //total ht global
             $('.totalht').each(function () {
@@ -197,70 +196,80 @@ function selectArticleBlEditInitial() {
             //totalttcglobal
             totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19 +0.600;
             $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
+            return false;
+        }
+        $.ajax({
+            url: Routing.generate('perso_get_articles_byId'),
+            type: "POST",
+            data: {id_article: $(this).val()},
+            success: function (data) {
+                if (data) {
+                    console.log(data[0])
+                    $('.puht_' + indexOfSelect).val((data[0].puVenteHT).toFixed(3));
+                    $('.stock_' + indexOfSelect).val((data[0].qte));
+                    $('.remise_' + indexOfSelect).val(data[0].article.remise);
+                    $('.puhtnet_' + indexOfSelect).val((data[0].puVenteHT).toFixed(3));
+                    $('.qte_' + indexOfSelect).val(0);
+                    $('.qte_' + indexOfSelect).val(0);
+                    $('.totalht_' + indexOfSelect).val(0.000);
+                    $('.puttc_' + indexOfSelect).val(0.000);
+                    $('.totalttc_' + indexOfSelect).val(0.000);
+                }
 
-        } else {
-            selectAricle[0].push(parseInt($(this).val()));
-            if (articleToDelete[0].includes(parseInt($(this).data('old_article')))) {
+                if ($('.qte_' + indexOfSelect).val() == 0) {
+                    //total ht global
+                    $('.totalht').each(function () {
+                        totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
+                        $('.total_ht_global').text((totalHtGlobal).toFixed(3))
+                    })
 
-                const indexArticle = articleToDelete[0].indexOf($(this).data('index'));
-                if (indexArticle > -1) {
-                    articleToDelete[0].splice(indexArticle, 1);
+                    //totalttcglobal
+                    totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19 +0.600;
+                    $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
                 }
 
 
+            },
+            error: function () {
+                alert('something wrong')
             }
-            $.ajax({
-                url: Routing.generate('perso_get_articles_byId'),
-                type: "POST",
-                data: {id_article: $(this).val()},
-                success: function (data) {
-                    if (data) {
-                        console.log(data[0])
-                        $('.puht_' + indexOfSelect).val((data[0].puVenteHT).toFixed(3));
-                        $('.stock_' + indexOfSelect).val((data[0].qte));
-                        $('.remise_' + indexOfSelect).val(data[0].article.remise);
-                        $('.puhtnet_' + indexOfSelect).val((data[0].puVenteHT).toFixed(3));
-                        $('.qte_' + indexOfSelect).val(0);
-                        $('.qte_' + indexOfSelect).val(0);
-                        $('.totalht_' + indexOfSelect).val(0.000);
-                        $('.puttc_' + indexOfSelect).val(0.000);
-                        $('.totalttc_' + indexOfSelect).val(0.000);
-                    }
+        })
 
-                    if ($('.qte_' + indexOfSelect).val() == 0) {
-                        //total ht global
-                        $('.totalht').each(function () {
-                            totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
-                            $('.total_ht_global').text((totalHtGlobal).toFixed(3))
-                        })
-
-                        //totalttcglobal
-                        totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19 +0.600;
-                        $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
-                    }
-
-
-                },
-                error: function () {
-                    alert('something wrong')
-                }
-            })
-        }
-
-        //remove old article
-        articleToDelete.push(parseInt($(this).data('old_article')));
-        $('.articleToDelete').val(articleToDelete);
-
-        if (selectAricle[0].includes(parseInt($(this).data('old_article')))) {
-
-            countArticle--;
-            const indexArticle = selectAricle[0].indexOf($(this).data('index'));
-            if (indexArticle > -1) {
-                selectAricle[0].splice(indexArticle, 1);
-            }
-
-
-        }
+        $('.qte_' + indexOfSelect).attr('readonly', false);
+//if new existe
+//         if (selectAricle[0].includes(parseInt($(this).val()))) {
+//
+//             countArticle--;
+//             toastr.error('cet article a été choisir , veuillez choisir un autre');
+//             //
+//             const indexArticle = selectAricle[0].indexOf($(this).data('index'));
+//             if (indexArticle > -1) {
+//                 selectAricle[0].splice(indexArticle, 1);
+//             }
+//             $(this).parent().parent().remove();
+//
+//             //total ht global
+//             $('.totalht').each(function () {
+//                 totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
+//                 $('.total_ht_global').text((totalHtGlobal).toFixed(3))
+//             })
+//
+//             //totalttcglobal
+//             totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19 +0.600;
+//             $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
+//
+//         } else {
+//             selectAricle[0].push(parseInt($(this).val()));
+//             if (articleToDelete[0].includes(parseInt($(this).data('old_article')))) {
+//
+//                 const indexArticle = articleToDelete[0].indexOf($(this).data('index'));
+//                 if (indexArticle > -1) {
+//                     articleToDelete[0].splice(indexArticle, 1);
+//                 }
+//
+//
+//             }
+//         }
 
     })
 
@@ -429,17 +438,20 @@ function selectArticleBl2(index) {
         error = false;
 
         $('.qte_' + index).attr('readonly', false);
-        if (selectAricle[0].includes(parseInt($(this).val()))) {
+        var articleExiste = 0;
+        var art = $(this).val();
+
+
+        $('.selectArticle').each(function () {
+            if ($(this).val() == art) {
+                articleExiste ++;
+            }
+        })
+        if (parseInt(articleExiste) >= 2){
+            toastr.error('cet article a été choisir , veuillez choisir un autre');
+            $(this).parent().parent().remove();
             var totalHtGlobal = 0;
             var totalTTCGlobal = 0;
-            countArticle--;
-            toastr.error('cet article a été choisir , veuillez choisir un autre');
-            //
-            const indexArticle = selectAricle[0].indexOf($(this).data('index'));
-            if (indexArticle > -1) {
-                selectAricle[0].splice(indexArticle, 1);
-            }
-            $(this).parent().parent().remove();
 
             //total ht global
             $('.totalht').each(function () {
@@ -450,12 +462,9 @@ function selectArticleBl2(index) {
             //totalttcglobal
             totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19 +0.600;
             $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
-
-
             return false;
         }
-        selectAricle[0].push(parseInt($(this).val()));
-        console.log(selectAricle[0]);
+
 
         $.ajax({
             url: Routing.generate('perso_get_articles_byId'),

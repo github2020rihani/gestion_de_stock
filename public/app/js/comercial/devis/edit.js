@@ -52,6 +52,7 @@ $(document).ready(function () {
         if (error) {
             return false;
         } else {
+            //getArticles
             $(this).hide();
             $('.formEditDevis').submit();
             $('.transfertDevis').show();
@@ -91,7 +92,7 @@ function addLingeArticle() {
                                                                 class="fa fa-trash"></i></button>
                                                                 </th>
                                                 <td>
-                                                    <select class="js-example-basic-single selectArticle_${index} article" name="article[]">
+                                                    <select class="js-example-basic-single selectArticle selectArticle_${index} article" name="article[]">
                                                         <option value="0" selected readonly>Coisir un article</option>
                                                        ${contentListArticle}
 
@@ -166,15 +167,29 @@ var error = false;
 function selectArticle(index) {
     $('.selectArticle_' + index).change(function () {
         error = false;
+        var articleExiste = 0;
+        var art = $(this).val();
 
-        console.log('initial ====' + selectAricle)
-        $('.qte_' + index).attr('readonly', false);
-        if (selectAricle.includes(parseInt($(this).val()))) {
+
+        $('.selectArticle').each(function () {
+            if ($(this).val() == art) {
+                articleExiste ++;
+            }
+        })
+        if (parseInt(articleExiste) >= 2){
             toastr.error('cet article a été choisir , veuillez choisir un autre');
             $(this).parent().parent().remove();
+            var newTotalttc = parseFloat( $('.tottalTTC').val()) - parseFloat($('.total_' + index).val());
+            $('.tottalTTC').val(newTotalttc.toFixed(3));
             return false;
         }
-        selectAricle.push(parseInt($(this).val()));
+        $('.qte_' + index).attr('readonly', false);
+        // if (selectAricle.includes(parseInt($(this).val()))) {
+        //     toastr.error('cet article a été choisir , veuillez choisir un autre');
+        //     $(this).parent().parent().remove();
+        //     return false;
+        // }
+        // selectAricle.push(parseInt($(this).val()));
 
         $.ajax({
             url: Routing.generate('perso_get_articles_byId'),
@@ -354,24 +369,40 @@ function selectArticleInitial() {
     $('.selectArticle').change(function () {
         var index = $(this).data('id_index');
         error = false;
+        var articleExiste = 0;
+        var art = $(this).val();
+
+
+        $('.selectArticle').each(function () {
+            if ($(this).val() == art) {
+                articleExiste ++;
+            }
+        })
+        if (parseInt(articleExiste) >= 2){
+            toastr.error('cet article a été choisir , veuillez choisir un autre');
+            $(this).parent().parent().remove();
+            var newTotalttc = parseFloat( $('.tottalTTC').val()) - parseFloat($('.total_' + index).val());
+            $('.tottalTTC').val(newTotalttc.toFixed(3));
+            return false;
+        }
 
         console.log('initial ====' + selectAricle)
         $('.qte_' + index).attr('readonly', false);
-        if (selectAricle.includes(parseInt($(this).val()))) {
-            toastr.error('cet article a été choisir , veuillez choisir un autre');
-            // $(this).parent().parent().remove();
-            return false;
-        } else {
-            selectAricle.push(parseInt($(this).val()));
-            var newTotalttc = parseFloat( $('.tottalTTC').val()) - parseFloat($('.total_' + index).val());
-            $('.tottalTTC').val(newTotalttc.toFixed(3));
-            OldArt = $('.articleAnnuler'+index).val();
-            const indexArticle = selectAricle.indexOf(parseInt(OldArt));
-
-            if (indexArticle > -1) {
-                selectAricle.splice(indexArticle, 1);
-            }
-        }
+        // if (selectAricle.includes(parseInt($(this).val()))) {
+        //     toastr.error('cet article a été choisir , veuillez choisir un autre');
+        //     // $(this).parent().parent().remove();
+        //     return false;
+        // } else {
+        //     selectAricle.push(parseInt($(this).val()));
+        //     // var newTotalttc = parseFloat( $('.tottalTTC').val()) - parseFloat($('.total_' + index).val());
+        //     // $('.tottalTTC').val(newTotalttc.toFixed(3));
+        //     OldArt = $('.articleAnnuler'+index).val();
+        //     const indexArticle = selectAricle.indexOf(parseInt(OldArt));
+        //
+        //     if (indexArticle > -1) {
+        //         selectAricle.splice(indexArticle, 1);
+        //     }
+        // }
 
         $.ajax({
             url: Routing.generate('perso_get_articles_byId'),

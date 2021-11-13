@@ -38,7 +38,7 @@ function addLingeArticleBl() {
                                                                 class="fa fa-trash"></i></button>
                                                                 </td>
                                                 <td>
-                                                    <select class="js-example-basic-single selectArticle_${index} article" data-index="${index}" name="article[]">
+                                                    <select class="js-example-basic-single selectArticle selectArticle_${index} article" data-index="${index}" name="article[]">
                                                         <option value="0" selected readonly>Coisir un article</option>
                                                        ${contentListArticle}
 
@@ -87,7 +87,7 @@ function addLingeArticleBl() {
                         var totalTTCGlobal = 0;
 
 
-                        const indexArticle = selectAricle.indexOf(parseInt($(this).data('index')));
+                        const indexArticle = selectAricle.indexOf(parseInt($(this).data('id_art')));
                         if (indexArticle > -1) {
                             selectAricle.splice(indexArticle, 1);
                         }
@@ -102,6 +102,7 @@ function addLingeArticleBl() {
                         totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
                         $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
 
+                        console.log('article  checked apre remove ----' , selectAricle);
 
                     });
                     //select article
@@ -161,19 +162,20 @@ function changeQteArtBl() {
 function selectArticleBl(index) {
     $('.selectArticle_' + index).change(function () {
         error = false;
+        var articleExiste = 0;
+        var art = $(this).val();
 
-        $('.qte_' + index).attr('readonly', false);
-        if (selectAricle.includes(parseInt($(this).val()))) {
+
+        $('.selectArticle').each(function () {
+            if ($(this).val() == art) {
+                articleExiste ++;
+            }
+        })
+        if (parseInt(articleExiste) >= 2){
+            toastr.error('cet article a été choisir , veuillez choisir un autre');
+            $(this).parent().parent().remove();
             var totalHtGlobal = 0;
             var totalTTCGlobal = 0;
-            countArticle--;
-            toastr.error('cet article a été choisir , veuillez choisir un autre');
-            //
-            const indexArticle = selectAricle.indexOf($(this).data('index'));
-            if (indexArticle > -1) {
-                selectAricle.splice(indexArticle, 1);
-            }
-            $(this).parent().parent().remove();
 
             //total ht global
             $('.totalht').each(function () {
@@ -184,12 +186,39 @@ function selectArticleBl(index) {
             //totalttcglobal
             totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
             $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
-
-
             return false;
         }
-        selectAricle.push(parseInt($(this).val()));
-        console.log(selectAricle);
+
+
+        $('.qte_' + index).attr('readonly', false);
+        // if (selectAricle.includes(parseInt($(this).val()))) {
+        //     var totalHtGlobal = 0;
+        //     var totalTTCGlobal = 0;
+        //     countArticle--;
+        //     toastr.error('cet article a été choisir , veuillez choisir un autre');
+        //     //
+        //     const indexArticle = selectAricle.indexOf(parseInt($(this).val()));
+        //     if (indexArticle > -1) {
+        //         selectAricle.splice(indexArticle, 1);
+        //     }
+        //     $(this).parent().parent().remove();
+        //
+        //     //total ht global
+        //     $('.totalht').each(function () {
+        //         totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
+        //         $('.total_ht_global').text((totalHtGlobal).toFixed(3))
+        //     })
+        //
+        //     //totalttcglobal
+        //     totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
+        //     $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
+        //
+        //     console.log('article checked change ----' , selectAricle);
+        //
+        //     return false;
+        // }
+        // selectAricle.push(parseInt($(this).val()));
+        // console.log('article checked----' , selectAricle);
 
         $.ajax({
             url: Routing.generate('perso_get_articles_byId'),
@@ -197,11 +226,11 @@ function selectArticleBl(index) {
             data: {id_article: $(this).val()},
             success: function (data) {
                 if (data) {
-                    console.log(data[0])
                     $('.puht_' + index).val((data[0].puVenteHT).toFixed(3));
                     $('.stock_' + index).val((data[0].qte));
                     $('.remise_' + index).val(data[0].article.remise);
                     $('.puhtnet_' + index).val((data[0].puVenteHT).toFixed(3));
+                    $('.delete_ligneArticle_'+index).attr('data-id_art',data[0].article.id )
                 }
 
             },
