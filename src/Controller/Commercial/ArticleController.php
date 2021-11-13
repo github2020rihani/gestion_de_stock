@@ -65,7 +65,7 @@ class ArticleController extends AbstractController
      */
     public function index( Request $request , EntityManagerInterface $em, ArticleRepository  $articleRepository): Response
     {
-        $articles = $articleRepository->findAll();
+        $articles = $articleRepository->findBy(array('stocked' => true));
         return $this->render('commercial/Article/index.html.twig',[
             'articles' =>$articles
         ]);

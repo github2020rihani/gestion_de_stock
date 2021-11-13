@@ -28,6 +28,7 @@ class Article
      */
     private $description;
 
+
     /**
      * @return mixed
      */
@@ -118,6 +119,16 @@ class Article
      */
     private $qte;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $stocked;
+
+    /**
+     * @ORM\OneToMany(targetEntity=InvoiceArticle::class, mappedBy="article")
+     */
+    private $invoiceArticles;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
@@ -127,6 +138,8 @@ class Article
         $this->inventaireArticles = new ArrayCollection();
         $this->devisArticles = new ArrayCollection();
         $this->qte = new ArrayCollection();
+        $this->stocked = false;
+        $this->invoiceArticles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -370,6 +383,48 @@ class Article
             // set the owning side to null (unless already changed)
             if ($qte->getArticle() === $this) {
                 $qte->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getStocked(): ?bool
+    {
+        return $this->stocked;
+    }
+
+    public function setStocked(bool $stocked): self
+    {
+        $this->stocked = $stocked;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|InvoiceArticle[]
+     */
+    public function getInvoiceArticles(): Collection
+    {
+        return $this->invoiceArticles;
+    }
+
+    public function addInvoiceArticle(InvoiceArticle $invoiceArticle): self
+    {
+        if (!$this->invoiceArticles->contains($invoiceArticle)) {
+            $this->invoiceArticles[] = $invoiceArticle;
+            $invoiceArticle->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoiceArticle(InvoiceArticle $invoiceArticle): self
+    {
+        if ($this->invoiceArticles->removeElement($invoiceArticle)) {
+            // set the owning side to null (unless already changed)
+            if ($invoiceArticle->getArticle() === $this) {
+                $invoiceArticle->setArticle(null);
             }
         }
 

@@ -50,11 +50,14 @@
                                             </thead>
                                             <tbody>
                                             {% for art in devi['devisArticles'] %}
-                                                <td>{{ art['article']['ref'] }}</td>
-                                                <td>{{ art['qte'] }}</td>
-                                                <td>{{ art['remise'] }}</td>
-                                                <td>{{ art['pventettc']| number_format(3) }}</td>
-                                                <td>{{ art['total']|number_format(3) }}</td>
+                                                <tr>
+                                                    <td>{{ art['article']['ref'] }}</td>
+                                                    <td>{{ art['qte'] }}</td>
+                                                    <td>{{ art['remise'] }}</td>
+                                                    <td>{{ art['pventettc']| number_format(3) }}</td>
+                                                    <td>{{ art['total']|number_format(3) }}</td>
+                                                </tr>
+
 
 
                                             {% endfor %}

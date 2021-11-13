@@ -52,7 +52,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {% for a in invoice.bonLivraison.bonlivraisonArticles %}
+                                            {% for a in invoice.invoiceArticles %}
                                                 <tr>
                                                     <td></td>
                                                     <td>{{ a.article.ref }}</td>
@@ -91,7 +91,7 @@
                                                     <span>Total HT</span>
                                                 </div>
                                                 <div class="order-summary-value">
-                                                    {{ invoice.bonLivraison.totalHt|number_format(3) }}
+                                                    {{ invoice.totalHt|number_format(3) }}
                                                 </div>
                                             </div>
                                             <div class="order-summary-row">
@@ -99,7 +99,7 @@
                                                     <span>TVA</span>
                                                 </div>
                                                 <div class="order-summary-value">
-                                                    {{ invoice.bonLivraison.totalTva|number_format(2) }}
+                                                    {{ invoice.totalTva|number_format(2) }}
                                                 </div>
                                             </div>
                                             <div class="order-summary-row">
@@ -107,7 +107,7 @@
                                                     <span>Remise</span>
                                                 </div>
                                                 <div class="order-summary-value">
-                                                    {{ invoice.bonLivraison.totalRemise|number_format(3) }}
+                                                    {{ invoice.totalRemise|number_format(3) }}
                                                 </div>
                                             </div>
                                             <div class="order-summary-row">
@@ -123,9 +123,9 @@
                                                     <span>Type du paiement</span>
                                                 </div>
                                                 <div class="order-summary-value">
-                                                    {% if invoice.bonLivraison.typePayement == 1 %}
+                                                    {% if invoice.typePayement == 1 %}
                                                         Espece
-                                                    {% elseif  invoice.bonLivraison.typePayement == 2 %}
+                                                    {% elseif  invoice.typePayement == 2 %}
                                                         Cheque
                                                     {% else %}
                                                         Carte
@@ -160,7 +160,7 @@
                             <div class="ecommerce-customer-info">
                                 <div class="ecommerce-customer-main-info">
                                     <div class="ecc-name">
-                                        {{ invoice.bonLivraison.customer.nom  }} {{ invoice.bonLivraison.customer.prenom  }}
+                                        {{ invoice.customer.nom  }} {{ invoice.customer.prenom  }}
                                     </div>
                                 </div>
                                 <div class="ecommerce-customer-sub-info">
@@ -170,7 +170,7 @@
                                         </div>
                                         <div class="sub-info-value">
                                             <a href="#">
-                                                {{ invoice.bonLivraison.customer.email  }}
+                                                {{ invoice.customer.email  }}
                                             </a>
                                         </div>
                                     </div>
@@ -179,7 +179,7 @@
                                             Téléphone
                                         </div>
                                         <div class="sub-info-value">
-                                            +216 {{ invoice.bonLivraison.customer.telephone  }}
+                                            +216 {{ invoice.customer.telephone  }}
                                         </div>
                                     </div>
                                 </div>
@@ -189,7 +189,7 @@
                                             Address
                                         </div>
                                         <div class="sub-info-value">
-                                            {{ invoice.bonLivraison.customer.adresse  }} ,   {{ invoice.bonLivraison.customer.city.name  }} , {{ invoice.bonLivraison.customer.country.name  }}
+                                            {{ invoice.customer.adresse  }} ,   {{ invoice.customer.city.name  }} , {{ invoice.customer.country.name  }}
                                             <br>
                                         </div>
                                     </div>

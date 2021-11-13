@@ -75,7 +75,8 @@ class DevisController extends AbstractController
             $client = $this->clientRepository->find($request->request->get('customers'));
             $qte = $request->request->get('qte');
             $articles = $request->request->get('article');
-            $lastDevis = $this->devisRepository->getLastDevis();
+            $year =date('Y');
+            $lastDevis = $this->devisRepository->getLastDevisWithCurrentYear($year);
             if ($lastDevis) {
                 $lastId = 000 + $lastDevis->getId() + 1;
                 $numero_devis =  '000' . $lastId;
@@ -91,6 +92,7 @@ class DevisController extends AbstractController
                 $devis = new Devis();
 
                 $devis->setNumero($numero_devis);
+                $devis->setYear($year);
                 $devis->setCreadetBy($this->getUser());
                 $devis->setClient($client);
                 $totalTTc = 0;
@@ -147,7 +149,7 @@ class DevisController extends AbstractController
     public function edit(Request $request, Devis $idDevis)
     {
         $customers = $this->clientRepository->findAll();
-        $articles = $this->articleRepository->findAll();
+        $articles = $this->articleRepository->findBy(array('stocked' => true));
         $devi = $this->devisRepository->findDetailDeviAndStock($idDevis);
         //request method post edit devis
         if ($request->isMethod('post')) {

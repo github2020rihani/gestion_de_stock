@@ -148,8 +148,10 @@
                                                                     class="fa fa-trash"></i></button>
                                                     </th>
                                                     <td>
+                                                        <input type="hidden" class="articleAnnuler{{loop.index }}" value="{{ art['article']['id']  }}">
 
-                                                        <select class="js-example-basic-single article selectArticle_{{ loop.index }}"
+                                                        <select class="js-example-basic-single article selectArticle selectArticle_{{ loop.index }}"
+                                                                data-id_index="{{ loop.index }}"
                                                                 name="article[]">
 
                                                             {% for a in articles %}

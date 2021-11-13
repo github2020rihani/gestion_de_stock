@@ -49,7 +49,7 @@ class BondLivraison
     private $typePayement;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $status;
 
@@ -105,10 +105,15 @@ class BondLivraison
      */
     private $devi;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $year;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
-        $this->status = false;
+        $this->status = 0;
         $this->existDevi = false ;
         $this->bonlivraisonArticles = new ArrayCollection();
         $this->invoices = new ArrayCollection();
@@ -180,12 +185,12 @@ class BondLivraison
         return $this;
     }
 
-    public function getStatus(): ?bool
+    public function getStatus(): ?int
     {
         return $this->status;
     }
 
-    public function setStatus(?bool $status): self
+    public function setStatus(?int $status): self
     {
         $this->status = $status;
 
@@ -344,6 +349,18 @@ class BondLivraison
     public function setDevi(?Devis $devi): self
     {
         $this->devi = $devi;
+
+        return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(int $year): self
+    {
+        $this->year = $year;
 
         return $this;
     }

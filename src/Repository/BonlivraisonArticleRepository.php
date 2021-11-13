@@ -19,6 +19,15 @@ class BonlivraisonArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, BonlivraisonArticle::class);
     }
 
+    public function getArticleBLByIdArticle($id_article) {
+        return $this->createQueryBuilder('b')
+            ->where('b.article = :id_article')
+            ->setParameter('id_article', $id_article)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
     // /**
     //  * @return BonlivraisonArticle[] Returns an array of BonlivraisonArticle objects
     //  */

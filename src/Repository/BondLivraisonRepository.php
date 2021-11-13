@@ -28,6 +28,16 @@ class BondLivraisonRepository extends ServiceEntityRepository
             ;
     }
 
+    public function getLastBlWithCurrentYear($year) {
+        return $this->createQueryBuilder('b')
+            ->where('b.year = :year')
+            ->setParameter('year', $year)
+            ->orderBy('b.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult()
+            ;
+    }
 
     // /**
     //  * @return BondLivraison[] Returns an array of BondLivraison objects

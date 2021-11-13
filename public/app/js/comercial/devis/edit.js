@@ -7,7 +7,7 @@ $(document).ready(function () {
     removeArticle();
     addLingeArticle();
     changeQteInitial();
-
+    selectArticleInitial();
     transfertDevis();
 
     $('.editDevis ').click(function () {
@@ -119,7 +119,6 @@ function addLingeArticle() {
                                                 </td>                                            </tr>`);
 
 
-
                     $('.js-example-basic-single').select2();
                     //remove ligne achat
                     $(".delete_ligneArticle_" + index).click(function (event) {
@@ -129,7 +128,7 @@ function addLingeArticle() {
                             selectAricle.splice(indexArticle, 1);
                         }
                         $(this).parent().parent().remove();
-                        var totalTTC = 0 ;
+                        var totalTTC = 0;
 
                         $('.total ').each(function () {
                             totalTTC = parseFloat(totalTTC) + parseFloat($(this).val());
@@ -168,8 +167,8 @@ function selectArticle(index) {
     $('.selectArticle_' + index).change(function () {
         error = false;
 
-        console.log('initial ===='+ selectAricle)
-        $('.qte_'+index).attr('readonly', false);
+        console.log('initial ====' + selectAricle)
+        $('.qte_' + index).attr('readonly', false);
         if (selectAricle.includes(parseInt($(this).val()))) {
             toastr.error('cet article a été choisir , veuillez choisir un autre');
             $(this).parent().parent().remove();
@@ -202,22 +201,21 @@ function selectArticle(index) {
 }
 
 
-
 function changeQte(index) {
     $('.qte').blur("input", function (e) {
-        var totalTTC = 0 ;
-        var total  = 0 ;
+        var totalTTC = 0;
+        var total = 0;
         console.log($(this).val())
-        console.log($('.stock_'+index).val())
-        if (($(this).val() > ($('.stock_'+index).val()))) {
+        console.log($('.stock_' + index).val())
+        if (($(this).val() > ($('.stock_' + index).val()))) {
             toastr.error('la quatité est depasser le stock');
             $(this).val('');
-            return false ;
+            return false;
         }
 
         $(this).attr('value', $(this).val())
-        total = (parseInt($(this).val()) * parseFloat($('.pventettc_'+index).val())).toFixed(3);
-        $('.total_'+index).val(parseFloat(total).toFixed(3))
+        total = (parseInt($(this).val()) * parseFloat($('.pventettc_' + index).val())).toFixed(3);
+        $('.total_' + index).val(parseFloat(total).toFixed(3))
         $('.total ').each(function () {
             totalTTC = parseFloat(totalTTC) + parseFloat($(this).val());
         })
@@ -225,21 +223,22 @@ function changeQte(index) {
 
     })
 }
+
 function changeQteInitial() {
     $('.qte').blur("input", function (e) {
         var index = $(this).data('index');
-        var totalTTC = 0 ;
-        var total  = 0 ;
+        var totalTTC = 0;
+        var total = 0;
 
-        if (($(this).val() > ($('.stock_'+index).val()))) {
+        if (($(this).val() > ($('.stock_' + index).val()))) {
             toastr.error('la quatité est depasser le stock');
             $(this).val('');
-            return false ;
+            return false;
         }
 
         $(this).attr('value', $(this).val())
-        total = (parseInt($(this).val()) * parseFloat($('.pventettc_'+index).val())).toFixed(3);
-        $('.total_'+index).val(parseFloat(total).toFixed(3))
+        total = (parseInt($(this).val()) * parseFloat($('.pventettc_' + index).val())).toFixed(3);
+        $('.total_' + index).val(parseFloat(total).toFixed(3))
         $('.total ').each(function () {
             totalTTC = parseFloat(totalTTC) + parseFloat($(this).val());
         })
@@ -250,7 +249,7 @@ function changeQteInitial() {
 
 
 function removeArticle() {
-    var totalTTC = 0 ;
+    var totalTTC = 0;
     $(".delete_ligneArticle").click(function (event) {
         var index = $(this).data('index');
         const indexArticle = selectAricle.indexOf(parseInt($(this).data('id_article')));
@@ -264,7 +263,7 @@ function removeArticle() {
 
         //update total ttc
         $('.total').each(function () {
-            totalTTC = parseFloat( $('.tottalTTC').val()) - parseFloat($(this).val());
+            totalTTC = parseFloat($('.tottalTTC').val()) - parseFloat($(this).val());
         })
         $('.tottalTTC').val((totalTTC).toFixed(3))
 
@@ -282,6 +281,7 @@ function getArticlesDevis(id) {
         success: function (data) {
             if (data) {
                 selectAricle.push(parseInt(data));
+                console.log(selectAricle)
 
 
             }
@@ -342,9 +342,61 @@ function transfertDevis() {
         var id_devis = $(this).data('id_devis');
         //show Modal
         $('#modalConfirmTransfer').modal('show');
-        $('#confirme').attr('href' , 'http://localhost:8000/personelle/BL/transfert/'+id_devis)
+        $('#confirme').attr('href', 'http://localhost:8000/personelle/BL/transfert/' + id_devis)
 
 
     })
 }
+
+var OldArt  ;
+function selectArticleInitial() {
+
+    $('.selectArticle').change(function () {
+        var index = $(this).data('id_index');
+        error = false;
+
+        console.log('initial ====' + selectAricle)
+        $('.qte_' + index).attr('readonly', false);
+        if (selectAricle.includes(parseInt($(this).val()))) {
+            toastr.error('cet article a été choisir , veuillez choisir un autre');
+            // $(this).parent().parent().remove();
+            return false;
+        } else {
+            selectAricle.push(parseInt($(this).val()));
+            var newTotalttc = parseFloat( $('.tottalTTC').val()) - parseFloat($('.total_' + index).val());
+            $('.tottalTTC').val(newTotalttc.toFixed(3));
+            OldArt = $('.articleAnnuler'+index).val();
+            const indexArticle = selectAricle.indexOf(parseInt(OldArt));
+
+            if (indexArticle > -1) {
+                selectAricle.splice(indexArticle, 1);
+            }
+        }
+
+        $.ajax({
+            url: Routing.generate('perso_get_articles_byId'),
+            type: "POST",
+            data: {id_article: $(this).val()},
+            success: function (data) {
+                if (data) {
+                    $('.descriptionarticle_' + index).text(data[0].article.description);
+                    $('.stock_' + index).val(data[0].qte);
+                    $('.qte_' + index).val(0);
+                    $('.remise_' + index).val(data[0].article.remise);
+                    $('.pventettc_' + index).val((data[0].puVenteTTC).toFixed(3));
+                    $('.total_' + index).val(0.000)
+
+                }
+
+            },
+            error: function () {
+                alert('something wrong')
+            }
+        })
+
+    })
+
+
+}
+
 

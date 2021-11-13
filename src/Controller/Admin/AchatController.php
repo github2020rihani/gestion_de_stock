@@ -76,40 +76,40 @@ class AchatController extends AbstractController
             $ref = $request->get('article');
             if ($fodec == "true") {
                 $achat->setFodec(true);
-            }else{
+            } else {
                 $achat->setFodec(false);
             }
             //input aricleachat
             $puhtnet = $request->get('puhtnet');
             $qte = $request->get('qte');
             $pventettc = $request->get('pventettc');
-            $totalHt = 0 ;
-            $totalTva = 0 ;
-            $totalTTC = 0 ;
+            $totalHt = 0;
+            $totalTva = 0;
+            $totalTTC = 0;
             foreach ($ref as $key => $value) {
-                $totalHt= $totalHt+ ((float)$puhtnet[$key] * $qte[$key]);
+                $totalHt = $totalHt + ((float)$puhtnet[$key] * $qte[$key]);
 
             }
             if ($fodec == "true") {
                 $achat->setFodec(true);
-                $totalHt = $totalHt *  $_ENV['FODEC'];
-            }else{
+                $totalHt = $totalHt * $_ENV['FODEC'];
+            } else {
                 $achat->setFodec(false);
             }
 
-            $totalTva =   $totalHt * $_ENV['TVA_ARTICLE'];
-            $totalTTC=  (float)$totalHt + (float)$totalTva+ (float)$remise + $_ENV['TIMBRE'] + (float)$transport ;
-            $achat->setTotalHT((float)number_format($totalHt , 3));
-            $achat->setTotalTVA((float)number_format($totalTva , 3));
-            $achat->setTotalTTC((float)number_format($totalTTC , 3));
-                //save achat
+            $totalTva = $totalHt * $_ENV['TVA_ARTICLE'];
+            $totalTTC = (float)$totalHt + (float)$totalTva + (float)$remise + $_ENV['TIMBRE'] + (float)$transport;
+            $achat->setTotalHT((float)number_format($totalHt, 3));
+            $achat->setTotalTVA((float)number_format($totalTva, 3));
+            $achat->setTotalTTC((float)number_format($totalTTC, 3));
+            //save achat
             $achat->setFournisseur($this->fournisseurRepository->find($fournisseur));
             $achat->setNumero($numero_achat);
             $achat->setAddedBy($this->getUser());
             $achat->setCreatedAt(new \DateTime('now'));
-            $achat->setRemise( (float)number_format($remise, 3));
-            $achat->setTronsport( (float)number_format($transport, 3));
-            $achat->setTimbre( (float)number_format($_ENV['TIMBRE'], 3));
+            $achat->setRemise((float)number_format($remise, 3));
+            $achat->setTronsport((float)number_format($transport, 3));
+            $achat->setTimbre((float)number_format($_ENV['TIMBRE'], 3));
             $this->em->persist($achat);
             $this->em->flush();
 
@@ -134,15 +134,13 @@ class AchatController extends AbstractController
                 $achatArticle->setPuhtnet((float)$puhtnet[$key]);
                 $achatArticle->setQte($qte[$key]);
                 $achatArticle->setPventettc((float)$pventettc[$key]);
-                $achatArticle->setPventeHT((float) number_format(((((float)$pventettc[$key] / 119))*100),3));
+                $achatArticle->setPventeHT((float)number_format(((((float)$pventettc[$key] / 119)) * 100), 3));
                 $achatArticle->setTva($_ENV['TVA_ARTICLE_PERCENT']);
                 $puttc[$key] = (float)(number_format($puhtnet[$key] * $_ENV['TVA_ARTICLE'], 3));
                 $achatArticle->setPuttc($puttc[$key]);
                 $achatArticle->setMarge((float)number_format(((($pventettc[$key] - $puttc[$key]) / $puttc[$key]) * 100), 2));
                 $this->em->persist($achatArticle);
                 $this->em->flush();
-
-
 
 
             }
@@ -186,7 +184,7 @@ class AchatController extends AbstractController
                 $achatArticleExiste = $this->achatRepository->findBy(array('numero' => $numero_achat));
                 if ($achatArticleExiste) {
                     $this->addFlash('error', 'il ya une achat avec enregistrer avec le numero' . $numero_achat);
-                   return  $this->redirectToRoute('index_achat');
+                    return $this->redirectToRoute('index_achat');
                 }
             }
 
@@ -207,7 +205,7 @@ class AchatController extends AbstractController
                 $this->em->flush();
             } else {
                 $this->addFlash('error', 'Aucun Achat trouvee');
-                return  $this->redirectToRoute('index_achat');
+                return $this->redirectToRoute('index_achat');
             }
 
 
@@ -253,7 +251,6 @@ class AchatController extends AbstractController
                     $achatArticle->setMarge((float)number_format(((($pventettc[$key] - $puttc[$key]) / $puttc[$key]) * 100), 2));
                     $this->em->persist($achatArticle);
                     $this->em->flush();
-
 
 
                 } else {
@@ -351,7 +348,8 @@ class AchatController extends AbstractController
      * @param Request $request
      * @Route("/stocker/achat", name="achat_stocker_achat", options={"expose" = true})
      */
-    public function stockerAchat(Request $request) {
+    public function stockerAchat(Request $request)
+    {
         $id_achat = $request->get('id_achat');
         $achatexiste = $this->achatRepository->getDetailAchat($id_achat);
         if ($achatexiste) {
@@ -361,7 +359,7 @@ class AchatController extends AbstractController
             $this->em->persist($achat);
             $this->em->flush();
 
-            foreach ($achatexiste[0]['achatArticles'] as $key=>$value){
+            foreach ($achatexiste[0]['achatArticles'] as $key => $value) {
                 //save in stock
                 $articleinStock = $this->stockRepository->findArticleInStockById($value['article']['id']);
                 if ($articleinStock && $articleinStock[0]) {
@@ -384,7 +382,7 @@ class AchatController extends AbstractController
 
                     //si modifier
 
-                    if ($articleWithNewPriw && $articleWithNewPriw[0]){
+                    if ($articleWithNewPriw && $articleWithNewPriw[0]) {
                         $articleExisteInprix[0]->setPuAchaHT($value['puhtnet']);
                         $articleExisteInprix[0]->setPuVenteHT($value['pventeHT']);
                         $articleExisteInprix[0]->setPhAchatTTC($value['puttc']);
@@ -393,7 +391,7 @@ class AchatController extends AbstractController
                         $this->em->persist($articleExisteInprix[0]);
                         $this->em->flush();
                     }
-                }else{
+                } else {
                     //insert article in prix
                     $prix = new Prix();
                     $prix->setAddedBy($this->getUser());
@@ -409,18 +407,26 @@ class AchatController extends AbstractController
                     $this->em->flush();
 
                 }
-
+//stocked Article
+                $art = $this->articleRepository->find($value['article']['id']);
+                if ($art->getStocked() == false) {
+                    $art->setStocked(true);
+                    $this->em->persist($art);
+                    $this->em->flush();
+                }
 
 
             }
+
+            //article stocked
             $message = 'Achat a été stocker ';
             $success = true;
-        }else{
+        } else {
             $message = 'Aucun achat trouver  ';
             $success = false;
 
         }
 
-        return $this->json(array('message' => $message , 'success' => $success));
+        return $this->json(array('message' => $message, 'success' => $success));
     }
 }

@@ -73,6 +73,13 @@ class Devis
      * @ORM\OneToMany(targetEntity=BondLivraison::class, mappedBy="devi")
      */
     private $bondLivraisons;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $year;
+
+
     public function __construct()
     {
         $this->creadetAt = new \DateTime('now');
@@ -255,4 +262,18 @@ class Devis
 
         return $this;
     }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(?int $year): self
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
+
 }

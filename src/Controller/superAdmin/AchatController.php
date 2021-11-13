@@ -410,7 +410,13 @@ class AchatController extends AbstractController
 
                 }
 
-
+//stocked Article
+                $art = $this->articleRepository->find($value['article']['id']);
+                if ($art->getStocked() == false) {
+                    $art->setStocked(true);
+                    $this->em->persist($art);
+                    $this->em->flush();
+                }
 
             }
             $message = 'Achat a été stocker ';

@@ -19,6 +19,31 @@ class InvoiceRepository extends ServiceEntityRepository
         parent::__construct($registry, Invoice::class);
     }
 
+    public function getLastInvoiceWithCurrentYear($year)
+    {
+        return $this->createQueryBuilder('i')
+            ->where('i.year = :year')
+            ->setParameter('year', $year)
+            ->orderBy('i.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult()
+            ;
+    }
+
+    public function findInvoiceByIdBl($idBl) {
+        return $this->createQueryBuilder('i')
+            ->where('i.bonLivraison = :id_bl')
+            ->setParameter('id_bl', $idBl)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+
+
+
+
     // /**
     //  * @return Invoice[] Returns an array of Invoice objects
     //  */

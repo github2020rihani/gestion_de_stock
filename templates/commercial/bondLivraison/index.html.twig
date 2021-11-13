@@ -28,11 +28,11 @@
                 {{ include('default/FlashBag/flashBag.html.twig') }}
 
                 <div class="element-box">
-{#                    <h5 class="form-header">#}
-{#                        <a href="{{ path('perso_add_bl') }}" class="btn btn-primary add-list float-right mb-2"><i#}
-{#                                    class="las la-plus mr-3"></i>Crée une Bon de livraison </a>#}
+                    <h5 class="form-header">
+                        <a href="{{ path('perso_add_bl') }}" class="btn btn-primary add-list float-right mb-2"><i
+                                    class="las la-plus mr-3"></i>Crée une Bon de livraison </a>
 
-{#                    </h5>#}
+                    </h5>
 
                     <div class="form-desc">
 
@@ -84,8 +84,10 @@
                                     <td>
                                         {%  if bl.status == 0 %}
                                             <span class="mr-2 mb-2 badge badge-warning">En attente  </span>
-                                        {%  else %}
-                                            <span class="mr-2 mb-2 badge badge-info"> Terminée </span>
+                                        {%  elseif bl.status == 1 %}
+                                            <span class="mr-2 mb-2 badge badge-info"> En cours </span>
+                                        {% else %}
+                                            <span class="mr-2 mb-2 badge badge-success"> Terminée </span>
                                         {%  endif %}
                                     </td>
                                     <td>
@@ -107,7 +109,8 @@
                                         >
                                             <i class="fa fa-eye"></i>
                                         </a>
-                                        {% if bl.existDevi == 0  %}
+                                        {% if bl.existDevi == 0 and bl.status !=2   %}
+
                                         <a class="  btn btn-sm btn-icon btn-success"
                                            data-toggle="tooltip"
                                            data-placement="top" title="" data-original-title="Modifier"
@@ -128,6 +131,19 @@
                                         >
                                             <i class="fa fa-print"></i>
                                         </button>
+
+                                        {% if bl.existDevi == 0 and bl.status == 0   %}
+
+                                            <a class="  btn btn-sm btn-icon btn-dark"
+                                               data-toggle="tooltip"
+                                               data-placement="top" title="" data-original-title="Taransfer BL vers FACTURE"
+                                               style="color: white"
+                                               href="{{ path('perso_transfert_bl_to_invoince', {bl: bl.id}) }}"
+                                            >
+                                                <i class="fa fa-share"></i>
+                                            </a>
+                                        {% endif %}
+
                                     </td>
                                 </tr>
 

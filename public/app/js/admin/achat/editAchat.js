@@ -14,6 +14,7 @@ $(document).ready(function () {
     changePVenteTTC();
     addLigneAchat();
     CheckedFodec();
+    selectArticleInitialAchat();
 
     $('.editAchat').click(function () {
         if ($('.ligne_achat').length == 0) {
@@ -423,5 +424,46 @@ function CheckedFodec() {
 
 
 
+var indexArt ;
+var OldArt;
 
+function selectArticleInitialAchat() {
+    $('.selectArticle').change(function () {
+        indexArt = parseInt($(this).data('id_index'));
+        //delete from select article
+
+        if (selectAricle[0].includes(parseInt($(this).val()))) {
+            toastr.error('cet article a été choisir , veuillez choisir un autre');
+            return false;
+        } else {
+            selectAricle[0].push(parseInt($(this).val()));
+            OldArt = $('.articleAnnuler'+indexArt).val();
+            const indexArticle =  selectAricle[0].indexOf(parseInt(OldArt));
+
+            if (indexArticle > -1) {
+                selectAricle[0].splice(indexArticle, 1);
+            }
+        }
+
+        $.ajax({
+            url: Routing.generate('get_articles_byId'),
+            type: "POST",
+            data: {id_article: $(this).val()},
+            success: function (data) {
+                if (data) {
+                    console.log(data[0].description)
+                    $('.descriptionarticle_'+indexArt).text(data[0].description);
+
+                }
+
+            },
+            error: function () {
+                alert('something wrong')
+            }
+        })
+
+    })
+
+
+}
 

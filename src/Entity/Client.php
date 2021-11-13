@@ -115,6 +115,11 @@ class  Client
      */
     private $bondLivraisons;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Invoice::class, mappedBy="customer")
+     */
+    private $invoices;
+
 
 
     public function __construct()
@@ -122,6 +127,7 @@ class  Client
         $this->createdAt = new \DateTime('now');
         $this->devis = new ArrayCollection();
         $this->bondLivraisons = new ArrayCollection();
+        $this->invoices = new ArrayCollection();
     }
 
     /**
@@ -330,6 +336,36 @@ class  Client
             // set the owning side to null (unless already changed)
             if ($bondLivraison->getCustomer() === $this) {
                 $bondLivraison->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invoice[]
+     */
+    public function getInvoices(): Collection
+    {
+        return $this->invoices;
+    }
+
+    public function addInvoice(Invoice $invoice): self
+    {
+        if (!$this->invoices->contains($invoice)) {
+            $this->invoices[] = $invoice;
+            $invoice->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoice(Invoice $invoice): self
+    {
+        if ($this->invoices->removeElement($invoice)) {
+            // set the owning side to null (unless already changed)
+            if ($invoice->getCustomer() === $this) {
+                $invoice->setCustomer(null);
             }
         }
 

@@ -148,8 +148,11 @@
                                                                     class="fa fa-trash"></i></button>
                                                     </th>
                                                     <td>
+                                                        <input type="hidden" class="articleAnnuler{{loop.index }}" value="{{ art['article']['id']  }}">
 
-                                                        <select class="js-example-basic-single article selectArticle_{{ loop.index }}"
+                                                        <select class="js-example-basic-single article selectArticle selectArticle_{{ loop.index }}"
+                                                                data-id_index="{{ loop.index }}"
+
                                                                 name="article[]">
 
                                                             {% for a in articles %}
@@ -167,7 +170,7 @@
                                                                class="form-control puhtnet puhtnet_{{ loop.index }}">
                                                     </td>
                                                     <td>
-                                                        <input type="number" min="1" name="qte[]"
+                                                        <input type="text" min="1" name="qte[]"
                                                                value="{{ article['qte'] }}"
                                                                data-index="{{ loop.index }}"
                                                                class="form-control qte qte_{{ loop.index }}">

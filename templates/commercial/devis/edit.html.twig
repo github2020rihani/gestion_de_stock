@@ -23,7 +23,7 @@
 
             <div class="content-box">
                 <div class="row">
-                    <div class="col-sm-12 col-xxxl-9">
+                    <div class="col-sm-12 col-xxxl-12">
                         <div class="element-wrapper">
                             <h6 class="element-header">
                                 Modifier un devis
@@ -89,7 +89,9 @@
                                                                     class="fa fa-trash"></i></button>
                                                     </th>
                                                     <td>
-                                                        <select class="js-example-basic-single selectArticle_{{loop.index}} article" name="article[]">
+                                                        <input type="hidden" class="articleAnnuler{{loop.index }}" value="{{ art['article']['id']  }}">
+                                                        <select class="js-example-basic-single selectArticle selectArticle_{{loop.index}} "
+                                                                data-id_index = "{{loop.index}}"  name="article[]">
                                                             <option value="0" selected readonly>Coisir un article</option>
                                                             {% for a in articles %}
                                                                 <option value="{{ a.id }}" {% if  art['article']['id'] == a.id %} selected {% endif %}>{{ a.ref }}</option>
@@ -134,13 +136,13 @@
                                     </button>
                                     <button type="button" class="mt-5 btn btn-primary editDevis w-100"
                                     ><i
-                                                class="fa fa-save"></i>Modifier
+                                                class="fa fa-save"></i> Modifier
                                     </button>
                                     {% if devi['statusMaj'] == 1 %}
 
                                     <button type="button" class="mt-5 btn btn-primary transfertDevis w-100"  data-id_devis= {{ devi['id'] }}
                                     ><i
-                                                class="fa fa-share"></i>Transfert vers BL
+                                                class="fa fa-share"></i> Transfert vers BL
                                     </button>
 
                                     {% endif %}

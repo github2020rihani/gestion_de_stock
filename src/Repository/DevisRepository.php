@@ -27,6 +27,16 @@ class DevisRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
             ;
     }
+    public function getLastDevisWithCurrentYear($year) {
+        return $this->createQueryBuilder('d')
+            ->where('d.year = :year')
+            ->setParameter('year' , $year)
+            ->orderBy('d.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult()
+            ;
+    }
     public function findDetailDevi($idDevis) {
         return $this->createQueryBuilder('d')
             ->select('d', 'devisArticle', 'article', 'client', 'city', 'country')

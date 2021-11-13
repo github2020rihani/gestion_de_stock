@@ -54,16 +54,19 @@
                                             </thead>
                                             <tbody>
                                             {% for a in bl.bonlivraisonArticles %}
-                                                <td></td>
-                                                <td>{{ a.article.ref }}</td>
-                                                <td>{{ a.puht|number_format(3) }}</td>
-                                                <td>{{ a.qte }}</td>
-                                                <td>{{ a.remise }}</td>
-                                                <td>{{ a.puhtnet|number_format(3) }}</td>
-                                                <td>{{ a.taxe }}</td>
-                                                <td>{{ a.totalht|number_format(3) }}</td>
-                                                <td>{{ a.puttc|number_format(3) }}</td>
-                                                <td>{{ a.totalttc|number_format(3) }}</td>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>{{ a.article.ref }}</td>
+                                                    <td>{{ a.puht|number_format(3) }}</td>
+                                                    <td>{{ a.qte }}</td>
+                                                    <td>{{ a.remise }}</td>
+                                                    <td>{{ a.puhtnet|number_format(3) }}</td>
+                                                    <td>{{ a.taxe }}</td>
+                                                    <td>{{ a.totalht|number_format(3) }}</td>
+                                                    <td>{{ a.puttc|number_format(3) }}</td>
+                                                    <td>{{ a.totalttc|number_format(3) }}</td>
+                                                </tr>
+
                                             {% endfor %}
 
                                             </tbody>
