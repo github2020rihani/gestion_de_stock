@@ -24,10 +24,10 @@ $(document).ready(function () {
             }
         })
 
-        if (selectAricle.length == 0) {
-            toastr.error('Aucun Article Ajouter');
-            return false;
-        }
+        // if (selectAricle.length == 0) {
+        //     toastr.error('Aucun Article Ajouter');
+        //     return false;
+        // }
 
         $('.article').each(function () {
             if ($(this).val() == 0) {
@@ -63,14 +63,15 @@ $(document).ready(function () {
     })
 });
 
-
+var index;
+var lingArt = [];
 function addLingeArticle() {
     $('.addLingneArticle').click(function () {
         countArticle++;
 
-        var index = ($('.ligne_article').length);
+        lingArt.push(1);
+        index = lingArt.length;
         var contentListArticle = '';
-        index++;
         $.ajax({
             url: Routing.generate('api_get_articles_from_prix'),
             type: "POST",
@@ -140,7 +141,8 @@ function addLingeArticle() {
                     //select article
                     selectArticle(index);
 
-                    changeQte(index);
+                    changeQte();
+
 
 
                 }
@@ -168,39 +170,50 @@ function selectArticle(index) {
     $('.selectArticle_' + index).change(function () {
         error = false;
         var articleExiste = 0;
+        var newTotalttc = 0;
         var art = $(this).val();
 
 
         $('.selectArticle').each(function () {
             if ($(this).val() == art) {
-                articleExiste ++;
+                articleExiste++;
             }
         })
-        if (parseInt(articleExiste) >= 2){
+        if (parseInt(articleExiste) >= 2) {
             toastr.error('cet article a été choisir , veuillez choisir un autre');
             $(this).parent().parent().remove();
-            var newTotalttc = parseFloat( $('.tottalTTC').val()) - parseFloat($('.total_' + index).val());
-            $('.tottalTTC').val(newTotalttc.toFixed(3));
+            $('.total').each(function () {
+                newTotalttc =  newTotalttc +parseFloat($(this).val());
+                $('.tottalTTC').val(newTotalttc.toFixed(3));
+
+            })
             return false;
         }
         $('.qte_' + index).attr('readonly', false);
-        // if (selectAricle.includes(parseInt($(this).val()))) {
-        //     toastr.error('cet article a été choisir , veuillez choisir un autre');
-        //     $(this).parent().parent().remove();
-        //     return false;
-        // }
-        // selectAricle.push(parseInt($(this).val()));
-
         $.ajax({
             url: Routing.generate('perso_get_articles_byId'),
             type: "POST",
             data: {id_article: $(this).val()},
             success: function (data) {
                 if (data) {
+                    var newTotalttc = 0 ;
                     $('.descriptionarticle_' + index).text(data[0].article.description);
                     $('.stock_' + index).val(data[0].qte);
                     $('.remise_' + index).val(data[0].article.remise);
                     $('.pventettc_' + index).val((data[0].puVenteTTC).toFixed(3));
+                    $('.total_' +  index).val(0.000);
+                    $('.qte_' + index).val(1);
+
+                    $('.pventettc_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.stock_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.total_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.qte_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.qte_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.total').each(function () {
+                        newTotalttc =  newTotalttc +parseFloat($(this).val());
+                        $('.tottalTTC').val(newTotalttc.toFixed(3));
+
+                    })
 
                 }
 
@@ -210,23 +223,29 @@ function selectArticle(index) {
             }
         })
 
+
     })
 
 
 }
 
 
-function changeQte(index) {
+function changeQte() {
     $('.qte').blur("input", function (e) {
+        var index = $(this).data('index');
+        console.log(index);
+        var idart = $(this).data('id_art');
         var totalTTC = 0;
         var total = 0;
-        console.log($(this).val())
-        console.log($('.stock_' + index).val())
-        if (($(this).val() > ($('.stock_' + index).val()))) {
+        // console.log($(this).val())
+        // console.log($('.stock_' + idart).val())
+
+        if (parseInt(($(this).val())) > parseInt(($('.stock_' + index).val()))) {
             toastr.error('la quatité est depasser le stock');
             $(this).val('');
             return false;
         }
+
 
         $(this).attr('value', $(this).val())
         total = (parseInt($(this).val()) * parseFloat($('.pventettc_' + index).val())).toFixed(3);
@@ -242,18 +261,25 @@ function changeQte(index) {
 function changeQteInitial() {
     $('.qte').blur("input", function (e) {
         var index = $(this).data('index');
+        console.log(index);
+        var idart = $(this).data('id_art');
         var totalTTC = 0;
         var total = 0;
+        // console.log($(this).val())
+        // console.log($('.stock_' + idart).val())
 
-        if (($(this).val() > ($('.stock_' + index).val()))) {
+        if (parseInt(($(this).val())) > parseInt(($('.stock_' + index).val()))) {
             toastr.error('la quatité est depasser le stock');
             $(this).val('');
             return false;
         }
 
+
         $(this).attr('value', $(this).val())
         total = (parseInt($(this).val()) * parseFloat($('.pventettc_' + index).val())).toFixed(3);
+
         $('.total_' + index).val(parseFloat(total).toFixed(3))
+
         $('.total ').each(function () {
             totalTTC = parseFloat(totalTTC) + parseFloat($(this).val());
         })
@@ -267,6 +293,7 @@ function removeArticle() {
     var totalTTC = 0;
     $(".delete_ligneArticle").click(function (event) {
         var index = $(this).data('index');
+        var id_art = $(this).data('id_article');
         const indexArticle = selectAricle.indexOf(parseInt($(this).data('id_article')));
         if (indexArticle > -1) {
             selectAricle.splice(indexArticle, 1);
@@ -278,7 +305,7 @@ function removeArticle() {
 
         //update total ttc
         $('.total').each(function () {
-            totalTTC = parseFloat($('.tottalTTC').val()) - parseFloat($(this).val());
+            totalTTC = parseFloat($('.tottalTTC').val()) - parseFloat($('.totalArt_' + id_art).val());
         })
         $('.tottalTTC').val((totalTTC).toFixed(3))
 
@@ -295,8 +322,12 @@ function getArticlesDevis(id) {
         data: {id_devis: id},
         success: function (data) {
             if (data) {
-                selectAricle.push(parseInt(data));
-                console.log(selectAricle)
+                selectAricle.push((data));
+                for (var k = 0; k < data.length; k++) {
+                    lingArt.push(data[k]);
+
+                }
+                console.log('initial select checked---- '  + selectAricle[0])
 
 
             }
@@ -363,46 +394,37 @@ function transfertDevis() {
     })
 }
 
-var OldArt  ;
+var OldArt;
+
 function selectArticleInitial() {
 
     $('.selectArticle').change(function () {
         var index = $(this).data('id_index');
         error = false;
         var articleExiste = 0;
+       var newTotalttc = 0 ;
         var art = $(this).val();
 
 
         $('.selectArticle').each(function () {
             if ($(this).val() == art) {
-                articleExiste ++;
+                articleExiste++;
             }
         })
-        if (parseInt(articleExiste) >= 2){
+        if (parseInt(articleExiste) >= 2) {
             toastr.error('cet article a été choisir , veuillez choisir un autre');
             $(this).parent().parent().remove();
-            var newTotalttc = parseFloat( $('.tottalTTC').val()) - parseFloat($('.total_' + index).val());
-            $('.tottalTTC').val(newTotalttc.toFixed(3));
+            //recalculer total ttc
+            $('.total').each(function () {
+                newTotalttc =  newTotalttc +parseFloat($(this).val());
+                $('.tottalTTC').val(newTotalttc.toFixed(3));
+
+            })
             return false;
         }
 
         console.log('initial ====' + selectAricle)
         $('.qte_' + index).attr('readonly', false);
-        // if (selectAricle.includes(parseInt($(this).val()))) {
-        //     toastr.error('cet article a été choisir , veuillez choisir un autre');
-        //     // $(this).parent().parent().remove();
-        //     return false;
-        // } else {
-        //     selectAricle.push(parseInt($(this).val()));
-        //     // var newTotalttc = parseFloat( $('.tottalTTC').val()) - parseFloat($('.total_' + index).val());
-        //     // $('.tottalTTC').val(newTotalttc.toFixed(3));
-        //     OldArt = $('.articleAnnuler'+index).val();
-        //     const indexArticle = selectAricle.indexOf(parseInt(OldArt));
-        //
-        //     if (indexArticle > -1) {
-        //         selectAricle.splice(indexArticle, 1);
-        //     }
-        // }
 
         $.ajax({
             url: Routing.generate('perso_get_articles_byId'),
@@ -412,10 +434,23 @@ function selectArticleInitial() {
                 if (data) {
                     $('.descriptionarticle_' + index).text(data[0].article.description);
                     $('.stock_' + index).val(data[0].qte);
-                    $('.qte_' + index).val(0);
                     $('.remise_' + index).val(data[0].article.remise);
                     $('.pventettc_' + index).val((data[0].puVenteTTC).toFixed(3));
-                    $('.total_' + index).val(0.000)
+                    $('.total_' +  index).val(0.000);
+                    $('.qte_' + index).val(1);
+
+                    $('.pventettc_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.stock_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.total_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.qte_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.qte_' + index).attr('data-id_art',  data[0].article.id);
+
+                    $('.total').each(function () {
+                        newTotalttc =  newTotalttc +parseFloat($(this).val());
+                        $('.tottalTTC').val(newTotalttc.toFixed(3));
+
+                    })
+
 
                 }
 

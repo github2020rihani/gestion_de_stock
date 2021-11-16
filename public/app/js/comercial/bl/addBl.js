@@ -83,8 +83,7 @@ function addLingeArticleBl() {
                     //remove ligne achat
                     $(".delete_ligneArticle_" + index).click(function (event) {
                         countArticle--;
-                        var totalHtGlobal = 0;
-                        var totalTTCGlobal = 0;
+
 
 
                         const indexArticle = selectAricle.indexOf(parseInt($(this).data('id_art')));
@@ -92,17 +91,19 @@ function addLingeArticleBl() {
                             selectAricle.splice(indexArticle, 1);
                         }
                         $(this).parent().parent().remove();
+                        var totalHtGlobal = 0;
+                        var totalTTCGlobal = 0;
                         //total ht global
                         $('.totalht').each(function () {
                             totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
-                            $('.total_ht_global').text((totalHtGlobal).toFixed(3))
+                            console.log(totalHtGlobal);
                         })
+                        $('.total_ht_global').text(parseFloat(totalHtGlobal).toFixed(3))
 
                         //totalttcglobal
                         totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
                         $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
 
-                        console.log('article  checked apre remove ----' , selectAricle);
 
                     });
                     //select article
@@ -132,8 +133,9 @@ function changeQteArtBl() {
         var totalHtGlobal = 0;
         var totalTTCGlobal = 0;
 
-        if (($(this).val() > ($('.stock_' + index).val()))) {
-            toastr.error('La quatité est depassé le stock');
+
+        if (parseInt(($(this).val())) > parseInt(($('.stock_' + index).val()))) {
+            toastr.error('la quatité est depasser le stock');
             $(this).val('');
             return false;
         }
@@ -149,8 +151,8 @@ function changeQteArtBl() {
         //total ht global
         $('.totalht').each(function () {
             totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
-            $('.total_ht_global').text((totalHtGlobal).toFixed(3))
         })
+        $('.total_ht_global').text((totalHtGlobal).toFixed(3))
 
         //totalttcglobal
         totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
@@ -191,34 +193,6 @@ function selectArticleBl(index) {
 
 
         $('.qte_' + index).attr('readonly', false);
-        // if (selectAricle.includes(parseInt($(this).val()))) {
-        //     var totalHtGlobal = 0;
-        //     var totalTTCGlobal = 0;
-        //     countArticle--;
-        //     toastr.error('cet article a été choisir , veuillez choisir un autre');
-        //     //
-        //     const indexArticle = selectAricle.indexOf(parseInt($(this).val()));
-        //     if (indexArticle > -1) {
-        //         selectAricle.splice(indexArticle, 1);
-        //     }
-        //     $(this).parent().parent().remove();
-        //
-        //     //total ht global
-        //     $('.totalht').each(function () {
-        //         totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
-        //         $('.total_ht_global').text((totalHtGlobal).toFixed(3))
-        //     })
-        //
-        //     //totalttcglobal
-        //     totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
-        //     $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
-        //
-        //     console.log('article checked change ----' , selectAricle);
-        //
-        //     return false;
-        // }
-        // selectAricle.push(parseInt($(this).val()));
-        // console.log('article checked----' , selectAricle);
 
         $.ajax({
             url: Routing.generate('perso_get_articles_byId'),
@@ -226,11 +200,32 @@ function selectArticleBl(index) {
             data: {id_article: $(this).val()},
             success: function (data) {
                 if (data) {
+                    var totalHtGlobal = 0 ;
                     $('.puht_' + index).val((data[0].puVenteHT).toFixed(3));
                     $('.stock_' + index).val((data[0].qte));
                     $('.remise_' + index).val(data[0].article.remise);
                     $('.puhtnet_' + index).val((data[0].puVenteHT).toFixed(3));
                     $('.delete_ligneArticle_'+index).attr('data-id_art',data[0].article.id )
+                    $('.totalht_' +  index).val(0.000);
+                    $('.puttc_' +  index).val(0.000);
+                    $('.totalttc_' +  index).val(0.000);
+                    $('.qte_' + index).val(0);
+
+                    $('.totalht_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.puttc_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.totalttc_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.qte_' + index).attr('data-id_art',  data[0].article.id);
+                    //total ht global
+                    $('.totalht').each(function () {
+                        totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
+                        $('.total_ht_global').text((totalHtGlobal).toFixed(3))
+                    })
+
+                    //totalttcglobal
+                    totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
+                    $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
+
+
                 }
 
             },
@@ -259,11 +254,11 @@ function saveBl() {
             }
         })
 
-        if (selectAricle.length == 0) {
-            toastr.error('Aucun Article Ajouter')
-            error = true;
-            return true;
-        }
+        // if (selectAricle.length == 0) {
+        //     toastr.error('Aucun Article Ajouter')
+        //     error = true;
+        //     return true;
+        // }
 
         $('.article').each(function () {
             if ($(this).val() == 0) {

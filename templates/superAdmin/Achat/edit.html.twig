@@ -148,7 +148,7 @@
                                                                     class="fa fa-trash"></i></button>
                                                     </th>
                                                     <td>
-                                                        <input type="hidden" class="articleAnnuler{{loop.index }}" value="{{ art['article']['id']  }}">
+{#                                                        <input type="hidden" class="articleAnnuler{{loop.index }}" value="{{ art['article']['id']  }}">#}
 
                                                         <select class="js-example-basic-single article selectArticle selectArticle_{{ loop.index }}"
                                                                 data-id_index="{{ loop.index }}"
@@ -167,26 +167,26 @@
                                                         <input type="text" name="puhtnet[]"
                                                                value="{{ article['puhtnet']|number_format(3) }}"
                                                                data-index="{{ loop.index }}"
-                                                               class="form-control puhtnet puhtnet_{{ loop.index }}">
+                                                               class="form-control puhtnet  puhtnet_{{ loop.index }} puhtnetArt_{{ loop.index }}">
                                                     </td>
                                                     <td>
                                                         <input type="text" min="1" name="qte[]"
                                                                value="{{ article['qte'] }}"
                                                                data-index="{{ loop.index }}"
-                                                               class="form-control qte qte_{{ loop.index }}">
+                                                               class="form-control qte qte_{{ loop.index }} qteArt_{{ loop.index }}">
 
                                                     </td>
                                                     <td>
                                                         <input type="text" value="19" name="tva[]"
                                                                data-index="{{ loop.index }}"
-                                                               class="form-control  tva tva_{{ loop.index }}" readonly>
+                                                               class="form-control  tva tva_{{ loop.index }}"  readonly>
 
                                                     </td>
                                                     <td>
                                                         <input type="text" name="puttc[]"
                                                                value="{{ article['puttc']|number_format(3) }}"
                                                                data-index="{{ loop.index }}"
-                                                               class="form-control puttc  puttc_{{ loop.index }}"
+                                                               class="form-control puttc  puttcArt{{ loop.index }} puttc_{{ loop.index }}"
                                                                readonly>
 
                                                     </td>
@@ -194,14 +194,14 @@
                                                         <input type="text" name="marge[]"
                                                                value="{{ article['marge']|number_format(2) }}"
                                                                data-index="{{ loop.index }}"
-                                                               class="form-control marge marge_{{ loop.index }}" readonly>
+                                                               class="form-control marge margeArt_{{ loop.index }} marge_{{ loop.index }}" readonly>
 
                                                     </td>
                                                     <td>
                                                         <input type="text" name="pventettc[]"
                                                                value="{{ article['pventettc']|number_format(3) }}"
                                                                data-index="{{ loop.index }}"
-                                                               class="form-control pventettc pventettc_{{ loop.index }}">
+                                                               class="form-control pventettc pventettc_{{ loop.index }}  pventettcArt_{{ loop.index }}">
 
                                                     </td>
                                                 </tr>

@@ -27,7 +27,7 @@ class InvoiceRepository extends ServiceEntityRepository
             ->orderBy('i.id', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleResult()
+            ->getOneOrNullResult()
             ;
     }
 

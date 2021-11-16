@@ -106,8 +106,8 @@ function addLingeArticleBlEdit() {
                         //total ht global
                         $('.totalht').each(function () {
                             totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
-                            $('.total_ht_global').text((totalHtGlobal).toFixed(3))
                         })
+                        $('.total_ht_global').text((totalHtGlobal).toFixed(3))
 
                         //totalttcglobal
                         totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
@@ -141,8 +141,9 @@ function changeQteArtBlInitial() {
         var totalHtGlobal = 0;
         var totalTTCGlobal = 0;
 
-        if (($(this).val() > ($('.stock_' + index).val()))) {
-            toastr.error('La quatité est depassé le stock');
+
+        if (parseInt(($(this).val())) > parseInt(($('.stock_' + index).val()))) {
+            toastr.error('la quatité est depasser le stock');
             $(this).val('');
             return false;
         }
@@ -158,8 +159,8 @@ function changeQteArtBlInitial() {
         //total ht global
         $('.totalht').each(function () {
             totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
-            $('.total_ht_global').text((totalHtGlobal).toFixed(3))
         })
+        $('.total_ht_global').text((totalHtGlobal).toFixed(3))
 
         //totalttcglobal
         totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
@@ -192,121 +193,56 @@ function selectArticleBlEditInitial() {
             //total ht global
             $('.totalht').each(function () {
                 totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
-                $('.total_ht_global').text((totalHtGlobal).toFixed(3))
             })
+            $('.total_ht_global').text((totalHtGlobal).toFixed(3))
 
             //totalttcglobal
             totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
             $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
             return false;
         }
-//if new article  existe
-//         if (selectAricle[0].includes(parseInt($(this).val()))) {
-//
-//             countArticle--;
-//             toastr.error('cet article a été choisir , veuillez choisir un autre');
-//             if (selectAricle[0].includes(parseInt(($(this).val())))) {
-//                 const indexArticle = selectAricle[0].indexOf(parseInt($(this).val()));
-//                 if (indexArticle > -1) {
-//                     selectAricle[0].splice(indexArticle, 1);
-//                 }
-//                 articleToDelete.push(parseInt($(this).data('old_article')));
-//                 $('.articleToDelete').val(articleToDelete);
-//             }
-//
-//             $(this).parent().parent().remove();
-//             //remove old article
-//
-//
-//
-//
-//
-//             //total ht global
-//             $('.totalht').each(function () {
-//                 totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
-//                 $('.total_ht_global').text((totalHtGlobal).toFixed(3))
-//             })
-//
-//             //totalttcglobal
-//             totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
-//             $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
-//
-//             console.log('initial select checked---- '  + selectAricle[0])
-//
-//         }
-        // else {
-        //     //new article not exist
-        //
-        //     if (!articleToDelete.includes(parseInt($(this).data('old_article')))) {
-        //         articleToDelete.push(parseInt($(this).data('old_article')));
-        //         $('.articleToDelete').val(articleToDelete);
-        //     }
-        //
-        //     if (selectAricle[0].includes(parseInt($(this).data('old_article')))) {
-        //         countArticle--;
-        //         const indexArticle = selectAricle[0].indexOf(parseInt($(this).data('old_article')));
-        //         if (indexArticle > -1) {
-        //             selectAricle[0].splice(indexArticle, 1);
-        //         }
-        //     }
-        //
-        //     if (selectAricle[0].includes(parseInt($(this).val()))) {
-        //         countArticle--;
-        //         const indexArticle = selectAricle[0].indexOf(parseInt($(this).val()));
-        //         if (indexArticle > -1) {
-        //             selectAricle[0].splice(indexArticle, 1);
-        //         }
-        //     }else{
-        //         selectAricle[0].push(parseInt($(this).val()));
-        //
-        //     }
-        //
-        //
-        //     console.log(' select article delte afer change  not exist---- '  + articleToDelete)
-        //     console.log(' select article  afer change  not exist---- '  + selectAricle)
-        //         $.ajax({
-        //         url: Routing.generate('perso_get_articles_byId'),
-        //         type: "POST",
-        //         data: {id_article: $(this).val()},
-        //         success: function (data) {
-        //             if (data) {
-        //                 $('.puht_' + indexOfSelect).val((data[0].puVenteHT).toFixed(3));
-        //                 $('.stock_' + indexOfSelect).val((data[0].qte));
-        //                 $('.remise_' + indexOfSelect).val(data[0].article.remise);
-        //                 $('.puhtnet_' + indexOfSelect).val((data[0].puVenteHT).toFixed(3));
-        //                 $('.qte_' + indexOfSelect).val(0);
-        //                 $('.qte_' + indexOfSelect).val(0);
-        //                 $('.totalht_' + indexOfSelect).val(0.000);
-        //                 $('.puttc_' + indexOfSelect).val(0.000);
-        //                 $('.totalttc_' + indexOfSelect).val(0.000);
-        //             }
-        //
-        //             if ($('.qte_' + indexOfSelect).val() == 0) {
-        //                 //total ht global
-        //                 $('.totalht').each(function () {
-        //                     totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
-        //                     $('.total_ht_global').text((totalHtGlobal).toFixed(3))
-        //                 })
-        //
-        //                 //totalttcglobal
-        //                 totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
-        //                 $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
-        //             }
-        //
-        //
-        //         },
-        //         error: function () {
-        //             alert('something wrong')
-        //         }
-        //     })
-        // }
 
-        //remove old article
-        // articleToDelete.push(parseInt($(this).data('old_article')));
-        // $('.articleToDelete').val(articleToDelete);
-        // console.log(' select article delte afer change exist---- '  + articleToDelete)
+        $('.qte_' + indexOfSelect).attr('readonly', false);
+
+        $.ajax({
+            url: Routing.generate('perso_get_articles_byId'),
+            type: "POST",
+            data: {id_article: $(this).val()},
+            success: function (data) {
+                if (data) {
+                    var totalHtGlobal = 0 ;
+                    $('.puht_' + indexOfSelect).val((data[0].puVenteHT).toFixed(3));
+                    $('.stock_' + indexOfSelect).val((data[0].qte));
+                    $('.remise_' + indexOfSelect).val(data[0].article.remise);
+                    $('.puhtnet_' + indexOfSelect).val((data[0].puVenteHT).toFixed(3));
+                    $('.delete_ligneArticle_'+indexOfSelect).attr('data-id_art',data[0].article.id )
+                    $('.totalht_' +  indexOfSelect).val(0.000);
+                    $('.puttc_' +  indexOfSelect).val(0.000);
+                    $('.totalttc_' +  indexOfSelect).val(0.000);
+                    $('.qte_' + indexOfSelect).val(0);
+
+                    $('.totalht_' + indexOfSelect).attr('data-id_art',  data[0].article.id);
+                    $('.puttc_' + indexOfSelect).attr('data-id_art',  data[0].article.id);
+                    $('.totalttc_' + indexOfSelect).attr('data-id_art',  data[0].article.id);
+                    $('.qte_' + indexOfSelect).attr('data-id_art',  data[0].article.id);
+                    //total ht global
+                    $('.totalht').each(function () {
+                        totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
+                        $('.total_ht_global').text((totalHtGlobal).toFixed(3))
+                    })
+
+                    //totalttcglobal
+                    totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
+                    $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
 
 
+                }
+
+            },
+            error: function () {
+                alert('something wrong')
+            }
+        })
 
     })
 
@@ -330,8 +266,8 @@ function removeArticleInitial() {
             //total ht global
             $('.totalht').each(function () {
                 totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
-                $('.total_ht_global').text((totalHtGlobal).toFixed(3))
             })
+            $('.total_ht_global').text((totalHtGlobal).toFixed(3))
 
             //totalttcglobal
             totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
@@ -363,11 +299,11 @@ function updateBL() {
             }
         })
 
-        if (selectAricle.length == 0) {
-            toastr.error('Aucun Article Ajouter')
-            error = true;
-            return true;
-        }
+        // if (selectAricle.length == 0) {
+        //     toastr.error('Aucun Article Ajouter')
+        //     error = true;
+        //     return true;
+        // }
 
         $('.article').each(function () {
             if ($(this).val() == 0) {
@@ -461,9 +397,8 @@ function changeQteArtBl2() {
         //total ht global
         $('.totalht').each(function () {
             totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
-            $('.total_ht_global').text((totalHtGlobal).toFixed(3))
         })
-
+        $('.total_ht_global').text((totalHtGlobal).toFixed(3))
         //totalttcglobal
         totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
         $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
@@ -502,34 +437,7 @@ function selectArticleBl2(index) {
         }
 
         $('.qte_' + index).attr('readonly', false);
-        // if (selectAricle[0].includes(parseInt($(this).val()))) {
-        //     var totalHtGlobal = 0;
-        //     var totalTTCGlobal = 0;
-        //     countArticle--;
-        //     toastr.error('cet article a été choisir , veuillez choisir un autre');
-        //     //
-        //     // const indexArticle = selectAricle[0].indexOf(parseInt($(this).val()));
-        //     // if (indexArticle > -1) {
-        //     //     selectAricle[0].splice(indexArticle, 1);
-        //     // }
-        //     $(this).parent().parent().remove();
-        //
-        //     //total ht global
-        //     $('.totalht').each(function () {
-        //         totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
-        //         $('.total_ht_global').text((totalHtGlobal).toFixed(3))
-        //     })
-        //
-        //     //totalttcglobal
-        //     totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
-        //     $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
-        //
-        //     console.log(selectAricle[0]);
-        //
-        //     return false;
-        // }
-        // selectAricle[0].push(parseInt($(this).val()));
-        // console.log(selectAricle[0]);
+
 
         $.ajax({
             url: Routing.generate('perso_get_articles_byId'),
@@ -537,11 +445,32 @@ function selectArticleBl2(index) {
             data: {id_article: $(this).val()},
             success: function (data) {
                 if (data) {
-                    console.log(data[0])
+                    var totalHtGlobal = 0 ;
                     $('.puht_' + index).val((data[0].puVenteHT).toFixed(3));
                     $('.stock_' + index).val((data[0].qte));
                     $('.remise_' + index).val(data[0].article.remise);
                     $('.puhtnet_' + index).val((data[0].puVenteHT).toFixed(3));
+                    $('.delete_ligneArticle_'+index).attr('data-id_art',data[0].article.id )
+                    $('.totalht_' +  index).val(0.000);
+                    $('.puttc_' +  index).val(0.000);
+                    $('.totalttc_' +  index).val(0.000);
+                    $('.qte_' + index).val(0);
+
+                    $('.totalht_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.puttc_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.totalttc_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.qte_' + index).attr('data-id_art',  data[0].article.id);
+                    //total ht global
+                    $('.totalht').each(function () {
+                        totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
+                        $('.total_ht_global').text((totalHtGlobal).toFixed(3))
+                    })
+
+                    //totalttcglobal
+                    totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
+                    $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
+
+
                 }
 
             },

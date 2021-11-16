@@ -328,30 +328,24 @@ class AchatController extends AbstractController
             $this->em->persist($achat);
             $this->em->flush();
 
-            foreach ($achatexiste[0]['achatArticles'] as $key => $value) {
+            foreach ($achatexiste[0]['achatArticles'] as $key=>$value){
                 //save in stock
                 $articleinStock = $this->stockRepository->findArticleInStockById($value['article']['id']);
                 if ($articleinStock && $articleinStock[0]) {
                     $articleinStock[0]->setQte((int)$articleinStock[0]->getQte() + $value['qte']);
                     $this->em->persist($articleinStock[0]);
                     $this->em->flush();
-                } else {
-                    $stock = new Stock();
-                    $stock->setArticle($this->articleRepository->find($value['article']['id']));
-                    $stock->setQte($value['qte']);
-                    $stock->setDateEntree(new \DateTime('now'));
-                    $this->em->persist($stock);
+
+                    //update table prix
+                    $articleExisteInprix = $this->prixRepository->findByIdArticle($value['article']['id']);
+                    $articleExisteInprix[0]->setQte( (int)$articleinStock[0]->getQte());
+                    $this->em->persist($articleExisteInprix[0]);
                     $this->em->flush();
-                }
-                //save in prix
-                $articleExisteInprix = $this->prixRepository->findByIdArticle($value['article']['id']);
-                if ($articleExisteInprix && $articleExisteInprix[0]) {
                     //verif si exit nexw pri or nn
                     $articleWithNewPriw = $this->achatArticleRepository->findArticleWithNewPrix($value['article']['id'], 'new');
 
                     //si modifier
-
-                    if ($articleWithNewPriw && $articleWithNewPriw[0]) {
+                    if ($articleWithNewPriw && $articleWithNewPriw[0]){
                         $articleExisteInprix[0]->setPuAchaHT($value['puhtnet']);
                         $articleExisteInprix[0]->setPuVenteHT($value['pventeHT']);
                         $articleExisteInprix[0]->setPhAchatTTC($value['puttc']);
@@ -360,7 +354,17 @@ class AchatController extends AbstractController
                         $this->em->persist($articleExisteInprix[0]);
                         $this->em->flush();
                     }
-                } else {
+                }
+                else {
+                    $stock = new Stock();
+                    $stock->setArticle($this->articleRepository->find($value['article']['id']));
+                    $stock->setQte($value['qte']);
+                    $stock->setDateEntree(new \DateTime('now'));
+                    $this->em->persist($stock);
+                    $this->em->flush();
+
+                    //save in prix
+
                     //insert article in prix
                     $prix = new Prix();
                     $prix->setAddedBy($this->getUser());
@@ -374,8 +378,11 @@ class AchatController extends AbstractController
                     $prix->setQte($value['qte']);
                     $this->em->persist($prix);
                     $this->em->flush();
-
                 }
+
+
+
+
 //stocked Article
                 $art = $this->articleRepository->find($value['article']['id']);
                 if ($art->getStocked() == false) {
@@ -384,10 +391,8 @@ class AchatController extends AbstractController
                     $this->em->flush();
                 }
 
-
             }
 
-            //article stocked
             $message = 'Achat a été stocker ';
             $success = true;
         } else {

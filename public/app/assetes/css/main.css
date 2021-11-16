@@ -14377,7 +14377,7 @@ body.menu-side-right .layout-w {
 }
 
 .menu-w .logo-w img {
-  width: 40px;
+  width: 90px;
   height: auto;
   display: inline-block;
   vertical-align: middle;
@@ -18112,7 +18112,7 @@ a.el-tablo:hover .label {
 
 .auth-box-w .logo-w {
   text-align: center;
-  padding: 20%;
+  padding: 10%;
 }
 
 .auth-box-w .auth-header {

@@ -112,9 +112,9 @@
                             <div class="element-box" style="background-color: rgba(12,12,12,0.25)">
 
                                 <h4 class="card-title">Total HT</h4>
-                                <p class="card-text total_ht">{{ totalHTglobal }} </p>
+                                <p class="card-text total_ht">{{ totalHTglobal|number_format(3) }} </p>
                                 <h4 class="card-title">Total remise</h4>
-                                <p class="card-text remise">{{ totalRemiseGlobal }}</p>
+                                <p class="card-text remise">{{ totalRemiseGlobal|number_format(3) }}</p>
                                 <h4 class="card-title">TVA</h4>
                                 <p class="card-text total_tva">{{ taxe/100 }}</p>
                                 {#                                <h4 class="card-title">Timbre</h4>#}
@@ -123,7 +123,7 @@
                                 {#                                <p class="card-text transport">0.00</p>#}
                                 <hr>
                                 <h4 class="card-title">Total TTC</h4>
-                                <p class="card-text total_ttc">{{ totalttcGlobal }}</p>
+                                <p class="card-text total_ttc">{{ totalttcGlobal|number_format(3) }}</p>
                                 <h4 class="card-title">Type du paiement</h4>
                                 <select name="type_payement" class="form-control type_payement">
                                     <option value="0" selected disabled>Choisir le type du paiement</option>

@@ -141,7 +141,7 @@ function changeQteArtBlInitial() {
         var totalHtGlobal = 0;
         var totalTTCGlobal = 0;
 
-        if (($(this).val() > ($('.stock_' + index).val()))) {
+        if (parseInt(($(this).val())) > parseInt(($('.stock_' + index).val()))) {
             toastr.error('La quatité est depassé le stock');
             $(this).val('');
             return false;
@@ -172,6 +172,8 @@ function selectArticleBlEditInitial() {
     $('.selectArticle').change(function () {
         error = false;
         indexOfSelect = $(this).data('index');
+        $('.qte_' + indexOfSelect).attr('readonly', false);
+
         var articleExiste = 0;
         var art = $(this).val();
 
@@ -209,24 +211,26 @@ function selectArticleBlEditInitial() {
                     $('.stock_' + indexOfSelect).val((data[0].qte));
                     $('.remise_' + indexOfSelect).val(data[0].article.remise);
                     $('.puhtnet_' + indexOfSelect).val((data[0].puVenteHT).toFixed(3));
+                    $('.delete_ligneArticle_'+indexOfSelect).attr('data-id_art',data[0].article.id )
+                    $('.totalht_' +  indexOfSelect).val(0.000);
+                    $('.puttc_' +  indexOfSelect).val(0.000);
+                    $('.totalttc_' +  indexOfSelect).val(0.000);
                     $('.qte_' + indexOfSelect).val(0);
-                    $('.qte_' + indexOfSelect).val(0);
-                    $('.totalht_' + indexOfSelect).val(0.000);
-                    $('.puttc_' + indexOfSelect).val(0.000);
-                    $('.totalttc_' + indexOfSelect).val(0.000);
-                }
 
-                if ($('.qte_' + indexOfSelect).val() == 0) {
-                    //total ht global
-                    $('.totalht').each(function () {
-                        totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
-                        $('.total_ht_global').text((totalHtGlobal).toFixed(3))
-                    })
-
-                    //totalttcglobal
-                    totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19 +0.600;
-                    $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
+                    $('.totalht_' + indexOfSelect).attr('data-id_art',  data[0].article.id);
+                    $('.puttc_' + indexOfSelect).attr('data-id_art',  data[0].article.id);
+                    $('.totalttc_' + indexOfSelect).attr('data-id_art',  data[0].article.id);
+                    $('.qte_' + indexOfSelect).attr('data-id_art',  data[0].article.id);
                 }
+                //total ht global
+                $('.totalht').each(function () {
+                    totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
+                    $('.total_ht_global').text((totalHtGlobal).toFixed(3))
+                })
+
+                //totalttcglobal
+                totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19 +0.600;
+                $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
 
 
             },
@@ -325,11 +329,11 @@ function updateInvoice() {
             }
         })
 
-        if (selectAricle.length == 0) {
-            toastr.error('Aucun Article Ajouter')
-            error = true;
-            return true;
-        }
+        // if (selectAricle.length == 0) {
+        //     toastr.error('Aucun Article Ajouter')
+        //     error = true;
+        //     return true;
+        // }
 
         $('.article').each(function () {
             if ($(this).val() == 0) {
@@ -477,6 +481,25 @@ function selectArticleBl2(index) {
                     $('.stock_' + index).val((data[0].qte));
                     $('.remise_' + index).val(data[0].article.remise);
                     $('.puhtnet_' + index).val((data[0].puVenteHT).toFixed(3));
+                    $('.delete_ligneArticle_'+index).attr('data-id_art',data[0].article.id )
+                    $('.totalht_' +  index).val(0.000);
+                    $('.puttc_' +  index).val(0.000);
+                    $('.totalttc_' +  index).val(0.000);
+                    $('.qte_' + index).val(0);
+
+                    $('.totalht_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.puttc_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.totalttc_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.qte_' + index).attr('data-id_art',  data[0].article.id);
+                    //total ht global
+                    $('.totalht').each(function () {
+                        totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
+                        $('.total_ht_global').text((totalHtGlobal).toFixed(3))
+                    })
+
+                    //totalttcglobal
+                    totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19;
+                    $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
                 }
 
             },

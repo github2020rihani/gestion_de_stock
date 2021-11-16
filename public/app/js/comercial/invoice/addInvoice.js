@@ -129,7 +129,7 @@ function changeQteArtBl() {
         var totalHtGlobal = 0;
         var totalTTCGlobal = 0;
 
-        if (($(this).val() > ($('.stock_' + index).val()))) {
+        if (parseInt(($(this).val())) > parseInt(($('.stock_' + index).val()))) {
             toastr.error('La quatité est depassé le stock');
             $(this).val('');
             return false;
@@ -187,34 +187,6 @@ function selectArticleBl(index) {
             $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
             return false;
         }
-        // if (selectAricle.includes(parseInt($(this).val()))) {
-        //     var totalHtGlobal = 0;
-        //     var totalTTCGlobal = 0;
-        //     countArticle--;
-        //     toastr.error('cet article a été choisir , veuillez choisir un autre');
-        //     //
-        //     const indexArticle = selectAricle.indexOf(parseInt($(this).data('index')));
-        //     if (indexArticle > -1) {
-        //         selectAricle.splice(indexArticle, 1);
-        //     }
-        //     $(this).parent().parent().remove();
-        //
-        //     //total ht global
-        //     $('.totalht').each(function () {
-        //         totalHtGlobal = totalHtGlobal + parseFloat($(this).data('index'));
-        //         $('.total_ht_global').text((totalHtGlobal).toFixed(3))
-        //     })
-        //
-        //     //totalttcglobal
-        //     totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19+0.600;
-        //     $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
-        //     console.log(selectAricle);
-        //
-        //
-        //     return false;
-        // }
-        // selectAricle.push(parseInt($(this).data('index')));
-        // console.log(selectAricle);
 
         $.ajax({
             url: Routing.generate('perso_get_articles_byId'),
@@ -222,11 +194,31 @@ function selectArticleBl(index) {
             data: {id_article: $(this).val()},
             success: function (data) {
                 if (data) {
-                    console.log(data[0])
+                    var totalHtGlobal = 0;
+                    var totalTTCGlobal = 0;
                     $('.puht_' + index).val((data[0].puVenteHT).toFixed(3));
                     $('.stock_' + index).val((data[0].qte));
                     $('.remise_' + index).val(data[0].article.remise);
                     $('.puhtnet_' + index).val((data[0].puVenteHT).toFixed(3));
+                    $('.delete_ligneArticle_'+index).attr('data-id_art',data[0].article.id )
+                    $('.totalht_' +  index).val(0.000);
+                    $('.puttc_' +  index).val(0.000);
+                    $('.totalttc_' +  index).val(0.000);
+                    $('.qte_' + index).val(0);
+                    $('.totalht_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.puttc_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.totalttc_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.qte_' + index).attr('data-id_art',  data[0].article.id);
+
+                    //total ht global
+                    $('.totalht').each(function () {
+                        totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
+                        $('.total_ht_global').text((totalHtGlobal).toFixed(3))
+                    })
+
+                    //totalttcglobal
+                    totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19+0.600;
+                    $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
                 }
 
             },
@@ -255,11 +247,11 @@ function saveInvoice() {
             }
         })
 
-        if (selectAricle.length == 0) {
-            toastr.error('Aucun Article Ajouter')
-            error = true;
-            return true;
-        }
+        // if (selectAricle.length == 0) {
+        //     toastr.error('Aucun Article Ajouter')
+        //     error = true;
+        //     return true;
+        // }
 
         $('.article').each(function () {
             if ($(this).val() == 0) {

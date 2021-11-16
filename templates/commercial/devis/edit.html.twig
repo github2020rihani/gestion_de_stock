@@ -85,6 +85,7 @@
                                                                 data-toggle="tooltip" type="button"
                                                                 data-id_article= "{{ art['article']['id']}}"
                                                                 data-index="{{ loop.index }}"
+
                                                                 data-placement="top" title="" data-original-title="Supprimer"><i
                                                                     class="fa fa-trash"></i></button>
                                                     </th>
@@ -101,23 +102,23 @@
                                                     </td>
                                                     <td class="descriptionarticle_{{loop.index}}">{{ art['article']['description'] }}</td>
                                                     <td>
-                                                        <input type="text" name="stock" data-index = "{{loop.index}}" value="{{ art['article']['prixes'][0]['qte'] }}" class="form-control  stock stock_{{loop.index}}" readonly >
+                                                        <input type="text" name="stock" data-index = "{{loop.index}}" value="{{ art['article']['prixes'][0]['qte'] }}" class="form-control  stock stock_{{loop.index}} stockArt_{{ art['article']['id']}}" readonly >
                                                     </td>
                                                     <td>
                                                         {%  if devi['statusMaj']  %} {% else %}{{ art['qte'] }} {% endif %}
-                                                        <input type="text" min="1" name="qte[]" pattern="[0-9]"  data-index ="{{loop.index}}" value="{%  if devi['statusMaj']  %} 0 {% else %}{{ art['qte'] }} {% endif %}" class="form-control qte qte_{{loop.index}}" >
+                                                        <input type="text" min="1" name="qte[]" pattern="[0-9]"  data-index ="{{loop.index}}" value="{%  if devi['statusMaj']  %} 0 {% else %}{{ art['qte'] }} {% endif %}" class="form-control qte qte_{{loop.index}} qteArt_{{ art['article']['id']}}" data-id_art="{{ art['article']['id']}}" >
 
                                                     </td>
                                                     <td>
-                                                        <input type="text" value="{{ art['article']['remise'] }}" name="remise" data-index = "{{loop.index}}"  class="form-control remise remise_{{loop.index}}" readonly>
+                                                        <input type="text" value="{{ art['article']['remise'] }}" name="remise" data-index = "{{loop.index}}"  class="form-control remise remise_{{loop.index}} remise_{{ art['article']['id']}}" readonly>
 
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="pventettc[]" value="{{  art['article']['prixes'][0]['puVenteTTC']|number_format(3) }}" data-index = "{{loop.index}}" class="form-control pventettc pventettc_{{loop.index}}" readonly>
+                                                        <input type="text" name="pventettc[]" value="{{  art['article']['prixes'][0]['puVenteTTC']|number_format(3) }}" data-index = "{{loop.index}}" class="form-control pventettc pventettc_{{loop.index}} pventettcArt_{{ art['article']['id']}}" readonly>
 
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="total[]" value=" {%  if devi['statusMaj']  %} 0.000 {% else %}{{ art['total']|number_format(3) }} {% endif %}" data-index = "{{loop.index}}" class="form-control total total_{{loop.index}}" readonly>
+                                                        <input type="text" name="total[]" value=" {%  if devi['statusMaj']  %} 0.000 {% else %}{{ art['total']|number_format(3) }} {% endif %}" data-index = "{{loop.index}}" class="form-control total total_{{loop.index}} totalArt_{{ art['article']['id']}}" readonly>
 
                                                     </td>
                                                 </tr>

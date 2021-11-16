@@ -35,7 +35,11 @@
         --------------------><!--------------------
         START - Main Menu
         -------------------->
-        <div class="menu-w color-scheme-dark color-style-bright menu-position-top menu-layout-compact sub-menu-style-over sub-menu-color-bright selected-menu-color-light menu-activated-on-hover menu-with-image menu-has-selected-link">
+{#        <div class="menu-w color-scheme-dark color-style-bright menu-position-top#}
+{#        menu-layout-compact sub-menu-style-over sub-menu-color-bright selected-menu-color-light#}
+{#        menu-activated-on-hover menu-with-image menu-has-selected-link">     #}
+
+            <div class="menu-w menu-activated-on-hover menu-has-selected-link selected-menu-color-light color-scheme-light color-style-transparent sub-menu-color-bright menu-position-top menu-layout-compact sub-menu-style-flyout">
             <div class="logo-w">
                 {% if  app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
 
@@ -45,9 +49,9 @@
                         {% endif %}
 
                         <img alt="" src="{{ asset("app/images/logo-soffal.png") }}">
-                        <div class="logo-label">
-                            SOFFAL
-                        </div>
+{#                        <div class="logo-label">#}
+{#                            SOFFAL#}
+{#                        </div>#}
                     </a>
                 </a>
             </div>

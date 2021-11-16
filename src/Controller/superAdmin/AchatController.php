@@ -336,22 +336,16 @@ class AchatController extends AbstractController
                     $articleinStock[0]->setQte((int)$articleinStock[0]->getQte() + $value['qte']);
                     $this->em->persist($articleinStock[0]);
                     $this->em->flush();
-                } else {
-                    $stock = new Stock();
-                    $stock->setArticle($this->articleRepository->find($value['article']['id']));
-                    $stock->setQte($value['qte']);
-                    $stock->setDateEntree(new \DateTime('now'));
-                    $this->em->persist($stock);
+
+                    //update table prix
+                    $articleExisteInprix = $this->prixRepository->findByIdArticle($value['article']['id']);
+                    $articleExisteInprix[0]->setQte( (int)$articleinStock[0]->getQte());
+                    $this->em->persist($articleExisteInprix[0]);
                     $this->em->flush();
-                }
-                //save in prix
-                $articleExisteInprix = $this->prixRepository->findByIdArticle($value['article']['id']);
-                if ($articleExisteInprix && $articleExisteInprix[0]) {
                     //verif si exit nexw pri or nn
                     $articleWithNewPriw = $this->achatArticleRepository->findArticleWithNewPrix($value['article']['id'], 'new');
 
                     //si modifier
-
                     if ($articleWithNewPriw && $articleWithNewPriw[0]){
                         $articleExisteInprix[0]->setPuAchaHT($value['puhtnet']);
                         $articleExisteInprix[0]->setPuVenteHT($value['pventeHT']);
@@ -361,7 +355,17 @@ class AchatController extends AbstractController
                         $this->em->persist($articleExisteInprix[0]);
                         $this->em->flush();
                     }
-                }else{
+                }
+                else {
+                    $stock = new Stock();
+                    $stock->setArticle($this->articleRepository->find($value['article']['id']));
+                    $stock->setQte($value['qte']);
+                    $stock->setDateEntree(new \DateTime('now'));
+                    $this->em->persist($stock);
+                    $this->em->flush();
+
+                    //save in prix
+
                     //insert article in prix
                     $prix = new Prix();
                     $prix->setAddedBy($this->getUser());
@@ -375,8 +379,10 @@ class AchatController extends AbstractController
                     $prix->setQte($value['qte']);
                     $this->em->persist($prix);
                     $this->em->flush();
-
                 }
+
+
+
 
 //stocked Article
                 $art = $this->articleRepository->find($value['article']['id']);

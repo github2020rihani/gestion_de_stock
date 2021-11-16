@@ -84,9 +84,9 @@ class BondLivraisonController extends AbstractController
         if ($devis && $devis[0]) {
 
             foreach ($devis[0]['devisArticles'] as $key => $devArticle) {
-                $totalHtaricle = (float)$devArticle['article']['prixes'][0]['puVenteHT'] * $devArticle['qte'];
+                $totalHtaricle = round((float)$devArticle['article']['prixes'][0]['puVenteHT'] * $devArticle['qte']);
                 $puttcArticle = (float)$devArticle['article']['prixes'][0]['puVenteHT'] * (float)$_ENV['TVA_ARTICLE'];
-                $totalttcArticle = (float)$puttcArticle * $devArticle['qte'];
+                $totalttcArticle = round((float)$puttcArticle * $devArticle['qte']);
 
                 $devis[0]['devisArticles'][$key]['totalHtArticle'] = $totalHtaricle;
                 $devis[0]['devisArticles'][$key]['puttcArticle'] = $puttcArticle;
@@ -361,7 +361,7 @@ class BondLivraisonController extends AbstractController
             foreach ($devis[0]['devisArticles'] as $key => $devArticle) {
                 $totalHtaricle = (float)$devArticle['article']['prixes'][0]['puVenteHT'] * $devArticle['qte'];
                 $puttcArticle = (float)$devArticle['article']['prixes'][0]['puVenteHT'] * (float)$_ENV['TVA_ARTICLE'];
-                $totalttcArticle = (float)$puttcArticle * $devArticle['qte'];
+                $totalttcArticle = round((float)$puttcArticle * $devArticle['qte']);
                 $totalHt = $totalHt + (float)$totalHtaricle;
                 $totalRemise = $totalRemise + (float)$devArticle['article']['remise'];
                 $totalttcGlobal = $totalttcGlobal + (float)$totalHt;

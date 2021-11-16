@@ -72,12 +72,17 @@ class StockController extends AbstractController
         }
 
         $articleStocked = $this->stockRepository->findArticleInStockById((int)$article);
+        $prixArticle = $this->prixRepository->findBy(array('article' => $this->articleRepository->find($article)));
+
         if ($articleStocked && $articleStocked[0]) {
 
             if ($type == 'add') {
                 $articleStocked[0]->setQte((int)$articleStocked[0]->getQte() + (int)$newQte);
                 $articleStocked[0]->setInventer(false);
 
+                $prixArticle[0]->setQte((int)$prixArticle[0]->getQte() + (int)$newQte);
+                $this->em->persist($prixArticle[0]);
+                $this->em->flush();
             } else {
                 if ((int)$newQte > (int)$articleStocked[0]->getQte()) {
                     $message = 'La quantité est supérieur de la quantité du base ';
@@ -86,38 +91,31 @@ class StockController extends AbstractController
 
                     $articleStocked[0]->setQte((int)$articleStocked[0]->getQte() - (int)$newQte);
                     $articleStocked[0]->setInventer(false);
+
+                    $prixArticle[0]->setQte((int)$prixArticle[0]->getQte() - (int)$newQte);
+                    $this->em->persist($prixArticle[0]);
+                    $this->em->flush();
+
+                    //update devis article if existe
+                    $articleDevis = $devisArticleRepository->findBy(array('article' => $article));
+
+                    if ($articleDevis) {
+                        foreach ($articleDevis as $key => $art) {
+                            $devis = $devisRepository->findBy(array('id' => $art->getDevi()->getId(), 'status' => 0));
+                            if ($devis && $devis[0]){
+                                $devis[0]->setStatusMaj(true);
+                                $this->em->persist($devis[0]);
+                                $this->em->flush();
+                            }
+
+                        }
+                    }
                 }
             }
 
             $this->em->persist($articleStocked[0]);
             $this->em->flush();
 
-            //update qte in table prix
-            $prixArticle = $this->prixRepository->findBy(array('article' => $this->articleRepository->find($article)));
-            if ($prixArticle[0]) {
-                $prixArticle[0]->setQte((int)$prixArticle[0]->getQte() + (int)$newQte);
-                $this->em->persist($prixArticle[0]);
-                $this->em->flush();
-
-                //update devis article if existe
-                $articleDevis = $devisArticleRepository->findBy(array('article' => $article));
-
-                if ($articleDevis) {
-                    foreach ($articleDevis as $key => $art) {
-                        $devis = $devisRepository->findBy(array('id' => $art->getDevi()->getId(), 'status' => 0));
-                        if ($devis && $devis[0]){
-                            $devis[0]->setStatusMaj(true);
-                            $this->em->persist($devis[0]);
-                            $this->em->flush();
-                        }
-
-                    }
-                }
-
-            } else {
-                $message = 'Article n\'exste pas ';
-                return $this->json(array('message' => $message, 'success' => false));
-            }
 
 
             $message = 'La quantité a été modifier';

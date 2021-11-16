@@ -77,6 +77,7 @@ class DevisController extends AbstractController
             $articles = $request->request->get('article');
             $year =date('Y');
             $lastDevis = $this->devisRepository->getLastDevisWithCurrentYear($year);
+
             if ($lastDevis) {
                 $lastId = 000 + $lastDevis->getId() + 1;
                 $numero_devis =  '000' . $lastId;
@@ -163,12 +164,11 @@ class DevisController extends AbstractController
                 $devisExiste->setCreadetBy($this->getUser());
                 $devisExiste->setClient($client);
                 $totalTTc = 0;
-
                 //delete old article
                 $old_articles = $this->devisArticleRepository->findBy(array('devi' =>$devi[0]['id']));
                 if ($old_articles) {
                     foreach ($old_articles as $key => $value) {
-                        $this->em->remove($old_articles);
+                        $this->em->remove($value);
                         $this->em->flush();
                     }
                 }

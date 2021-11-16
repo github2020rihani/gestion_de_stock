@@ -35,7 +35,7 @@ class BondLivraisonRepository extends ServiceEntityRepository
             ->orderBy('b.id', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleResult()
+            ->getOneOrNullResult()
             ;
     }
 

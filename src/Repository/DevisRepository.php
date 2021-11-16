@@ -34,7 +34,7 @@ class DevisRepository extends ServiceEntityRepository
             ->orderBy('d.id', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleResult()
+            ->getOneOrNullResult()
             ;
     }
     public function findDetailDevi($idDevis) {

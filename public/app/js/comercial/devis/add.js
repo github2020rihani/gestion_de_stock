@@ -46,7 +46,6 @@ $(document).ready(function () {
             //get articles
 
 
-
             $(this).hide();
             $('.formAddDevis').submit();
 
@@ -56,12 +55,13 @@ $(document).ready(function () {
 });
 
 var lingArt = [];
+var index;
 
 function addLingeArticle() {
     $('.addLingneArticle').click(function () {
         countArticle++;
 
-        var index = ($('.ligne_article').length);
+        // var index = ($('.ligne_article').length);
         var contentListArticle = '';
         lingArt.push(1);
         index = lingArt.length;
@@ -133,11 +133,13 @@ function addLingeArticle() {
                     });
                     //select article
                     selectArticle(index);
+                    changeQte();
 
-                    changeQte(index);
+
 
 
                 }
+
             },
             error: function () {
                 alert('something wrong')
@@ -146,6 +148,7 @@ function addLingeArticle() {
 
 
     })
+
 
 }
 
@@ -158,7 +161,7 @@ var error = false;
 
 function selectArticle(index) {
     $('.selectArticle_' + index).change(function () {
-        error= false ;
+        error = false;
         var articleExiste = 0;
         var art = $(this).val();
 
@@ -167,25 +170,21 @@ function selectArticle(index) {
 
         $('.selectArticle').each(function () {
             if ($(this).val() == art) {
-                articleExiste ++;
+                articleExiste++;
             }
         })
-        if (parseInt(articleExiste) >= 2){
+        if (parseInt(articleExiste) >= 2) {
             toastr.error('cet article a été choisir , veuillez choisir un autre');
             $(this).parent().parent().remove();
+            var newTotalttc = 0 ;
+            $('.total').each(function () {
+                newTotalttc =  newTotalttc +parseFloat($(this).val());
+                $('.tottalTTC').val(newTotalttc.toFixed(3));
+
+            })
             return false;
         }
 
-        // if (selectAricle.includes(parseInt($(this).val()))) {
-        //     toastr.error('cet article a été choisir , veuillez choisir un autre');
-        //     const indexArticle = selectAricle.indexOf(parseInt($(this).val()));
-        //     if (indexArticle > -1) {
-        //         selectAricle.splice(indexArticle, 1);
-        //     }
-        //     $(this).parent().parent().remove();
-        //     return false;
-        // }
-        // selectAricle.push(parseInt($(this).val()));
 
         $.ajax({
             url: Routing.generate('perso_get_articles_byId'),
@@ -193,10 +192,23 @@ function selectArticle(index) {
             data: {id_article: $(this).val()},
             success: function (data) {
                 if (data) {
+                    var newTotalttc = 0 ;
                     $('.descriptionarticle_' + index).text(data[0].article.description);
                     $('.stock_' + index).val(data[0].qte);
                     $('.remise_' + index).val(data[0].article.remise);
                     $('.pventettc_' + index).val((data[0].puVenteTTC).toFixed(3));
+                    $('.total_' +  index).val(0.000);
+                    $('.qte_' + index).val(1);
+
+                    $('.pventettc_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.stock_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.total_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.qte_' + index).attr('data-id_art',  data[0].article.id);
+                    $('.total').each(function () {
+                        newTotalttc =  newTotalttc +parseFloat($(this).val());
+                        $('.tottalTTC').val(newTotalttc.toFixed(3));
+
+                    })
 
                 }
 
@@ -206,23 +218,29 @@ function selectArticle(index) {
             }
         })
 
+
     })
 
 
 }
 
 
-function changeQte(index) {
+function changeQte() {
     $('.qte').blur("input", function (e) {
+        var index = $(this).data('index');
+        console.log(index);
+        var idart = $(this).data('id_art');
         var totalTTC = 0;
         var total = 0;
-        console.log($(this).val())
-        console.log($('.stock_' + index).val())
-        if (($(this).val() > ($('.stock_' + index).val()))) {
+        // console.log($(this).val())
+        // console.log($('.stock_' + idart).val())
+
+        if (parseInt(($(this).val())) > parseInt(($('.stock_' + index).val()))) {
             toastr.error('la quatité est depasser le stock');
             $(this).val('');
             return false;
         }
+
 
         $(this).attr('value', $(this).val())
         total = (parseInt($(this).val()) * parseFloat($('.pventettc_' + index).val())).toFixed(3);
