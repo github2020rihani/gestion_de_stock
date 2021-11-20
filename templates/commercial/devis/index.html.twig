@@ -48,6 +48,7 @@
                                 <th>Numéro</th>
                                 <th>Client</th>
                                 <th>Total</th>
+                                <th>Fichier</th>
                                 <th>Transfert vers BL</th>
                                 <th>Action</th>
                             </tr>
@@ -58,6 +59,7 @@
                                 <th>Numéro</th>
                                 <th>Client</th>
                                 <th>Total</th>
+                                <th>Fichier</th>
                                 <th>Transfert vers BL</th>
                                 <th>Action</th>
                             </tr>
@@ -69,6 +71,10 @@
                                     <td>{{ perfex_devis }}{{ d.numero }}</td>
                                     <td>{{ d.client.nom }} {{ d.client.prenom }}</td>
                                     <td>{{ d.totalTTC|number_format(3) }}</td>
+                                    <td>
+                                    {%  if d.file %}    <a class="btn btn-sm btn-primary" href="{{ d.file }}" target="_blank" ><i class="fa fa-file"></i></a> {% else %} - {% endif %}
+
+                                    </td>
                                     <td>
                                         {% if d.status == 2 %}
                                             <span class="mr-2 mb-2 badge badge-success"

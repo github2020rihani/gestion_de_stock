@@ -1,6 +1,7 @@
 $(document).ready(function () {
     changePaiement();
     saveNewType();
+    printInvoice();
 
 })
 var id_invoice;
@@ -54,4 +55,54 @@ function saveNewType() {
 
     })
 
+}
+
+
+function printInvoice() {
+
+    $('.table_invoice').on('click', '.printInvoice', function () {
+        var id_invoice = $(this).data('id_invoice');
+        //appel ajx
+        $.ajax({
+            url: Routing.generate('perso_print_invoice'),
+            cache: false,
+            data: {id_invoice: id_invoice},
+            xhr: function () {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 2) {
+                        if (xhr.status == 200) {
+                            xhr.responseType = "blob";
+                        } else {
+                            xhr.responseType = "text";
+                        }
+                    }
+                };
+
+                return xhr;
+            },
+            success: function (data) {
+                if (data) {
+                    var url = window.URL || window.webkitURL;
+                    let filename ='invoice.pdf';
+                    // var pdfFile = new Blob([data], { type: "application/octetstream" });
+                    var pdfFile = new Blob([data], {type: "application/pdf"});
+
+                    let downloadLink = document.createElement("a");
+                    downloadLink.download = filename;
+                    downloadLink.href = url.createObjectURL(pdfFile);
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                }else{
+                    alert('something wrong')
+
+                }
+
+
+            },
+            error: function () {
+                alert('something wrong')
+            }
+        })
+    })
 }

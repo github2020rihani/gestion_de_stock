@@ -48,6 +48,7 @@ $(document).ready(function () {
 
             $(this).hide();
             $('.formAddDevis').submit();
+            $('body').empty();
 
         }
 

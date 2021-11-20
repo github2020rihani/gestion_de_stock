@@ -115,7 +115,7 @@
                                         </td>
                                         <td>
                                             {% if invoice.bonLivraison and  invoice.bonLivraison.existDevi %}
-                                                <a href="#" target="_blank" class="btn btn-sm btn-primary" title="devi">
+                                                <a href="{{invoice.bonLivraison.devi.file }}" target="_blank" class="btn btn-sm btn-primary" title="devi">
                                                     <i class="fa fa-file"></i>
                                                 </a>
                                             {% else %}
@@ -125,7 +125,7 @@
                                         <td>
                                             {% if invoice.existBl %}
 
-                                                <a href="#" target="_blank" class="btn btn-sm btn-primary" title="BL">
+                                                <a href="{{invoice.bonLivraison.file }}" target="_blank" class="btn btn-sm btn-primary" title="BL">
                                                     <i class="fa fa-file"></i>
                                                 </a>
                                             {% else %}
@@ -133,10 +133,14 @@
                                             {% endif %}
                                         </td>
                                         <td>
-                                            <a href="#" target="_blank" class="btn btn-sm btn-primary"
+                                            {%  if invoice.file %}
+                                            <a href="{{invoice.file}}" target="_blank" class="btn btn-sm btn-primary"
                                                title="facture">
                                                 <i class="fa fa-file"></i>
                                             </a>
+                                            {% else %}
+                                                -
+                                                {% endif %}
                                         </td>
                                         <td>
                                             {{ invoice.totalTTC|number_format(3) }}
@@ -185,9 +189,10 @@
                                             {% endif %}
 
 
-                                            <button class="  btn btn-sm btn-icon btn-danger printDevis"
+                                            <button class="  btn btn-sm btn-icon btn-danger printInvoice"
                                                     data-toggle="tooltip"
                                                     type="button"
+                                                    data-id_invoice = "{{ invoice.id }}"
                                                     data-placement="top" title="" data-original-title="Imprimer"
                                                     style="color: white"
                                                     href=""

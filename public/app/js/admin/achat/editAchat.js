@@ -83,38 +83,42 @@ var selectAricle = [];
 var articleToDelete = [];
 var resTotalHt = 0 ;
 var countArticle = 0 ;
+var index;
+var lingArt = []
 function removeArticle() {
     $(".delete_ligneAchat").click(function (event) {
         var index = $(this).data('index');
 
-        const indexArticle = selectAricle[0].indexOf($(this).data('id_article'));
-        if (indexArticle > -1) {
-            selectAricle[0].splice(indexArticle, 1);
-        }
-        var totalHtOld = parseFloat($('.total_ht').text());
-        if ($('input.fodec').is(':checked')) {
-             resTotalHt = (parseFloat(($('.puhtnet_' + index).val()) * parseInt($('.qte_' + (index)).val())) * 0.99).toFixed(3);
-        }else{
-            resTotalHt = (parseFloat(($('.puhtnet_' + index).val()) * parseInt($('.qte_' + (index)).val()))).toFixed(3);
-        }
 
-        totalHtNew = (totalHtOld - parseFloat(resTotalHt).toFixed(3)).toFixed(3);
+        $(this).parent().parent().remove();
 
+        var totalHt = 0;
         var totalTVA = 0;
-        var totalTTC = 0;
         var timbre = 0.600;
         var remise = parseFloat($('.remise').text());
         var transport = parseFloat($('.transport').text());
+        var totalTTC = 0;
+        var qte = 0
+        var sommepuhtnet = 0;
+        var totalHtNew = 0;
+        //calculer totalHT totaltva totalttc
+        $('.puhtnet').each(function (index) {
+            totalHt += (parseFloat($(this).val()) * parseInt($('.qte_' + ($(this).data('index'))).val()));
+        })
+        if ($('input.fodec').is(':checked')) {
 
+            totalHtNew = parseFloat((totalHt * 0.99)).toFixed(3);
+        } else {
+
+            totalHtNew = parseFloat(totalHt).toFixed(3);
+
+        }
         totalTVA = (totalHtNew * 1.19);
-        totalTTC = parseFloat(totalHtNew + totalTVA + timbre + remise + transport).toFixed(3);
+        totalTTC = (totalHtNew + totalTVA + timbre + remise + transport);
         $('.total_ht').text(totalHtNew)
         $('.total_tva').text(totalTVA.toFixed(3))
-        $('.total_ttc').text(totalTTC)
-        $(this).parent().parent().remove();
-        articleToDelete.push($(this).data('id_article'));
-        $(this).attr('data-original-title', '');
-        $('.articleToDelete').val(articleToDelete);
+        $('.total_ttc').text(totalTTC.toFixed(3));
+        return false;
     });
 }
 
@@ -125,8 +129,11 @@ function getArticlesAchat(id) {
         data: {id_achat: id},
         success: function (data) {
             if (data) {
-                selectAricle.push(data);
+                selectAricle.push((data));
+                for (var k = 0; k < data.length; k++) {
+                    lingArt.push(data[k]);
 
+                }
 
             }
 
@@ -140,10 +147,10 @@ function getArticlesAchat(id) {
 function addLigneAchat() {
     $('.addLingeAchat').click(function () {
         countArticle++;
-
-        var index = ($('.ligne_achat').length);
+        lingArt.push(1);
+        index = lingArt.length;
         var contentListArticle = '';
-        index++;
+
         $.ajax({
             url: Routing.generate('achat_get_articles'),
             type: "POST",
@@ -198,31 +205,35 @@ function addLigneAchat() {
                     $('.js-example-basic-single').select2();
                     //remove ligne achat
                     $(".delete_ligneAchat_" + index).click(function (event) {
-                        const indexArticle = selectAricle[0].indexOf($('.selectArticle_' + index).val());
-                        if (indexArticle > -1) {
-                            selectAricle[0].splice(indexArticle, 1);
-                        }
-                        var totalHtOld = parseFloat($('.total_ht').text());
-                        if ($('input.fodec').is(':checked')) {
-                            resTotalHt = (parseFloat(($('.puhtnet_' + index).val()) * parseInt($('.qte_' + (index)).val())) * 0.99).toFixed(3);
-                        }else{
-                            resTotalHt = (parseFloat(($('.puhtnet_' + index).val()) * parseInt($('.qte_' + (index)).val()))).toFixed(3);
-                        }
+                        $(this).parent().parent().remove();
 
-                        var totalHtNew = (totalHtOld - (parseFloat(resTotalHt)).toFixed(3)).toFixed(3);
+                        var totalHt = 0;
                         var totalTVA = 0;
-                        var totalTTC = 0;
                         var timbre = 0.600;
                         var remise = parseFloat($('.remise').text());
                         var transport = parseFloat($('.transport').text());
+                        var totalTTC = 0;
+                        var qte = 0
+                        var sommepuhtnet = 0;
+                        var totalHtNew = 0;
+                        //calculer totalHT totaltva totalttc
+                        $('.puhtnet').each(function (index) {
+                            totalHt += (parseFloat($(this).val()) * parseInt($('.qte_' + ($(this).data('index'))).val()));
+                        })
+                        if ($('input.fodec').is(':checked')) {
 
+                            totalHtNew = parseFloat((totalHt * 0.99)).toFixed(3);
+                        } else {
+
+                            totalHtNew = parseFloat(totalHt).toFixed(3);
+
+                        }
                         totalTVA = (totalHtNew * 1.19);
-                        totalTTC = parseFloat(totalHtNew + totalTVA + timbre + remise + transport).toFixed(3);
+                        totalTTC = (totalHtNew + totalTVA + timbre + remise + transport);
                         $('.total_ht').text(totalHtNew)
                         $('.total_tva').text(totalTVA.toFixed(3))
-                        $('.total_ttc').text(totalTTC)
-
-                        $(this).parent().parent().remove();
+                        $('.total_ttc').text(totalTTC.toFixed(3));
+                        return false;
                     });
                     //select article
                     selectArticle(index);
@@ -256,28 +267,35 @@ function selectArticle(index) {
         })
         if (parseInt(articleExiste) >= 2){
             toastr.error('cet article a été choisir , veuillez choisir un autre');
-            //check calculer
-            var totalHtOld = parseFloat($('.total_ht').text());
-            if ($('input.fodec').is(':checked')) {
-                resTotalHt = (parseFloat(($('.puhtnet_' + index).val()) * parseInt($('.qte_' + (index)).val())) * 0.99).toFixed(3);
-            } else {
-                resTotalHt = (parseFloat(($('.puhtnet_' + index).val()) * parseInt($('.qte_' + (index)).val()))).toFixed(3);
-            }
+            $(this).parent().parent().remove();
 
-            var totalHtNew = (totalHtOld - (parseFloat(resTotalHt)).toFixed(3)).toFixed(3);
+            var totalHt = 0;
             var totalTVA = 0;
-            var totalTTC = 0;
             var timbre = 0.600;
             var remise = parseFloat($('.remise').text());
             var transport = parseFloat($('.transport').text());
+            var totalTTC = 0;
+            var qte = 0
+            var sommepuhtnet = 0;
+            var totalHtNew = 0;
+            //calculer totalHT totaltva totalttc
+            $('.puhtnet').each(function (index) {
+                totalHt += (parseFloat($(this).val()) * parseInt($('.qte_' + ($(this).data('index'))).val()));
+            })
+            if ($('input.fodec').is(':checked')) {
 
+                totalHtNew = parseFloat((totalHt * 0.99)).toFixed(3);
+            } else {
+
+                totalHtNew = parseFloat(totalHt).toFixed(3);
+
+            }
             totalTVA = (totalHtNew * 1.19);
-            totalTTC = parseFloat(totalHtNew + totalTVA + timbre + remise + transport).toFixed(3);
+            totalTTC = (totalHtNew + totalTVA + timbre + remise + transport);
             $('.total_ht').text(totalHtNew)
             $('.total_tva').text(totalTVA.toFixed(3))
-            $('.total_ttc').text(totalTTC)
-            $(this).parent().parent().remove();
-            return false;;
+            $('.total_ttc').text(totalTTC.toFixed(3));
+            return false;
         }
 
         $.ajax({
@@ -287,6 +305,40 @@ function selectArticle(index) {
             success: function (data) {
                 if (data) {
                     $('.descriptionarticle_' + index).text(data[0].description);
+                    ('.puhtnet' +  index).val(0.000);
+                    $('.qte' +  index).val(0);
+                    $('.puttc_' +  index).val(0.000);
+                    $('.marge' + index).val(0.000);
+                    $('.pventettc ' + index).val(0.000);
+
+
+                    var totalHt = 0;
+                    var totalTVA = 0;
+                    var timbre = 0.600;
+                    var remise = parseFloat($('.remise').text());
+                    var transport = parseFloat($('.transport').text());
+                    var totalTTC = 0;
+                    var qte = 0
+                    var sommepuhtnet = 0;
+                    var totalHtNew = 0;
+                    //calculer totalHT totaltva totalttc
+                    $('.puhtnet').each(function (index) {
+                        totalHt += (parseFloat($(this).val()) * parseInt($('.qte_' + ($(this).data('index'))).val()));
+                    })
+                    if ($('input.fodec').is(':checked')) {
+
+                        totalHtNew = parseFloat((totalHt * 0.99)).toFixed(3);
+                    } else {
+
+                        totalHtNew = parseFloat(totalHt).toFixed(3);
+
+                    }
+                    totalTVA = (totalHtNew * 1.19);
+                    totalTTC = (totalHtNew + totalTVA + timbre + remise + transport);
+                    $('.total_ht').text(totalHtNew)
+                    $('.total_tva').text(totalTVA.toFixed(3))
+                    $('.total_ttc').text(totalTTC.toFixed(3));
+                    return false;
 
                 }
 
@@ -305,7 +357,7 @@ function changePUHTNET() {
     var tva = 1.19;
     puttc = 0;
 
-    $('.puhtnet').keyup("input", function (e) {
+    $('.puhtnet').blur("input", function (e) {
         $(this).attr('value', $(this).val())
         var index = $(this).data('index');
         var pventettc = $('.pventettc_' + index).val();
@@ -316,7 +368,7 @@ function changePUHTNET() {
             marge = (((pventettc - puttc) / puttc) * 100).toFixed(2);
             $('.marge_' + index).val(marge);
         }
-        calculerTotal();
+        calculerTotal(index);
 
     })
 
@@ -324,7 +376,7 @@ function changePUHTNET() {
 
 function changePVenteTTC() {
 
-    $('.pventettc').keyup("input", function (e) {
+    $('.pventettc').blur("input", function (e) {
         $(this).attr('value', $(this).val())
 
         var index = $(this).data('index');
@@ -336,17 +388,17 @@ function changePVenteTTC() {
 
 
         $('.marge_' + index).val(marge);
-        calculerTotal();
+        calculerTotal(index);
 
     })
 
 }
 
 function changeQte() {
-    $('.qte').keyup("input", function (e) {
+    $('.qte').blur("input", function (e) {
         $(this).attr('value', $(this).val())
         var index = $(this).data('index');
-        calculerTotal();
+        calculerTotal(index);
 
     })
 }
@@ -446,28 +498,35 @@ function selectArticleInitialAchat() {
         })
         if (parseInt(articleExiste) >= 2){
             toastr.error('cet article a été choisir , veuillez choisir un autre');
-            //check calculer
-            var totalHtOld = parseFloat($('.total_ht').text());
-            if ($('input.fodec').is(':checked')) {
-                resTotalHt = (parseFloat(($('.puhtnet_' + index).val()) * parseInt($('.qte_' + (index)).val())) * 0.99).toFixed(3);
-            } else {
-                resTotalHt = (parseFloat(($('.puhtnet_' + index).val()) * parseInt($('.qte_' + (index)).val()))).toFixed(3);
-            }
+            $(this).parent().parent().remove();
 
-            var totalHtNew = (totalHtOld - (parseFloat(resTotalHt)).toFixed(3)).toFixed(3);
+            var totalHt = 0;
             var totalTVA = 0;
-            var totalTTC = 0;
             var timbre = 0.600;
             var remise = parseFloat($('.remise').text());
             var transport = parseFloat($('.transport').text());
+            var totalTTC = 0;
+            var qte = 0
+            var sommepuhtnet = 0;
+            var totalHtNew = 0;
+            //calculer totalHT totaltva totalttc
+            $('.puhtnet').each(function (index) {
+                totalHt += (parseFloat($(this).val()) * parseInt($('.qte_' + ($(this).data('index'))).val()));
+            })
+            if ($('input.fodec').is(':checked')) {
 
+                totalHtNew = parseFloat((totalHt * 0.99)).toFixed(3);
+            } else {
+
+                totalHtNew = parseFloat(totalHt).toFixed(3);
+
+            }
             totalTVA = (totalHtNew * 1.19);
-            totalTTC = parseFloat(totalHtNew + totalTVA + timbre + remise + transport).toFixed(3);
+            totalTTC = (totalHtNew + totalTVA + timbre + remise + transport);
             $('.total_ht').text(totalHtNew)
             $('.total_tva').text(totalTVA.toFixed(3))
-            $('.total_ttc').text(totalTTC)
-            $(this).parent().parent().remove();
-            return false;;
+            $('.total_ttc').text(totalTTC.toFixed(3));
+            return false;
         }
         //delete from select article
 
@@ -481,6 +540,40 @@ function selectArticleInitialAchat() {
                 if (data) {
                     console.log(data[0].description)
                     $('.descriptionarticle_'+indexArt).text(data[0].description);
+                    ('.puhtnetArt_' +  indexArt).val(0.000);
+                    $('.qteArt_' +  indexArt).val(0);
+                    $('.puttcArt_' +  indexArt).val(0.000);
+                    $('.margeArt_' + indexArt).val(0.000);
+                    $('.pventettcArt_ ' + indexArt).val(0.000);
+
+
+                    var totalHt = 0;
+                    var totalTVA = 0;
+                    var timbre = 0.600;
+                    var remise = parseFloat($('.remise').text());
+                    var transport = parseFloat($('.transport').text());
+                    var totalTTC = 0;
+                    var qte = 0
+                    var sommepuhtnet = 0;
+                    var totalHtNew = 0;
+                    //calculer totalHT totaltva totalttc
+                    $('.puhtnet').each(function (index) {
+                        totalHt += (parseFloat($(this).val()) * parseInt($('.qte_' + ($(this).data('index'))).val()));
+                    })
+                    if ($('input.fodec').is(':checked')) {
+
+                        totalHtNew = parseFloat((totalHt * 0.99)).toFixed(3);
+                    } else {
+
+                        totalHtNew = parseFloat(totalHt).toFixed(3);
+
+                    }
+                    totalTVA = (totalHtNew * 1.19);
+                    totalTTC = (totalHtNew + totalTVA + timbre + remise + transport);
+                    $('.total_ht').text(totalHtNew)
+                    $('.total_tva').text(totalTVA.toFixed(3))
+                    $('.total_ttc').text(totalTTC.toFixed(3));
+                    return false;
 
                 }
 

@@ -17,7 +17,10 @@ use App\Repository\DevisRepository;
 use App\Repository\InvoiceRepository;
 use App\Repository\PrixRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\NodeVisitor\EscaperNodeVisitor;
@@ -94,7 +97,7 @@ class BondLivraisonController extends AbstractController
                 $totalHt = $totalHt + (float)$totalHtaricle;
                 $totalRemise = $totalRemise + (float)$devArticle['article']['remise'];
             }
-            $totalttcGlobal = $totalttcGlobal + (float)$totalHt + 0.19;
+            $totalttcGlobal = $totalttcGlobal + (float)$totalHt + 0.19+0.600;
 
         }
         return $this->render('commercial/bondLivraison/transfertDeviToBl.html.twig', array(
@@ -162,12 +165,11 @@ class BondLivraisonController extends AbstractController
 
             foreach ($id_articles as $key => $id_art) {
                 $articleExiste = $this->prixRepository->getArticleById($id_art);
-                $totalHtaricle = (float)$articleExiste[0]['puVenteHT'] * $qte_article[$key];
-                $puttcArticle = (float)$articleExiste[0]['puVenteHT'] * (float)$_ENV['TVA_ARTICLE'];
-                $totalttcArticle = (float)$puttcArticle * $qte_article[$key];
-                $totalHt = $totalHt + (float)$totalHtaricle;
-                $totalRemise = $totalRemise + (float)$articleExiste[0]['article']['remise'];
-                $totalttcGlobal = $totalttcGlobal + (float)$totalHt;
+                $totalHtaricle = (float)round($articleExiste[0]['puVenteHT'] * $qte_article[$key]);
+                $puttcArticle = (float)round($articleExiste[0]['puVenteHT'] * (float)$_ENV['TVA_ARTICLE']);
+                $totalttcArticle = round((float)($puttcArticle * $qte_article[$key]));
+                $totalHt = round($totalHt + (float)$totalHtaricle);
+                $totalRemise = round($totalRemise + (float)$articleExiste[0]['article']['remise']);
 
 
                 //save article bl
@@ -179,19 +181,22 @@ class BondLivraisonController extends AbstractController
                 $article_bl->setPuhtnet($articleExiste[0]['puVenteHT']);
                 $article_bl->setRemise($articleExiste[0]['article']['remise']);
                 $article_bl->setTaxe($articleExiste[0]['tva']);
-                $article_bl->setTotalht((float)(number_format($totalHtaricle, 3)));
-                $article_bl->setPuttc((float)(number_format($puttcArticle, 3)));
-                $article_bl->setTotalttc((float)(number_format($totalttcArticle, 3)));
+                $article_bl->setTotalht((float)(($totalHtaricle)));
+                $article_bl->setPuttc((float)(($puttcArticle)));
+                $article_bl->setTotalttc((float)(($totalttcArticle)));
                 $this->em->persist($article_bl);
                 $this->em->flush();
             }
+            $totalttcGlobal = $totalttcGlobal + (float)$totalHt;
 
-            $bl->setTotalHT((float)(number_format($totalHt, 3)));
-            $bl->setTotalRemise((float)(number_format($totalRemise, 3)));
+
+            $bl->setTotalHT((float)(($totalHt)));
+            $bl->setTotalRemise((float)(($totalRemise)));
             $bl->setTotalTVA($_ENV['TVA_ARTICLE_PERCENT'] / 100);
-            $bl->setTotalTTC((float)(number_format($totalHt + 0.19, 3)));
+            $bl->setTotalTTC((float)(($totalHt + 0.19)));
             $this->em->persist($bl);
             $this->em->flush();
+            self::generateBl($bl->getId(), $request, $bl);
 
             $this->addFlash('success', 'Ajout effectué avec succés');
             return $this->redirectToRoute('perso_index_bl');
@@ -224,7 +229,7 @@ class BondLivraisonController extends AbstractController
                 $customer = $this->clientRepository->find($customer_id);
                 //chek if exist invoice
                 $invoice = $this->invoiceRepository->findInvoiceByIdBl($id->getId());
-                if ($invoice){
+                if ($invoice) {
                     $this->em->remove($invoice);
                     $this->em->flush();
                 }
@@ -242,60 +247,64 @@ class BondLivraisonController extends AbstractController
                 $old_articles = $this->bonlivraisonArticleRepository->findBy(array('bonLivraison' => $id));
                 if ($old_articles) {
                     foreach ($old_articles as $key => $value) {
-                        $this->em->remove($old_articles);
+                        $this->em->remove($value);
                         $this->em->flush();
                     }
                 }
 
                 //update articles
-                foreach ($articles_selected as $key=> $value) {
+                foreach ($articles_selected as $key => $value) {
 
                     $prixArticle = $this->prixRepository->getArticleById($value);
-                    $totalHtaricle = (float)$prixArticle[0]['puVenteHT'] * $qte_articles[$key];
-                    $puttcArticle = (float)$prixArticle[0]['puVenteHT'] * (float)$_ENV['TVA_ARTICLE'];
-                    $totalttcArticle = (float)$puttcArticle * $qte_articles[$key];
-                    $totalHt = $totalHt + (float)$totalHtaricle;
-                    $totalRemise = $totalRemise + (float)$prixArticle[0]['article']['remise'];
-                    $totalttcGlobal = $totalttcGlobal + (float)$totalHt;
+                    $totalHtaricle = (((float)round($prixArticle[0]['puVenteHT'] * $qte_articles[$key])));
+                    $puttcArticle = ((float)round($prixArticle[0]['puVenteHT'] * (float)$_ENV['TVA_ARTICLE']));
+                    $totalttcArticle = round((float)$puttcArticle * $qte_articles[$key]);
+                    $totalHt = round($totalHt + (float)$totalHtaricle);
+                    $totalRemise = round($totalRemise + (float)$prixArticle[0]['article']['remise']);
 
 
-                        try {
-                            $articleBL = new BonlivraisonArticle();
-                            $articleBL->setBonLivraison($id);
-                            $articleBL->setArticle($this->articleRepository->find($value));
+                    try {
+                        $articleBL = new BonlivraisonArticle();
+                        $articleBL->setBonLivraison($id);
+                        $articleBL->setArticle($this->articleRepository->find($value));
 
-                            $articleBL->setQte($qte_articles[$key]);
-                            $articleBL->setPuht($prixArticle[0]['puVenteHT']);
-                            $articleBL->setPuhtnet($prixArticle[0]['puVenteHT']);
-                            $articleBL->setRemise($prixArticle[0]['article']['remise']);
-                            $articleBL->setTaxe($prixArticle[0]['tva']);
-                            $articleBL->setTotalht((float)(number_format($totalHtaricle, 3)));
-                            $articleBL->setPuttc((float)(number_format($puttcArticle, 3)));
-                            $articleBL->setTotalttc((float)(number_format($totalttcArticle, 3)));
-                            $this->em->persist($articleBL);
-                            $this->em->flush();
-                        }catch (\Exception $e) {
-                            $this->addFlash('error',$e->getCode() .':' . $e->getMessage().''.$e->getFile().''.$e->getLine());
-                            return $this->redirectToRoute('perso_index_bl');
-                        }
-
+                        $articleBL->setQte($qte_articles[$key]);
+                        $articleBL->setPuht($prixArticle[0]['puVenteHT']);
+                        $articleBL->setPuhtnet($prixArticle[0]['puVenteHT']);
+                        $articleBL->setRemise($prixArticle[0]['article']['remise']);
+                        $articleBL->setTaxe($prixArticle[0]['tva']);
+                        $articleBL->setTotalht((float)(($totalHtaricle)));
+                        $articleBL->setPuttc((float)(($puttcArticle)));
+                        $articleBL->setTotalttc((float)(($totalttcArticle)));
+                        $this->em->persist($articleBL);
+                        $this->em->flush();
+                    } catch (\Exception $e) {
+                        $this->addFlash('error', $e->getCode() . ':' . $e->getMessage() . '' . $e->getFile() . '' . $e->getLine());
+                        return $this->redirectToRoute('perso_index_bl');
+                    }
 
 
                 }
-                $id->setTotalHT((float)(number_format($totalHt, 3)));
-                $id->setTotalRemise((float)(number_format($totalRemise, 3)));
+                $totalttcGlobal = $totalttcGlobal + (float)$totalHt;
+
+                $id->setTotalHT((float)(($totalHt)));
+                $id->setTotalRemise((float)(($totalRemise)));
                 $id->setTotalTVA($_ENV['TVA_ARTICLE_PERCENT'] / 100);
-                $id->setTotalTTC((float)(number_format($totalHt + 0.19, 3)));
+                $id->setTotalTTC((float)(($totalHt + 0.19)));
                 $id->setStatus(0);
                 $this->em->persist($id);
                 $this->em->flush();
+//                dd($id);
+                $bondL = $this->bondLivraisonRepository->find($id->getId());
+//                dd($bondL);
+                self::generateBl($id->getId(), $request, $id);
 
-                $this->addFlash('success','Bon de livraison a été modifié avec succès');
+                $this->addFlash('success', 'Bon de livraison a été modifié avec succès');
                 return $this->redirectToRoute('perso_index_bl');
 
 
             } catch (\Exception $e) {
-                $this->addFlash('error',$e->getCode() .':' . $e->getMessage().''.$e->getFile().''.$e->getLine());
+                $this->addFlash('error', $e->getCode() . ':' . $e->getMessage() . '' . $e->getFile() . '' . $e->getLine());
                 return $this->redirectToRoute('perso_index_bl');
 
 
@@ -359,12 +368,12 @@ class BondLivraisonController extends AbstractController
 
 
             foreach ($devis[0]['devisArticles'] as $key => $devArticle) {
-                $totalHtaricle = (float)$devArticle['article']['prixes'][0]['puVenteHT'] * $devArticle['qte'];
-                $puttcArticle = (float)$devArticle['article']['prixes'][0]['puVenteHT'] * (float)$_ENV['TVA_ARTICLE'];
-                $totalttcArticle = round((float)$puttcArticle * $devArticle['qte']);
-                $totalHt = $totalHt + (float)$totalHtaricle;
-                $totalRemise = $totalRemise + (float)$devArticle['article']['remise'];
-                $totalttcGlobal = $totalttcGlobal + (float)$totalHt;
+                $totalHtaricle = round((float)$devArticle['article']['prixes'][0]['puVenteHT'] * $devArticle['qte'], 3);
+                $puttcArticle = round((float)$devArticle['article']['prixes'][0]['puVenteHT'] * (float)$_ENV['TVA_ARTICLE'], 3);
+                $totalttcArticle = round((float)$puttcArticle * $devArticle['qte'], 3);
+                $totalHt = round($totalHt + (float)$totalHtaricle);
+                $totalRemise = round($totalRemise + (float)$devArticle['article']['remise']);
+
 
                 //save article bl
                 $article_bl = new BonlivraisonArticle();
@@ -375,16 +384,19 @@ class BondLivraisonController extends AbstractController
                 $article_bl->setPuhtnet($devArticle['article']['prixes'][0]['puVenteHT']);
                 $article_bl->setRemise($devArticle['article']['remise']);
                 $article_bl->setTaxe($_ENV['TVA_ARTICLE_PERCENT']);
-                $article_bl->setTotalht((float)(number_format($totalHtaricle, 3)));
-                $article_bl->setPuttc((float)(number_format($puttcArticle, 3)));
-                $article_bl->setTotalttc((float)(number_format($totalttcArticle, 3)));
+                $article_bl->setTotalht((float)(($totalHtaricle)));
+                $article_bl->setPuttc((float)(($puttcArticle)));
+                $article_bl->setTotalttc((float)(($totalttcArticle)));
                 $this->em->persist($article_bl);
                 $this->em->flush();
             }
-            $bl->setTotalHT((float)(number_format($totalHt, 3)));
-            $bl->setTotalRemise((float)(number_format($totalRemise, 3)));
+            $totalttcGlobal = ((float)$totalHt + 0.19);
+
+
+            $bl->setTotalHT((float)(($totalHt)));
+            $bl->setTotalRemise((float)(($totalRemise)));
             $bl->setTotalTVA($_ENV['TVA_ARTICLE_PERCENT'] / 100);
-            $bl->setTotalTTC((float)(number_format($totalHt + 0.19, 3)));
+            $bl->setTotalTTC((float)(($totalHt + 0.19)));
             $this->em->persist($bl);
             $this->em->flush();
 
@@ -404,7 +416,7 @@ class BondLivraisonController extends AbstractController
             $invoice->setStatus(1);
             $invoice->setExistBl(1);
             $invoice->setNumero($numero_invoice);
-            $invoice->setTotalTTC((float)(number_format($totalInvoice, 3)));
+            $invoice->setTotalTTC((float)(($totalInvoice)));
             $invoice->setTimbre($_ENV['TIMBRE']);
             $invoice->setCreadetBy($this->getUser());
             $this->em->persist($invoice);
@@ -415,6 +427,9 @@ class BondLivraisonController extends AbstractController
             $updateDevis->setStatus(1);
             $this->em->persist($updateDevis);
             $this->em->flush();
+
+            //generate bl
+            self::generateBl($bl->getId(), $request, $bl);
 
 
             $message = 'Bon de livraison et une facture a été enregistrer';
@@ -429,6 +444,105 @@ class BondLivraisonController extends AbstractController
         return $this->json(array('status' => $status, 'message' => $message));
     }
 
+    public function generateBl($bl, $request, $b)
+    {
+        $bondl = $this->bondLivraisonRepository->getDataBl($bl);
+        $uploadDir = $this->getParameter('uploads_directory');
+        $pdfOptions = new Options();
+        $pdfOptions->setDefaultFont('Courier');
+        $pdfOptions->setIsRemoteEnabled(true);
+        $dompdf = new Dompdf($pdfOptions);
+        $html = $this->renderView('commercial/bondLivraison/printBlFromDevis.html.twig', [
+            'bl' => $bondl[0]
+        ]);
+        $html .= '<link type="text/css" href="/public/app/assetes/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />';
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $contxt = stream_context_create([
+            'ssl' => [
+                'verify_peer' => FALSE,
+                'verify_peer_name' => FALSE,
+                'allow_self_signed' => TRUE
+            ]
+        ]);
+        $dompdf->setHttpContext($contxt);
+        $dompdf->render();
+        $output = $dompdf->output();
+        $codeClient = $bondl[0]['customer']['code'];
+        $numBl = $bondl[0]['numero'];
+        $yearBl = $bondl[0]['year'];
+
+
+        $mypath = $uploadDir . 'bl/customer_' . $codeClient;
+        $newFilename = 'BL_Num_' . $numBl . '_' . $yearBl . '.pdf';
+        $pdfFilepath = $uploadDir . 'bl/customer_' . $codeClient . '/' . $newFilename;
+        if (!is_dir($mypath)) {
+            mkdir($mypath, 0777, TRUE);
+
+        }
+        $baseurl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . '/uploads/bl/customer_' . $codeClient . '/' . $newFilename;
+
+//        if (file_exists($pdfFilepath)) {
+//            unlink($pdfFilepath);
+//        }
+        file_put_contents($pdfFilepath, $output);
+
+        $b->setFile($baseurl);
+        $this->em->persist($b);
+        $this->em->flush();
+
+
+    }
+
+    public function generateInvoice($id_invoice, $request, $invoice)
+    {
+        $dataInvoice = $this->invoiceRepository->getDataInvoice($id_invoice);
+        $uploadDir = $this->getParameter('uploads_directory');
+        $pdfOptions = new Options();
+        $pdfOptions->setDefaultFont('Courier');
+        $pdfOptions->setIsRemoteEnabled(true);
+        $dompdf = new Dompdf($pdfOptions);
+        $html = $this->renderView('commercial/invoice/printInvoiceFromBl.html.twig', [
+            'invoice' => $dataInvoice[0]
+        ]);
+        $html .= '<link type="text/css" href="/public/app/assetes/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />';
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $contxt = stream_context_create([
+            'ssl' => [
+                'verify_peer' => FALSE,
+                'verify_peer_name' => FALSE,
+                'allow_self_signed' => TRUE
+            ]
+        ]);
+        $dompdf->setHttpContext($contxt);
+        $dompdf->render();
+        $output = $dompdf->output();
+        $codeClient = $invoice->getBonLivraison()->getCustomer()->getCode();
+        $yearBl =$invoice->getYear();
+        $numBl=$invoice->getNumero();
+
+        $mypath = $uploadDir . 'invoice/customer_' . $codeClient;
+        $newFilename = 'invoice_' . $numBl . '_' .$yearBl . '.pdf';
+        $pdfFilepath = $uploadDir . 'invoice/customer_' . $codeClient . '/' . $newFilename;
+        if (!is_dir($mypath)) {
+            mkdir($mypath, 0777, TRUE);
+
+        }
+        $baseurl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . '/uploads/invoice/customer_' . $codeClient . '/' . $newFilename;
+
+//        if (file_exists($pdfFilepath)) {
+//            unlink($pdfFilepath);
+//        }
+        file_put_contents($pdfFilepath, $output);
+
+        $invoice->setFile($baseurl);
+        $this->em->persist($invoice);
+        $this->em->flush();
+
+
+    }
+
 
     /**
      * @param Request $request
@@ -437,7 +551,8 @@ class BondLivraisonController extends AbstractController
      * @Route("/transfert/bl/to/invoice/{bl}", name="perso_transfert_bl_to_invoince")
      */
 
-    public function transfertBLToInvoice(Request $request, BondLivraison $bl){
+    public function transfertBLToInvoice(Request $request, BondLivraison $bl)
+    {
         try {
             $year = date('Y');
             $lasttInvoice = $this->invoiceRepository->getLastInvoiceWithCurrentYear($year);
@@ -454,7 +569,7 @@ class BondLivraisonController extends AbstractController
             $invoice->setYear($year);
             $invoice->setStatus(1);
             $invoice->setNumero($numero_invoice);
-            $invoice->setTotalTTC((float)(number_format($totalInvoice, 3)));
+            $invoice->setTotalTTC((float)(($totalInvoice)));
             $invoice->setTimbre($_ENV['TIMBRE']);
             $invoice->setCreadetBy($this->getUser());
             $invoice->setExistBl(1);
@@ -462,12 +577,14 @@ class BondLivraisonController extends AbstractController
             $bl->setStatus(1);
             $this->em->persist($bl);
             $this->em->flush();
-            $this->addFlash('success','Bon de livraison a été transféré avec succès');
+            //generate Invoice
+            self::generateInvoice($invoice->getId(), $request, $invoice);
+            $this->addFlash('success', 'Bon de livraison a été transféré avec succès');
             return $this->redirectToRoute('perso_index_invoice');
 
 
-        }catch (\Exception $e) {
-            $this->addFlash('error',$e->getCode() .':' . $e->getMessage().''.$e->getFile().''.$e->getLine());
+        } catch (\Exception $e) {
+            $this->addFlash('error', $e->getCode() . ':' . $e->getMessage() . '' . $e->getFile() . '' . $e->getLine());
             return $this->redirectToRoute('perso_index_invoice');
         }
 
@@ -488,6 +605,32 @@ class BondLivraisonController extends AbstractController
             $articles[] = $value->getArticle()->getId();
         }
         return $this->json($articles);
+
+    }
+
+
+    /**
+     * @param Request $request
+     * @Route("api/print/BL", name="perso_print_bl" , options={"expose" = true})
+     */
+    public function printBL(Request $request)
+    {
+        $id_bl = $request->get('id_bl');
+        $bl = $this->bondLivraisonRepository->find($id_bl);
+        $uploadDir = $this->getParameter('uploads_directory');
+        if ($bl->getFile()) {
+            $success = true;
+            $message = '';
+            $file_with_path = $uploadDir . strstr($bl->getFile(), 'bl');
+            $response = new BinaryFileResponse ($file_with_path);
+            $response->headers->set('Content-Type', 'application/pdf; charset=utf-8', 'application/force-download');
+            $response->headers->set('Content-Disposition', 'attachment; filename=devis.pdf');
+        } else {
+            $mssage = 'Pas de bl enregistrer ';
+            $success = false;
+            $response = null;
+        }
+        return $response;
 
     }
 

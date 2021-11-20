@@ -75,14 +75,14 @@ class DevisController extends AbstractController
             $client = $this->clientRepository->find($request->request->get('customers'));
             $qte = $request->request->get('qte');
             $articles = $request->request->get('article');
-            $year =date('Y');
+            $year = date('Y');
             $lastDevis = $this->devisRepository->getLastDevisWithCurrentYear($year);
 
             if ($lastDevis) {
                 $lastId = 000 + $lastDevis->getId() + 1;
-                $numero_devis =  '000' . $lastId;
+                $numero_devis = '000' . $lastId;
             } else {
-                $numero_devis =  '0001';
+                $numero_devis = '0001';
             }
             //chek devis exite
             $devis = $this->devisRepository->findBy(array('numero' => $numero_devis));
@@ -118,6 +118,9 @@ class DevisController extends AbstractController
                 $devis->setTotalTTC($totalTTc);
                 $this->em->persist($devis);
                 $this->em->flush();
+                //generate devis
+
+                self::generateDevis($devis->getId(), $request, $devis);
 
                 $this->addFlash('success', 'Ajoute a été effectuer avec succès');
                 return $this->redirectToRoute('perso_index_devis');
@@ -165,7 +168,7 @@ class DevisController extends AbstractController
                 $devisExiste->setClient($client);
                 $totalTTc = 0;
                 //delete old article
-                $old_articles = $this->devisArticleRepository->findBy(array('devi' =>$devi[0]['id']));
+                $old_articles = $this->devisArticleRepository->findBy(array('devi' => $devi[0]['id']));
                 if ($old_articles) {
                     foreach ($old_articles as $key => $value) {
                         $this->em->remove($value);
@@ -213,6 +216,8 @@ class DevisController extends AbstractController
                 $this->em->persist($devisExiste);
                 $this->em->flush();
 
+                self::generateDevis($idDevis->getId(), $request, $idDevis);
+
 
                 return $this->redirectToRoute('perso_index_devis');
 
@@ -236,38 +241,12 @@ class DevisController extends AbstractController
         $id_devis = $request->get('id_devis');
         $devis = $this->devisRepository->findDetailDeviAndStock($id_devis);
         $uploadDir = $this->getParameter('uploads_directory');
-        $date = new \DateTime();
         $devObj = $this->devisRepository->find($devis[0]['id']);
-
         if ($devObj->getStatusMaj() == false) {
             $success = true;
             $message = '';
-            $pdfOptions = new Options();
-            $pdfOptions->set('defaultFont', 'Arial');
-            $pdfOptions->set('isPhpEnabled', 'true');
-            $dompdf = new Dompdf($pdfOptions);
-            $html = $this->renderView('commercial/devis/print_devis.html.twig', [
-                'devis' => $devis[0]
-            ]);
-            $dompdf->loadHtml($html);
-            $dompdf->setPaper('A4', 'portrait');
-            $dompdf->render();
-            $output = $dompdf->output();
-            $mypath = $uploadDir. 'coffreFort/customer_'.$devis[0]['client']['id'].'/dossier_'.$devis[0]['id'];
-            $pdfFilepath = $uploadDir. 'coffreFort/customer_'.$devis[0]['client']['id'].'/dossier_'.$devis[0]['id'].'devis.pdf';
-            if (!is_dir($mypath)){
-                mkdir($mypath,0777,TRUE);
-
-            }
-            file_put_contents($pdfFilepath, $output);
-
-
-            //save file inventaire
-            $devObj = $this->devisRepository->find($devis[0]['id']);
-            $devObj->setFile($pdfFilepath);
-            $this->em->persist($devObj);
-            $this->em->flush();
-            $file_with_path = $pdfFilepath ;
+            $pdfFilepath = $uploadDir . 'devis/customer_' . $devis[0]['client']['id'] . '/dossier_' . $devis[0]['id'] . 'devis.pdf';
+            $file_with_path = $uploadDir . strstr($devis[0]['file'], 'devis');
             $response = new BinaryFileResponse ($file_with_path);
             $response->headers->set('Content-Type', 'application/pdf; charset=utf-8', 'application/force-download');
             $response->headers->set('Content-Disposition', 'attachment; filename=devis.pdf');
@@ -276,7 +255,7 @@ class DevisController extends AbstractController
             $success = false;
             $response = null;
         }
-        return $response ;
+        return $response;
 
     }
 
@@ -294,6 +273,55 @@ class DevisController extends AbstractController
 
     }
 
+
+    public function generateDevis($id_devis, $request, $d)
+    {
+        $devis = $this->devisRepository->findDetailDeviAndStock($id_devis);
+
+        $uploadDir = $this->getParameter('uploads_directory');
+        $pdfOptions = new Options();
+        $pdfOptions->setDefaultFont('Courier');
+        $pdfOptions->setIsRemoteEnabled(true);
+        $dompdf = new Dompdf($pdfOptions);
+        $html = $this->renderView('commercial/devis/print_devis2.html.twig', [
+            'devis' => $devis[0]
+        ]);
+        $html .= '<link type="text/css" href="/public/app/assetes/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />';
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $contxt = stream_context_create([
+            'ssl' => [
+                'verify_peer' => FALSE,
+                'verify_peer_name' => FALSE,
+                'allow_self_signed' => TRUE
+            ]
+        ]);
+        $dompdf->setHttpContext($contxt);
+        $dompdf->render();
+        $output = $dompdf->output();
+        $codeClient = $devis[0]['client']['code'];
+        $numDevi =$devis[0]['numero'];
+        $yearDevis = $devis[0]['year'];
+        $mypath = $uploadDir . 'devis/customer_' . $codeClient;
+        $newFilename = 'devi_Num_' . $numDevi . '_' . $yearDevis . '.pdf';
+        $pdfFilepath = $uploadDir . 'devis/customer_' . $codeClient . '/' . $newFilename;
+        if (!is_dir($mypath)) {
+            mkdir($mypath, 0777, TRUE);
+
+        }
+        $baseurl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . '/uploads/devis/customer_' . $codeClient . '/' . $newFilename;
+
+        if (file_exists($pdfFilepath)) {
+            unlink($pdfFilepath);
+        }
+        file_put_contents($pdfFilepath, $output);
+
+        $d->setFile($baseurl);
+        $this->em->persist($d);
+        $this->em->flush();
+
+
+    }
 
 
 }

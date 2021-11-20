@@ -397,7 +397,7 @@ function changePVenteTTC() {
 }
 
 function changeQte() {
-    $('.qte').keyup("input", function (e) {
+    $('.qte').blur("input", function (e) {
         $(this).attr('value', $(this).val())
         var index = $(this).data('index');
         calculerTotal(index);

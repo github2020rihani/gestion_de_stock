@@ -39,6 +39,22 @@ class BondLivraisonRepository extends ServiceEntityRepository
             ;
     }
 
+    public function getDataBl($id) {
+        return $this->createQueryBuilder('b')
+            ->select('b', 'bl', 'c', 'ci', 'co', 'a')
+            ->leftJoin('b.bonlivraisonArticles', 'bl')
+            ->leftJoin('bl.article', 'a')
+            ->leftJoin('b.customer', 'c')
+            ->leftJoin('c.city', 'ci')
+            ->leftJoin('c.country', 'co')
+            ->where('b.id = :id')
+            ->setParameter('id', $id)
+            ->orderBy('b.id', 'DESC')
+            ->getQuery()
+            ->getArrayResult()
+            ;
+    }
+
     // /**
     //  * @return BondLivraison[] Returns an array of BondLivraison objects
     //  */

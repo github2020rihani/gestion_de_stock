@@ -40,6 +40,35 @@ class InvoiceRepository extends ServiceEntityRepository
             ;
     }
 
+    public function getDataInvoice($id) {
+        return $this->createQueryBuilder('i')
+            ->select('i', 'bl','bla', 'c', 'ci', 'co', 'a')
+            ->leftJoin('i.bonLivraison', 'bl')
+            ->leftJoin('bl.bonlivraisonArticles', 'bla')
+            ->leftJoin('bla.article', 'a')
+            ->leftJoin('bl.customer', 'c')
+            ->leftJoin('c.city', 'ci')
+            ->leftJoin('c.country', 'co')
+            ->where('i.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getArrayResult()
+            ;
+    }
+    public function getDataInvoiceSeul($id) {
+        return $this->createQueryBuilder('i')
+            ->select('i', 'ia', 'c', 'ci', 'co', 'a')
+            ->leftJoin('i.invoiceArticles', 'ia')
+            ->leftJoin('ia.article', 'a')
+            ->leftJoin('i.customer', 'c')
+            ->leftJoin('c.city', 'ci')
+            ->leftJoin('c.country', 'co')
+            ->where('i.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getArrayResult()
+            ;
+    }
 
 
 
