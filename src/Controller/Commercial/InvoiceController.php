@@ -239,7 +239,7 @@ class InvoiceController extends AbstractController
                     $old_articles = $this->invoiceArticleRepository->findBy(array('invoice' => $invoice));
                     if ($old_articles) {
                         foreach ($old_articles as $key => $value) {
-                            $this->em->remove($old_articles);
+                            $this->em->remove($value);
                             $this->em->flush();
                         }
                     }
