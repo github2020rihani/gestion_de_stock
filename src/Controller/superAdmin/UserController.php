@@ -53,7 +53,7 @@ class UserController extends AbstractController
             $user->setPassword(
                 $passwordEncoder->hashPassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $form->get('password')->getData()
                 )
             );
             $user->setDepartemnt($departementRepository->find(2));

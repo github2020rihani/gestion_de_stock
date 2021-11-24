@@ -134,7 +134,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Mot de passe *</label>
-                                {{ form_widget(form.plainPassword.first , {'attr': {'class' : 'form-control' , 'placeholder': 'Entre le mot de passe'}}) }}
+                                {{ form_widget(form.password.first , {'attr': {'class' : 'form-control' , 'placeholder': 'Entre le mot de passe'}}) }}
                                 <div class="invalid-feedback">
                                     s'il vous plaît entre le mot de passe
                                 </div>
@@ -144,7 +144,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Confirmer le mot de passe *</label>
-                                {{ form_widget(form.plainPassword.second , {'attr': {'class' : 'form-control' , 'placeholder': 'Confirmer le mot de passe'}}) }}
+                                {{ form_widget(form.password.second , {'attr': {'class' : 'form-control' , 'placeholder': 'Confirmer le mot de passe'}}) }}
                                 <div class="invalid-feedback">
                                     s'il vous plaît repeter le mot de passe
                                 </div>

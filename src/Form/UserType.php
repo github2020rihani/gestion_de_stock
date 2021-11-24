@@ -30,9 +30,6 @@ class UserType extends AbstractType
                 'entry_options'  => [
                     'choices'  => [
                         'Administrateur' => 'ROLE_ADMIN',
-                        'Responsable' => 'ROLE_RESPONSABLE',
-                        'Gerant' =>  'ROLE_GERANT',
-                        'Magasinier' =>  'ROLE_MAGASINIER',
                         'Personelle' =>  'ROLE_PERSONELLE',
                         'Achat' =>  'ROLE_ACHAT',
                     ],
@@ -53,7 +50,7 @@ class UserType extends AbstractType
 //                'expanded' => false,
 //                'attr' => ['class' => 'form-control'],
 //            ])
-            ->add('plainPassword',RepeatedType::class, [
+            ->add('password',RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options'  => ['label' => 'mot de passe',
 

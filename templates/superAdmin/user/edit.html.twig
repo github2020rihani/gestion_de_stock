@@ -134,12 +134,12 @@
                                 <option value="ROLE_ADMIN" {% if user.roles[0] == 'ROLE_ADMIN' %} selected {% endif %}>
                                     Administrateur
                                 </option>
-                                <option value="ROLE_RESPONSABLE" {% if user.roles[0] == 'ROLE_RESPONSABLE' %} selected {% endif %}>
-                                    Responsable
+                                <option value="ROLE_PERSONELLE" {% if user.roles[0] == 'ROLE_PERSONELLE' %} selected {% endif %}>
+                                    Personelle
                                 </option>
-                                <option value="ROLE_GERANT" {% if user.roles[0] == 'ROLE_GERANT' %} selected {% endif %} >
-                                    Gérant
-                                </option>
+{#                                <option value="ROLE_GERANT" {% if user.roles[0] == 'ROLE_GERANT' %} selected {% endif %} >#}
+{#                                    Gérant#}
+{#                                </option>#}
                                 <option value="ROLE_ACHAT" {% if user.roles[0] == 'ROLE_ACHAT' %} selected {% endif %} >
                                     Achat
                                 </option>
