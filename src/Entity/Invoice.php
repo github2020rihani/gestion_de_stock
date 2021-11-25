@@ -102,6 +102,7 @@ class Invoice
 
     /**
      * @ORM\OneToMany(targetEntity=InvoiceArticle::class, mappedBy="invoice")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $invoiceArticles;
 

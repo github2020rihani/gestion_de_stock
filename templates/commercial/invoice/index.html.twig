@@ -199,6 +199,19 @@
                                             >
                                                 <i class="fa fa-print"></i>
                                             </button>
+
+                                            {%  if invoice.status != 2 %}
+                                            <a class="  btn btn-sm btn-icon btn-danger deleteInvoice"
+                                               data-placement="top" title=""
+                                               href="{{ path('perso_delete_invoice' , {id :invoice.id}) }}"
+                                               data-id_invoice="{{ invoice.id }}"
+                                               data-original-title="Supprimer"
+                                               style="color: white"
+                                            >
+                                                <i class="fa fa-times"></i>
+
+                                            </a>
+                                            {% endif %}
                                         </td>
 
                                     </tr>

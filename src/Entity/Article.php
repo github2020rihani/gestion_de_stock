@@ -129,6 +129,11 @@ class Article
      */
     private $invoiceArticles;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $qteReserved;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
@@ -427,6 +432,18 @@ class Article
                 $invoiceArticle->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQteReserved(): ?int
+    {
+        return $this->qteReserved;
+    }
+
+    public function setQteReserved(int $qteReserved): self
+    {
+        $this->qteReserved = $qteReserved;
 
         return $this;
     }

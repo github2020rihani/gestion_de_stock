@@ -14,6 +14,7 @@ use App\Repository\ClientRepository;
 use App\Repository\InvoiceArticleRepository;
 use App\Repository\InvoiceRepository;
 use App\Repository\PrixRepository;
+use App\Repository\StockRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -36,11 +37,13 @@ class InvoiceController extends AbstractController
     private $prixRepository;
     private $articleRepository;
     private $invoiceArticleRepository;
+    private $stockRepository;
 
     public function __construct(EntityManagerInterface $em, InvoiceRepository $invoiceRepository,
                                 ClientRepository $clientRepository,
                                 ArticleRepository $articleRepository,
                                 PrixRepository $prixRepository,
+                                StockRepository $stockRepository,
                                 InvoiceArticleRepository $invoiceArticleRepository,
                                 BonlivraisonArticleRepository $bonlivraisonArticleRepository,
                                 BondLivraisonRepository $bondLivraisonRepository)
@@ -53,6 +56,7 @@ class InvoiceController extends AbstractController
         $this->prixRepository = $prixRepository;
         $this->articleRepository = $articleRepository;
         $this->invoiceArticleRepository = $invoiceArticleRepository;
+        $this->stockRepository = $stockRepository;
 
     }
 
@@ -183,6 +187,22 @@ class InvoiceController extends AbstractController
                     $articleInvoice->setTotalttc((float)(($totalttcArticle)));
                     $this->em->persist($articleInvoice);
                     $this->em->flush();
+                    //change stock
+                    $Lingart = $this->articleRepository->find($articleExiste[0]['article']['id']);
+                    $Lingart->setQteReserved($qte_article[$key]);
+                    $this->em->persist($Lingart);
+                    //update stocked
+                    $lingArtPr = $this->prixRepository->findOneBy(array('article' => $articleExiste[0]['article']['id']));
+                    $newQte = (int)$lingArtPr->getQte() - (int)$qte_article[$key];
+                    $lingArtPr->setQte($newQte);
+                    $this->em->persist($lingArtPr);
+
+                    $lingeArtStock = $this->stockRepository->findOneBy(array('article' => $articleExiste[0]['article']['id']));
+                    $lingeArtStock->setQte($newQte);
+                    $this->em->persist($lingeArtStock);
+                    $this->em->flush();
+
+
                 }
                 $totalttcGlobal = $totalttcGlobal + (float)$totalHt;
 
@@ -192,8 +212,10 @@ class InvoiceController extends AbstractController
                 $invoice->setTotalTTC((float)(($totalHt + 0.19 + 0.600)));
                 $this->em->persist($invoice);
                 $this->em->flush();
+
+                //
                 //generate invoice
-                self::generateInvoice($invoice->getId(),$request, $invoice);
+                self::generateInvoice($invoice->getId(), $request, $invoice);
 
 
                 $this->addFlash('success', 'Ajout effectué avec succés');
@@ -277,6 +299,24 @@ class InvoiceController extends AbstractController
                             $this->em->persist($article_invoice);
                             $this->em->flush();
 
+
+                            //change stock
+                            $Lingart = $this->articleRepository->find($value);
+                            $lingArtPr = $this->prixRepository->findOneBy(array('article' => $value));
+                            $lingeArtStock = $this->stockRepository->findOneBy(array('article' => $value));
+
+                            $sourceQte = (int)$lingArtPr->getQte() + (int)$Lingart->getQteReserved();
+                            $Lingart->setQteReserved($qte_articles[$key]);
+                            $this->em->persist($Lingart);
+                            //update stocked
+                            $newQte = (int)$sourceQte - (int)$qte_articles[$key];
+                            $lingArtPr->setQte($newQte);
+                            $this->em->persist($lingArtPr);
+                            $lingeArtStock->setQte($newQte);
+                            $this->em->persist($lingeArtStock);
+                            $this->em->flush();
+
+
                         } catch (\Exception $e) {
                             $this->addFlash('error', $e->getCode() . ':' . $e->getMessage() . '' . $e->getFile() . '' . $e->getLine());
                             return $this->redirectToRoute('perso_index_invoice');
@@ -295,7 +335,7 @@ class InvoiceController extends AbstractController
                     $this->em->flush();
 
                     //generate invoice
-                    self::generateInvoice($invoice->getId(),$request, $invoice);
+                    self::generateInvoice($invoice->getId(), $request, $invoice);
 
 
                     $this->addFlash('success', 'Bon de livraison a été modifié avec succès');
@@ -388,7 +428,6 @@ class InvoiceController extends AbstractController
     }
 
 
-
     /**
      * @param Request $request
      * @Route("api/print/invoice", name="perso_print_invoice" , options={"expose" = true})
@@ -411,6 +450,46 @@ class InvoiceController extends AbstractController
             $response = null;
         }
         return $response;
+
+    }
+
+    /**
+     * @param Invoice $id
+     * @Route("/delete/{id}", name="perso_delete_invoice")
+     */
+    public function delete(Invoice $id)
+    {
+        $invoice = $this->invoiceRepository->find($id);
+
+        if ($invoice) {
+            foreach ($invoice->getinvoiceArticles() as $key=> $value) {
+
+                $article = $this->articleRepository->find($value->getArticle()->getId());
+                $articlePrix = $this->prixRepository->findOneBy(array('article' => $value->getArticle()->getId()));
+                $articeStocked = $this->stockRepository->findOneBy(array('article' => $value->getArticle()->getId()));
+
+                $sourceQte = (int)$articlePrix->getQte() + (int)$article->getQteReserved();
+                $article->setQteReserved(0);
+                $this->em->persist($article);
+                //update stocked
+                $newQte = $sourceQte;
+                $articlePrix->setQte($newQte);
+                $this->em->persist($articlePrix);
+
+                $articeStocked->setQte($newQte);
+                $this->em->persist($articeStocked);
+
+                $this->em->flush();
+            }
+
+            $this->em->remove($invoice);
+            $this->em->flush();
+            $this->addFlash('success', 'Bon de livraison a été supprimé avec succès');
+            return $this->redirectToRoute('perso_index_invoice');
+
+
+        }
+
 
     }
 

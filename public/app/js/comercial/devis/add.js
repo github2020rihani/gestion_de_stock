@@ -192,6 +192,7 @@ function selectArticle(index) {
             type: "POST",
             data: {id_article: $(this).val()},
             success: function (data) {
+                console.log(data)
                 if (data) {
                     var newTotalttc = 0 ;
                     $('.descriptionarticle_' + index).text(data[0].article.description);

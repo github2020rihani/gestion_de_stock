@@ -66,6 +66,7 @@ class InvoiceArticle
 
     /**
      * @ORM\ManyToOne(targetEntity=Invoice::class, inversedBy="invoiceArticles")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $invoice;
 
