@@ -16,6 +16,7 @@ use App\Repository\DevisArticleRepository;
 use App\Repository\DevisRepository;
 use App\Repository\InvoiceRepository;
 use App\Repository\PrixRepository;
+use App\Repository\StockRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -41,6 +42,7 @@ class BondLivraisonController extends AbstractController
     private $clientRepository;
     private $prixRepository;
     private $invoiceRepository;
+    private $stockRepository;
 
     /**
      * BondLivraisonController constructor.
@@ -58,6 +60,7 @@ class BondLivraisonController extends AbstractController
                                 BondLivraisonRepository $bondLivraisonRepository,
                                 ClientRepository $clientRepository,
                                 InvoiceRepository $invoiceRepository,
+                                StockRepository $stockRepository,
                                 PrixRepository $prixRepository,
                                 BonlivraisonArticleRepository $bonlivraisonArticleRepository)
     {
@@ -70,6 +73,8 @@ class BondLivraisonController extends AbstractController
         $this->clientRepository = $clientRepository;
         $this->prixRepository = $prixRepository;
         $this->invoiceRepository = $invoiceRepository;
+        $this->stockRepository = $stockRepository;
+
     }
 
 
@@ -186,7 +191,24 @@ class BondLivraisonController extends AbstractController
                 $article_bl->setTotalttc((float)(($totalttcArticle)));
                 $this->em->persist($article_bl);
                 $this->em->flush();
+
+                //change stock
+                $Lingart = $this->articleRepository->find($articleExiste[0]['article']['id']);
+                $Lingart->setQteReserved($qte_article[$key]);
+                $this->em->persist($Lingart);
+                //update stocked
+                $lingArtPr = $this->prixRepository->findOneBy(array('article' => $articleExiste[0]['article']['id']));
+                $newQte = (int)$lingArtPr->getQte() - (int)$qte_article[$key];
+                $lingArtPr->setQte($newQte);
+                $this->em->persist($lingArtPr);
+
+                $lingeArtStock = $this->stockRepository->findOneBy(array('article' => $articleExiste[0]['article']['id']));
+                $lingeArtStock->setQte($newQte);
+                $this->em->persist($lingeArtStock);
+                $this->em->flush();
             }
+
+
             $totalttcGlobal = $totalttcGlobal + (float)$totalHt;
 
 
@@ -278,6 +300,23 @@ class BondLivraisonController extends AbstractController
                         $articleBL->setTotalttc((float)(($totalttcArticle)));
                         $this->em->persist($articleBL);
                         $this->em->flush();
+
+                        //change stock
+                        $Lingart = $this->articleRepository->find($value);
+                        $lingArtPr = $this->prixRepository->findOneBy(array('article' => $value));
+                        $lingeArtStock = $this->stockRepository->findOneBy(array('article' => $value));
+
+                        $sourceQte = (int)$lingArtPr->getQte() + (int)$Lingart->getQteReserved();
+                        $Lingart->setQteReserved($qte_articles[$key]);
+                        $this->em->persist($Lingart);
+                        //update stocked
+                        $newQte = (int)$sourceQte - (int)$qte_articles[$key];
+                        $lingArtPr->setQte($newQte);
+                        $this->em->persist($lingArtPr);
+                        $lingeArtStock->setQte($newQte);
+                        $this->em->persist($lingeArtStock);
+                        $this->em->flush();
+
                     } catch (\Exception $e) {
                         $this->addFlash('error', $e->getCode() . ':' . $e->getMessage() . '' . $e->getFile() . '' . $e->getLine());
                         return $this->redirectToRoute('perso_index_bl');
@@ -631,6 +670,47 @@ class BondLivraisonController extends AbstractController
             $response = null;
         }
         return $response;
+
+    }
+
+    /**
+     * @param BondLivraison $id
+     * @Route("/delete/{id}", name="perso_delete_bl")
+     */
+    public function delete(BondLivraison $id)
+    {
+
+        $bl = $this->bondLivraisonRepository->find($id);
+
+        if ($bl) {
+            foreach ($bl->getBonlivraisonArticles() as $key=> $value) {
+
+                $article = $this->articleRepository->find($value->getArticle()->getId());
+                $articlePrix = $this->prixRepository->findOneBy(array('article' => $value->getArticle()->getId()));
+                $articeStocked = $this->stockRepository->findOneBy(array('article' => $value->getArticle()->getId()));
+
+                $sourceQte = (int)$articlePrix->getQte() + (int)$article->getQteReserved();
+                $article->setQteReserved(0);
+                $this->em->persist($article);
+                //update stocked
+                $newQte = $sourceQte;
+                $articlePrix->setQte($newQte);
+                $this->em->persist($articlePrix);
+
+                $articeStocked->setQte($newQte);
+                $this->em->persist($articeStocked);
+
+                $this->em->flush();
+            }
+
+            $this->em->remove($bl);
+            $this->em->flush();
+            $this->addFlash('success', 'Bon de livraison a été supprimé avec succès');
+            return $this->redirectToRoute('perso_index_bl');
+
+
+        }
+
 
     }
 
