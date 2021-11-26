@@ -3,6 +3,7 @@
 
 namespace App\Controller\Commercial;
 
+use App\Entity\BondLivraison;
 use App\Entity\Devis;
 use App\Entity\DevisArticle;
 use App\Repository\ArticleRepository;
@@ -11,11 +12,15 @@ use App\Repository\ClientRepository;
 use App\Repository\DevisArticleRepository;
 use App\Repository\DevisRepository;
 use App\Repository\PrixRepository;
+use App\Repository\StockRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\BrowserKit\Response;
+
+
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -32,18 +37,22 @@ class DevisController extends AbstractController
     private $articleRepository;
     private $devisArticleRepository;
     private $bondLivraisonRepository;
+    private $stockRepository;
 
     /**
      * DevisController constructor.
      * @param EntityManagerInterface $em
      * @param DevisRepository $devisRepository
      * @param ClientRepository $clientRepository
+     *
      */
     public function __construct(EntityManagerInterface $em, DevisRepository $devisRepository,
                                 PrixRepository $prixRepository, ArticleRepository $articleRepository,
                                 BondLivraisonRepository $bondLivraisonRepository,
                                 DevisArticleRepository $devisArticleRepository,
+                                StockRepository $stockRepository,
                                 ClientRepository $clientRepository)
+
     {
         $this->em = $em;
         $this->devisRepository = $devisRepository;
@@ -52,6 +61,7 @@ class DevisController extends AbstractController
         $this->articleRepository = $articleRepository;
         $this->devisArticleRepository = $devisArticleRepository;
         $this->bondLivraisonRepository = $bondLivraisonRepository;
+        $this->stockRepository = $stockRepository;
     }
 
     /**
@@ -300,7 +310,7 @@ class DevisController extends AbstractController
         $dompdf->render();
         $output = $dompdf->output();
         $codeClient = $devis[0]['client']['code'];
-        $numDevi =$devis[0]['numero'];
+        $numDevi = $devis[0]['numero'];
         $yearDevis = $devis[0]['year'];
         $mypath = $uploadDir . 'devis/customer_' . $codeClient;
         $newFilename = 'devi_Num_' . $numDevi . '_' . $yearDevis . '.pdf';
@@ -323,5 +333,45 @@ class DevisController extends AbstractController
 
     }
 
+    /**
+     * @param Devis $id
+     * @Route("/delete/{id}", name="perso_delete_devi")
+     */
+    public function delete(Devis $id)
+    {
+
+        $devis = $this->devisArticleRepository->find($id);
+
+        if ($devis) {
+            foreach ($devis->getId() as $key => $value) {
+
+                $article = $this->articleRepository->find($value->getArticle()->getId());
+                $articlePrix = $this->prixRepository->findOneBy(array('article' => $value->getArticle()->getId()));
+                $articeStocked = $this->stockRepository->findOneBy(array('article' => $value->getArticle()->getId()));
+
+                $sourceQte = (int)$articlePrix->getQte() + (int)$article->getQteReserved();
+                $article->setQteReserved(0);
+                $this->em->persist($article);
+                //update stocked
+                $newQte = $sourceQte;
+                $articlePrix->setQte($newQte);
+                $this->em->persist($articlePrix);
+
+                $articeStocked->setQte($newQte);
+                $this->em->persist($articeStocked);
+
+                $this->em->flush();
+            }
+
+            $this->em->remove($devis);
+            $this->em->flush();
+            $this->addFlash('success', 'devis a été supprimé avec succès');
+            return $this->redirectToRoute('perso_index_devis');
+
+
+        }
+
+
+    }
 
 }

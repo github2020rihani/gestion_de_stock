@@ -137,6 +137,18 @@
                                                 <i class="fa fa-share"></i>
                                             </button>
                                         {% endif %}
+                                        {% if d.statusMaj != 2 %}
+                                            <a class="  btn btn-sm btn-icon btn-danger deleteInvoice"
+                                               data-placement="top" title=""
+                                               href="{{ path('perso_delete_devi' , {id :d.id}) }}"
+                                               data-id_invoice="{{ d.id }}"
+                                               data-original-title="Supprimer"
+                                               style="color: white"
+                                            >
+                                                <i class="fa fa-times"></i>
+
+                                            </a>
+                                        {% endif %}
                                     </td>
                                 </tr>
                             {% endfor %}
