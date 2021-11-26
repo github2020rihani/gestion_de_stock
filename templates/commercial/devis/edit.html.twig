@@ -105,7 +105,8 @@
                                                         <input type="text" name="stock" data-index = "{{loop.index}}" value="{{ art['article']['prixes'][0]['qte'] }}" class="form-control  stock stock_{{loop.index}} stockArt_{{ art['article']['id']}}" readonly >
                                                     </td>
                                                     <td>
-                                                        {%  if devi['statusMaj']  %} {% else %}{{ art['qte'] }} {% endif %}
+                                                        <input type="hidden"  class="oldQteArt_{{ loop.index }}" value=" {%  if devi['statusMaj']  %} 0 {% else %}{{ art['qte'] }} {% endif %}">
+
                                                         <input type="text" min="1" name="qte[]" pattern="[0-9]"  data-index ="{{loop.index}}" value="{%  if devi['statusMaj']  %} 0 {% else %}{{ art['qte'] }} {% endif %}" class="form-control qte qte_{{loop.index}} qteArt_{{ art['article']['id']}}" data-id_art="{{ art['article']['id']}}" >
 
                                                     </td>

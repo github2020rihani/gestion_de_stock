@@ -56,6 +56,7 @@ class Devis
 
     /**
      * @ORM\OneToMany(targetEntity=DevisArticle::class, mappedBy="devi")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $devisArticles;
 
@@ -71,6 +72,7 @@ class Devis
 
     /**
      * @ORM\OneToMany(targetEntity=BondLivraison::class, mappedBy="devi")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $bondLivraisons;
 

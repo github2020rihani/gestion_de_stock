@@ -11,6 +11,7 @@ use App\Repository\ClientRepository;
 use App\Repository\DevisArticleRepository;
 use App\Repository\DevisRepository;
 use App\Repository\PrixRepository;
+use App\Repository\StockRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -32,6 +33,7 @@ class DevisController extends AbstractController
     private $articleRepository;
     private $devisArticleRepository;
     private $bondLivraisonRepository;
+    private $stockRepository;
 
     /**
      * DevisController constructor.
@@ -40,6 +42,7 @@ class DevisController extends AbstractController
      * @param ClientRepository $clientRepository
      */
     public function __construct(EntityManagerInterface $em, DevisRepository $devisRepository,
+                                StockRepository $stockRepository,
                                 PrixRepository $prixRepository, ArticleRepository $articleRepository,
                                 BondLivraisonRepository $bondLivraisonRepository,
                                 DevisArticleRepository $devisArticleRepository,
@@ -52,6 +55,7 @@ class DevisController extends AbstractController
         $this->articleRepository = $articleRepository;
         $this->devisArticleRepository = $devisArticleRepository;
         $this->bondLivraisonRepository = $bondLivraisonRepository;
+        $this->stockRepository = $stockRepository;
     }
 
     /**
@@ -170,6 +174,25 @@ class DevisController extends AbstractController
                 //delete old article
                 $old_articles = $this->devisArticleRepository->findBy(array('devi' => $devi[0]['id']));
                 if ($old_articles) {
+                    //verifier if existe bl ou nn
+                    ///update stock
+                    $bl = $this->bondLivraisonRepository->findBy(array('devi' => $devisExiste->getId()));
+                    if ($bl && $bl[0]) {
+                        foreach ($old_articles as $key => $value) {
+                            $lingArticle = $this->articleRepository->find($value->getArticle()->getId());
+                            $lingArticlePrix = $this->prixRepository->findOneBy(array('article' => $value->getArticle()->getId()));
+                            $lingeArtStock = $this->stockRepository->findOneBy(array('article' => $value->getArticle()->getId()));
+                            $sourceQte =  (int)$value->getQte() + (int)$lingArticlePrix->getQte();
+                            $restReserved = abs((int)$lingArticle->getQteReserved() - (int)$value->getQte());
+                            $lingeArtStock->setQte($sourceQte);
+                            $lingArticlePrix->setQte($sourceQte);
+                            $this->em->persist($lingeArtStock);
+                            $this->em->persist($lingArticlePrix);
+                            $lingArticle->setQteReserved($restReserved);
+                            $this->em->persist($lingArticle);
+                        }
+                        $this->em->flush();
+                    }
                     foreach ($old_articles as $key => $value) {
                         $this->em->remove($value);
                         $this->em->flush();
@@ -300,7 +323,7 @@ class DevisController extends AbstractController
         $dompdf->render();
         $output = $dompdf->output();
         $codeClient = $devis[0]['client']['code'];
-        $numDevi =$devis[0]['numero'];
+        $numDevi = $devis[0]['numero'];
         $yearDevis = $devis[0]['year'];
         $mypath = $uploadDir . 'devis/customer_' . $codeClient;
         $newFilename = 'devi_Num_' . $numDevi . '_' . $yearDevis . '.pdf';
@@ -319,6 +342,47 @@ class DevisController extends AbstractController
         $d->setFile($baseurl);
         $this->em->persist($d);
         $this->em->flush();
+
+
+    }
+
+    /**
+     * @param Request $request
+     * @param Devis $id
+     * @Route("/delete/{id}", name="perso_delete_devis")
+     */
+    public function delete(Request $request, Devis $id)
+    {
+        $devi = $this->devisRepository->find($id);
+        //request method post edit devis
+        //delete Articles
+        if ($devi) {
+            $bl = $this->bondLivraisonRepository->findBy(array('devi' => $devi->getId()));
+            if ($bl && $bl[0]) {
+                foreach ($devi->getDevisArticles() as $key => $value) {
+                    $lingArticle = $this->articleRepository->find($value->getArticle()->getId());
+                    $lingArticlePrix = $this->prixRepository->findOneBy(array('article' => $value->getArticle()->getId()));
+                    $lingeArtStock = $this->stockRepository->findOneBy(array('article' => $value->getArticle()->getId()));
+                    $sourceQte = (int)$value->getQte() + (int)$lingArticlePrix->getQte();
+                    $restReserved = abs((int)$lingArticle->getQteReserved() - (int)$value->getQte());
+                    $lingeArtStock->setQte($sourceQte);
+                    $lingArticlePrix->setQte($sourceQte);
+                    $this->em->persist($lingeArtStock);
+                    $this->em->persist($lingArticlePrix);
+                    $lingArticle->setQteReserved($restReserved);
+                    $this->em->persist($lingArticle);
+                }
+                $this->em->flush();
+            }
+            //remove devis
+            $this->em->remove($devi);
+            $this->em->flush();
+
+            $this->addFlash('success', 'Devi a été supprimé avec succès');
+
+            return $this->redirectToRoute('perso_index_devis');
+
+        }
 
 
     }

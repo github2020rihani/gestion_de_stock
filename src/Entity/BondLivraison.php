@@ -102,6 +102,7 @@ class BondLivraison
 
     /**
      * @ORM\ManyToOne(targetEntity=Devis::class, inversedBy="bondLivraisons")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $devi;
 

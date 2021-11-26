@@ -11,6 +11,7 @@ use App\Repository\ArticleRepository;
 use App\Repository\BondLivraisonRepository;
 use App\Repository\BonlivraisonArticleRepository;
 use App\Repository\ClientRepository;
+use App\Repository\DevisRepository;
 use App\Repository\InvoiceArticleRepository;
 use App\Repository\InvoiceRepository;
 use App\Repository\PrixRepository;
@@ -38,11 +39,13 @@ class InvoiceController extends AbstractController
     private $articleRepository;
     private $invoiceArticleRepository;
     private $stockRepository;
+    private $devisRepository;
 
     public function __construct(EntityManagerInterface $em, InvoiceRepository $invoiceRepository,
                                 ClientRepository $clientRepository,
                                 ArticleRepository $articleRepository,
                                 PrixRepository $prixRepository,
+                                DevisRepository $devisRepository,
                                 StockRepository $stockRepository,
                                 InvoiceArticleRepository $invoiceArticleRepository,
                                 BonlivraisonArticleRepository $bonlivraisonArticleRepository,
@@ -57,6 +60,7 @@ class InvoiceController extends AbstractController
         $this->articleRepository = $articleRepository;
         $this->invoiceArticleRepository = $invoiceArticleRepository;
         $this->stockRepository = $stockRepository;
+        $this->devisRepository = $devisRepository;
 
     }
 
@@ -189,11 +193,11 @@ class InvoiceController extends AbstractController
                     $this->em->flush();
                     //change stock
                     $Lingart = $this->articleRepository->find($articleExiste[0]['article']['id']);
-                    $Lingart->setQteReserved($qte_article[$key]);
+                    $Lingart->setQteReserved( (int)$Lingart->getQteReserved() + (int)$qte_article[$key]);
                     $this->em->persist($Lingart);
                     //update stocked
                     $lingArtPr = $this->prixRepository->findOneBy(array('article' => $articleExiste[0]['article']['id']));
-                    $newQte = (int)$lingArtPr->getQte() - (int)$qte_article[$key];
+                    $newQte = abs((int)$lingArtPr->getQte() - (int)$qte_article[$key]);
                     $lingArtPr->setQte($newQte);
                     $this->em->persist($lingArtPr);
 
@@ -261,6 +265,23 @@ class InvoiceController extends AbstractController
                     $old_articles = $this->invoiceArticleRepository->findBy(array('invoice' => $invoice));
                     if ($old_articles) {
                         foreach ($old_articles as $key => $value) {
+
+                            //change stock
+                            $Lingart = $this->articleRepository->find($value->getArticle()->getId());
+                            $lingArtPr = $this->prixRepository->findOneBy(array('article' => $value->getArticle()->getId()));
+                            $lingeArtStock = $this->stockRepository->findOneBy(array('article' => $value->getArticle()->getId()));
+
+                            $sourceQte = (int)$lingArtPr->getQte() + (int)$value->getQte();
+                            $restQteReserved = abs((int)$Lingart->getQteReserved() - (int)$value->getQte());
+                            $Lingart->setQteReserved($restQteReserved);
+                            $this->em->persist($Lingart);
+                            //update stocked
+                            $lingArtPr->setQte($sourceQte);
+                            $this->em->persist($lingArtPr);
+                            $lingeArtStock->setQte($sourceQte);
+                            $this->em->persist($lingeArtStock);
+                            $this->em->flush();
+
                             $this->em->remove($value);
                             $this->em->flush();
                         }
@@ -302,16 +323,15 @@ class InvoiceController extends AbstractController
 
                             //change stock
                             $Lingart = $this->articleRepository->find($value);
-                            $lingArtPr = $this->prixRepository->findOneBy(array('article' => $value));
-                            $lingeArtStock = $this->stockRepository->findOneBy(array('article' => $value));
-
-                            $sourceQte = (int)$lingArtPr->getQte() + (int)$Lingart->getQteReserved();
-                            $Lingart->setQteReserved($qte_articles[$key]);
+                            $Lingart->setQteReserved((int)$Lingart->getQteReserved() + (int)$qte_articles[$key]);
                             $this->em->persist($Lingart);
-                            //update stocked
-                            $newQte = (int)$sourceQte - (int)$qte_articles[$key];
+
+                            $lingArtPr = $this->prixRepository->findOneBy(array('article' => $value));
+                            $newQte = abs((int)$lingArtPr->getQte() - (int)$qte_articles[$key]);
                             $lingArtPr->setQte($newQte);
                             $this->em->persist($lingArtPr);
+
+                            $lingeArtStock = $this->stockRepository->findOneBy(array('article' => $value));
                             $lingeArtStock->setQte($newQte);
                             $this->em->persist($lingeArtStock);
                             $this->em->flush();
@@ -463,13 +483,13 @@ class InvoiceController extends AbstractController
 
         if ($invoice) {
             foreach ($invoice->getinvoiceArticles() as $key=> $value) {
-
                 $article = $this->articleRepository->find($value->getArticle()->getId());
                 $articlePrix = $this->prixRepository->findOneBy(array('article' => $value->getArticle()->getId()));
                 $articeStocked = $this->stockRepository->findOneBy(array('article' => $value->getArticle()->getId()));
 
-                $sourceQte = (int)$articlePrix->getQte() + (int)$article->getQteReserved();
-                $article->setQteReserved(0);
+                $sourceQte = (int)$articlePrix->getQte() + (int)$value->getQte();
+                $restQteReserved = abs((int)$article->getQteReserved() - (int)$value->getQte());
+                $article->setQteReserved($restQteReserved);
                 $this->em->persist($article);
                 //update stocked
                 $newQte = $sourceQte;
@@ -481,6 +501,24 @@ class InvoiceController extends AbstractController
 
                 $this->em->flush();
             }
+
+            //check bl et devis
+            $d =$this->devisRepository->find($id->getBonLivraison()->getDevi()->getId());
+            if ($d) {
+                $this->em->remove($d);
+                $this->em->flush();
+            }
+            $bl = $this->bondLivraisonRepository->find($id->getBonLivraison()->getId());
+            if ($bl) {
+                $this->em->remove($bl);
+                $this->em->flush();
+            }
+
+
+
+
+
+
 
             $this->em->remove($invoice);
             $this->em->flush();

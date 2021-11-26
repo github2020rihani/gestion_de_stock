@@ -100,6 +100,7 @@
                                                     <input type="text" name="puht" data-index = "{{loop.index}}" value="{{ art.puht|number_format(3) }}" class="form-control  puht puht_{{loop.index}}"  readonly>
                                                 </td>
                                                 <td>
+                                                  <input type="hidden"  class="oldQteArt_{{ loop.index }}" value="{{art.qte}}">
                                                     <input type="text" min="1" name="qte[]" pattern="[0-9]"  data-index = "{{loop.index}}" value="{{ art.qte }}" class="form-control qte qte_{{loop.index}}"  >
                                                 </td>
                                                 <td>

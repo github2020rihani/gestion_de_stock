@@ -141,6 +141,10 @@ function changeQteArtBlInitial() {
         var totalHtGlobal = 0;
         var totalTTCGlobal = 0;
 
+        if ($(this).val() == '' ) {
+            $('.stock_'+index).val(parseInt($('.stock_'+index).val()) + (parseInt($('.oldQteArt_'+index).val())))
+            $('.oldQteArt_'+index).val(0);
+        }
 
         if (parseInt(($(this).val())) > parseInt(($('.stock_' + index).val()))) {
             toastr.error('la quatité est depasser le stock');

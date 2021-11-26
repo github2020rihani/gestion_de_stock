@@ -137,6 +137,16 @@
                                                 <i class="fa fa-share"></i>
                                             </button>
                                         {% endif %}
+                                        {% if d.status != 2 %}
+                                        <a class="  btn btn-sm btn-icon btn-danger"
+                                           data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="Supprimer"
+                                           style="color: white"
+                                           href="{{ path('perso_delete_devis', {id : d.id}) }}"
+                                        >
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                        {% endif %}
                                     </td>
                                 </tr>
                             {% endfor %}

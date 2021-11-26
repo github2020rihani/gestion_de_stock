@@ -44,6 +44,7 @@ class DevisArticle
 
     /**
      * @ORM\ManyToOne(targetEntity=Devis::class, inversedBy="devisArticles")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $devi;
 
