@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste des articles {% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+       {% block smenu %}
+           <ul class="breadcrumb">
+               <li class="breadcrumb-item">
+                   <a href="{{ path('dashboard_personelle') }}">Vente</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <a href="#">articles</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <span>Liste</span>
+               </li>
+           </ul>
+       {% endblock %}
+
+        {% block content %}
+
+            <div class="element-wrapper">
+                <h6 class="element-header">
+                    Liste des articles
+                </h6>
+                {{ include('default/FlashBag/flashBag.html.twig') }}
+
+                <div class="element-box">
+                    <h5 class="form-header">
+                        <a href="{{ path('perso_add_article') }}" class="btn btn-primary add-list float-right mb-2"><i
+                                    class="las la-plus mr-3"></i>Ajouter un article </a>
+
+                    </h5>
+
+                    <div class="form-desc">
+
+                    </div>
+
+
+                    <div class="table-responsive">
+
+                        <table id="dataTable1" width="100%" class="table table-striped table-lightfont">
+                            <thead>
+                            <tr>
+                                <th>Réference</th>
+                                <th>Description</th>
+                                <th>Catégorie</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Réference</th>
+                                <th>Description</th>
+                                <th>Catégorie</th>
+
+                            </tr>
+                            </tfoot>
+                            <tbody class="ligth-body">
+                            {% for a in articles %}
+                                <tr>
+                                    <td>{{ a.ref }}</td>
+                                    <td>{{ a.description }}</td>
+                                    <td>{{ a.categorie.title }}</td>
+                                   {# <td width="5%">
+
+                                        <div class="d-flex align-items-center list-action">
+
+
+                                            <a class="  btn btn-sm btn-icon btn-success"
+                                               data-toggle="tooltip"
+                                               data-placement="top" title="" data-original-title="Modifier"
+                                               style="color: white"
+                                               href="{{ path('perso_edit_article', {id: a.id}) }}"
+                                            >
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        </div>
+                                    </td>#}
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        {% endblock %}
+
+
+{% block javascripts %}
+
+{% endblock %}

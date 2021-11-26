@@ -33,7 +33,6 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
     public function authenticate(Request $request): PassportInterface
     {
         $email = $request->request->get('email', '');
-
         $request->getSession()->set(Security::LAST_USERNAME, $email);
 
         return new Passport(
@@ -48,13 +47,25 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         $roles = $token->getUser()->getRoles();
-
-        $rolesTab = array_map(function($role){
+        $status = $token->getUser()->getStatus();
+        $rolesTab = array_map(function ($role) {
             return $role;
         }, $roles);
+//        $slug = $token->getUser()->getDepartemnt()->getCodeDeppart() ;
 
-        if (in_array(USER::ROLE_SUPER_ADMIN, $rolesTab, true))
+        if (in_array(USER::ROLE_SUPER_ADMIN, $rolesTab, true) && $status)
             return new RedirectResponse($this->urlGenerator->generate('dashboard_super_admin'));
+      elseif  (in_array(USER::ROLE_ADMIN, $rolesTab, true) && $status)
+            return new RedirectResponse($this->urlGenerator->generate('dashboard_admin'));
+        elseif (in_array(USER::ROLE_PERSONELLE, $rolesTab, true) && $status)
+            return new RedirectResponse($this->urlGenerator->generate('dashboard_personelle'));
+        elseif (in_array(USER::ROLE_GERANT, $rolesTab, true) && $status)
+            return new RedirectResponse($this->urlGenerator->generate('dashboard_gerant'));
+        elseif (in_array(USER::ROLE_ACHAT, $rolesTab, true) && $status)
+            return new RedirectResponse($this->urlGenerator->generate('dashboard_achat'));
+        else
+            return new RedirectResponse($this->urlGenerator->generate('login'));
+
 
 //        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
 //            return new RedirectResponse($targetPath);
@@ -62,7 +73,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
 //
 //        // For example:
 //        return new RedirectResponse($this->urlGenerator->generate('login'));
-//       // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__');
+        // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__');
     }
 
     protected function getLoginUrl(Request $request): string

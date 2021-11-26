@@ -1,0 +1,147 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {%  if client %} Modifier {% else%}  Ajouter {% endif %}un client {% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+      {% block smenu %}
+          <ul class="breadcrumb">
+              <li class="breadcrumb-item">
+                  <a href="{{ path('dashboard_personelle') }}">Tableau de bord</a>
+              </li>
+              <li class="breadcrumb-item">
+                  <a href="{{path('perso_index_client')}}">clients</a>
+              </li>
+              <li class="breadcrumb-item">
+                  <span>{%  if client %} Modifier {% else%}  Ajouter {% endif %}</span>
+
+              </li>
+          </ul>
+      {% endblock %}
+        {% block content %}
+
+            <div class="col-sm-12">
+                <div class="element-wrapper">
+                    <div class="element-box">
+                        {%  if client %}
+                            {{ form_start(form,{'method': 'post', 'action': path('perso_edit_client' , {id: client.id}),'attr': {'id': 'formValidate'}}) }}
+                        {% else%}
+                            {{ form_start(form,{'method': 'post', 'action': path('perso_add_client'),'attr': {'id': 'formValidate'}}) }}
+                        {% endif %}
+                        <h5 class="form-header">
+                            {%  if client %} Modifier {% else%}  Ajouter {% endif %}un client
+                        </h5>
+                        <div class="form-desc">
+                            {{ include('default/FlashBag/flashBag.html.twig') }}
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="pno">Code :</label>
+                                {{ form_widget(form.code , {'attr': {'class' : 'form-control' , 'placeholder': 'Enter Code'}}) }}
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
+
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="pno">Code TVA/ CIN :</label>
+                                {{ form_widget(form.codeTVA , {'attr': {'class' : 'form-control' , 'placeholder': 'Enter Code'}}) }}
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
+
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="fname">Nom:</label>
+                                {{ form_widget(form.nom ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter Nom'}}) }}
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
+
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="lname">Prénom:</label>
+                                {{ form_widget(form.prenom ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter Prenom'}}) }}
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
+
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="add1">Adresse:</label>
+                                {{ form_widget(form.adresse ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter adresse'}}) }}
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="add2">Téléphone:</label>
+                                {{ form_widget(form.telephone ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter telephone'}}) }}
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
+
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="add1">Pays:</label>
+                                {{ form_widget(form.country ,{'attr': {'class' : 'form-control js-example-basic-single'}}) }}
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
+
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="add1">Ville:</label>
+                                {{ form_widget(form.city ,{'attr': {'class' : 'form-control '}}) }}
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
+
+                            </div>
+
+                           {# <div class="form-group col-md-6">
+                                <label for="email">Email:</label>
+                                {{ form_widget(form.email ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter email'}}) }}
+                                <div class="help-block form-text with-errors form-control-feedback"></div>
+
+
+                            </div>#}
+
+
+
+
+                        </div>
+
+                        <div class="form-buttons-w">
+
+                            <button type="submit" class="btn btn-primary mr-2">{%  if client %} Modifier {% else%}  Enregistrer {% endif %}</button>
+                            <button type="reset" class="btn btn-danger">Annuler</button>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+
+        {% endblock %}
+
+
+{% block javascripts %}
+
+    <script>
+        var $country= $('#client_country');
+
+        $country.change(function() {
+            var $form = $(this).closest('form');
+            var data = {};
+            console.log($country.val());
+            data[$country.attr('name')] = $country.val();
+
+            $.ajax({
+                url : $form.attr('action'),
+                type: $form.attr('method'),
+                data : data,
+                success: function(html) {
+                    $('#client_city').replaceWith(
+                        $(html).find('#client_city')
+
+                    );
+                    $('.js-example-basic-single').select2();
+                }
+            });
+        });
+    </script>
+    <script>   $(document).ready(function () {
+            $('.js-example-basic-single').select2();
+        });
+
+    </script>
+
+{% endblock %}

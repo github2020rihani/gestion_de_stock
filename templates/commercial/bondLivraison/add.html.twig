@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Crée une bon de livraison {% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+       {% block smenu %}
+           <ul class="breadcrumb">
+               <li class="breadcrumb-item">
+                   <a href="{{ path('dashboard_personelle') }}">Tableau de bord</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <a href="{{ path('perso_index_bl') }}">BL</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <span>Crée</span>
+               </li>
+           </ul>
+       {% endblock %}
+
+        {% block content %}
+            <div class="content-box">
+                <div class="row">
+                    <div class="col-sm-9 col-xxxl-9">
+                        <div class="element-wrapper">
+                            <h6 class="element-header">
+                                Crée une bon de livraison
+                            </h6>
+                            <div class="element-box" style="min-height: 360px">
+                                <form method="post" action="{{ path('perso_add_bl') }}" class="formAddBL">
+                                    <input type="hidden" class="fodecChecked" name="fodecChecked" value="">
+
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="validationCustom01">Clients</label>
+                                            <select name="customers"
+                                                    class="form-control customers js-example-basic-single">
+                                                <option value="0" selected disabled>Choisir un client</option>
+                                                {% for c in customers %}
+                                                    <option value="{{ c.id }}">{{ c.nom }} {{ c.prenom }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+{#                                            <label for="validationCustom01">N achat</label>#}
+{#                                            <input type="text" class="form-control numero_achat" id="validationCustom01"#}
+{#                                                   required=""#}
+{#                                                   name="numero_achat">#}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="validationCustom01">Date de création</label>
+                                            <input type="text" class="form-control date_creation"
+                                                   id="validationCustom01" required=""
+                                                   value="{{ ('now')| date('d/m/Y') }}" disabled
+                                                   name="date_creation">
+                                        </div>
+                                        <input type="hidden" value="" name="typePayement" class="typePayement">
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-lightborder table_art_bl">
+                                            <thead>
+
+                                            <tr id="ligne_achat_1">
+                                                <th scope="col">#</th>
+                                                <th scope="col">Réference</th>
+                                                <th scope="col">PU HT</th>
+                                                <th scope="col">Qte</th>
+                                                <th scope="col">En stock</th>
+                                                <th scope="col">REMISE (%)</th>
+                                                <th scope="col">PU HT Net</th>
+                                                <th scope="col">TOTAL HT</th>
+                                                <th scope="col">PU TTC</th>
+                                                <th scope="col">TOTAL TTC</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="tbodyLingeArticleBL">
+
+                                            </tbody>
+
+
+                                        </table>
+
+                                    </div>
+                                    <button type="button" class="mt-2 btn btn-primary float-right addLingeBL"><i
+                                                class="fa fa-plus"></i>Autre
+                                    </button>
+                                    <button type="button" class="mt-5 btn btn-primary addBL w-100"
+                                    ><i
+                                                class="fa fa-save"></i> Enregistrer
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-xxxl-3">
+                        <!--START - Top Selling Chart-->
+                        <div class="element-wrapper">
+                            <h6 class="element-header">
+                                Total
+                            </h6>
+                            <div class="element-box" style="background-color: rgba(12,12,12,0.25)">
+                                <h4 class="card-title">Total HT</h4>
+                                <p class="card-text total_ht_global">0.000 </p>
+                                <h4 class="card-title">Remise</h4>
+                                <p class="card-text remise">0.000</p>
+                                <h4 class="card-title">TVA (%)</h4>
+                                <p class="card-text total_tva">{{ tva }}</p>
+                                {#                                <h4 class="card-title">Timbre</h4>#}
+                                {#                                <p class="card-text timbre"> </p>#}
+                                {#                                <h4 class="card-title">Transports</h4>#}
+                                {#                                <p class="card-text transport">0.00</p>#}
+                                <hr>
+                                <h4 class="card-title">Total TTC</h4>
+                                <p class="card-text total_ttc_global ">0.000</p>
+                                <h4 class="card-title">Type du paiement</h4>
+                                <select name="type_payement" class="form-control type_payement">
+                                    <option value="0" selected disabled>Choisir le type du paiement</option>
+                                    <option value="1">Espece</option>
+                                    <option value="2">Cheque</option>
+                                    <option value="3">Carte</option>
+                                </select>
+
+
+                            </div>
+                        </div>
+                        <!--END - Top Selling Chart-->
+                    </div>
+                </div>
+            </div>
+
+
+        {% endblock %}
+
+{% block javascripts %}
+    <script>   $(document).ready(function () {
+            $('.js-example-basic-single').select2();
+        });
+
+    </script>
+    <script src="{{ asset('app/js/comercial/bl/addBl.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,203 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Détail d'achat {% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+       {% block smenu %}
+           <ul class="breadcrumb">
+               <li class="breadcrumb-item">
+                   <a href="{{ path('dashboard_personelle') }}">Tableau de bord</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <a href="{{ path('perso_index_bl') }}">BL</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <span>Détail</span>
+               </li>
+           </ul>
+       {% endblock %}
+
+        {% block content %}
+            <div class="content-box">
+                <div class="row">
+                    <div class="col-sm-9 col-xxxl-9">
+                        <div class="element-wrapper">
+                            <h6 class="element-header">
+                                Informations des articles
+                            </h6>
+                            <div class="order-box">
+                                <div class="order-details-box">
+                                    <div class="order-main-info">
+                                        <span>Numéro du BL #</span><strong>{{ perfix_bl }}{{ bl.numero }}</strong>
+                                    </div>
+                                    <div class="order-sub-info">
+                                        <span>Date de création</span><strong>{{ bl.createdAt|date('d/m/Y') }}</strong>
+                                    </div>
+                                </div>
+                                <div class="order-items-table">
+                                    <div class="table-responsive">
+                                        <table class="table table-lightborder">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Réference</th>
+                                                <th scope="col">PU HT</th>
+                                                <th scope="col">Qte</th>
+                                                <th scope="col">REMISE (%)</th>
+                                                <th scope="col">PU HT Net</th>
+                                                <th scope="col">TAXE (%)</th>
+                                                <th scope="col">TOTAL HT</th>
+                                                <th scope="col">PU TTC</th>
+                                                <th scope="col">TOTAL TTC</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for a in bl.bonlivraisonArticles %}
+                                                <tr>
+                                                    <td></td>
+                                                    <td>{{ a.article.ref }}</td>
+                                                    <td>{{ a.puht|number_format(3) }}</td>
+                                                    <td>{{ a.qte }}</td>
+                                                    <td>{{ a.remise }}</td>
+                                                    <td>{{ a.puhtnet|number_format(3) }}</td>
+                                                    <td>{{ a.taxe }}</td>
+                                                    <td>{{ a.totalht|number_format(3) }}</td>
+                                                    <td>{{ a.puttc|number_format(3) }}</td>
+                                                    <td>{{ a.totalttc|number_format(3) }}</td>
+                                                </tr>
+
+                                            {% endfor %}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="order-foot">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-4">
+                                            {#                                            <h5>#}
+                                            {#                                                Notes#}
+                                            {#                                            </h5>#}
+                                            {#                                            <div class="form-group">#}
+                                            {#                                                <textarea class="form-control" placeholder="Enter your notes here..."></textarea>#}
+                                            {#                                            </div>#}
+                                            {#                                            <button class="btn btn-primary">Save Notes</button>#}
+                                        </div>
+                                        <div class="col-md-5 offset-md-1">
+                                            <h5 class="order-section-heading">
+                                            </h5>
+
+                                            <div class="order-summary-row">
+                                                <div class="order-summary-label">
+                                                    <span>Total HT</span>
+                                                </div>
+                                                <div class="order-summary-value">
+                                                    {{ bl.totalHt|number_format(3) }}
+                                                </div>
+                                            </div>
+                                            <div class="order-summary-row">
+                                                <div class="order-summary-label">
+                                                    <span>TVA</span>
+                                                </div>
+                                                <div class="order-summary-value">
+                                                    {{ bl.totalTva|number_format(2) }}
+                                                </div>
+                                            </div>
+                                            <div class="order-summary-row">
+                                                <div class="order-summary-label">
+                                                    <span>Remise</span>
+                                                </div>
+                                                <div class="order-summary-value">
+                                                    {{ bl.totalRemise|number_format(3) }}
+                                                </div>
+                                            </div>
+                                            <div class="order-summary-row">
+                                                <div class="order-summary-label">
+                                                    <span>Type du paiement</span>
+                                                </div>
+                                                <div class="order-summary-value">
+                                                    {% if bl.typePayement == 1 %}
+                                                        Espece
+                                                    {% elseif  bl.typePayement == 2 %}
+                                                        Cheque
+                                                    {% else %}
+                                                        Carte
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+
+
+                                            <div class="order-summary-row as-total">
+                                                <div class="order-summary-label">
+                                                    <span>Total TTC</span>
+                                                </div>
+                                                <div class="order-summary-value">
+                                                    {{ bl.totalTtc|number_format(3) }}
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-xxxl-3">
+                        <!--START - Top Selling Chart-->
+                        <div class="element-wrapper">
+                            <h6 class="element-header">
+                                Information du client
+                            </h6>
+                            <div class="ecommerce-customer-info">
+                                <div class="ecommerce-customer-main-info">
+                                    <div class="ecc-name">
+                                        {{ bl.customer.nom  }} {{ bl.customer.prenom  }}
+                                    </div>
+                                </div>
+                                <div class="ecommerce-customer-sub-info">
+                                    <div class="ecc-sub-info-row">
+                                        <div class="sub-info-label">
+                                            Email
+                                        </div>
+                                        <div class="sub-info-value">
+                                            <a href="#">
+                                                {{ bl.customer.email  }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ecc-sub-info-row">
+                                        <div class="sub-info-label">
+                                            Téléphone
+                                        </div>
+                                        <div class="sub-info-value">
+                                            +216 {{ bl.customer.telephone  }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-content">
+                                    <div class="ecc-sub-info-row">
+                                        <div class="sub-info-label">
+                                            Address
+                                        </div>
+                                        <div class="sub-info-value">
+                                            {{ bl.customer.adresse  }} ,   {{ bl.customer.city.name  }} , {{ bl.customer.country.name  }}
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--END - Top Selling Chart-->
+                    </div>
+                </div>
+            </div>
+
+
+        {% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}

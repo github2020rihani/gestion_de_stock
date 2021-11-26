@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+        {% block content %}
+    <!-- Wrapper Start -->
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-4">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <div class="header-title">
+                                    <h4 class="card-title">Ajouter Client</h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="form-group">
+                                        <div class="crm-profile-img-edit position-relative">
+                                            <img class="crm-profile-pic rounded avatar-100" src="{{ asset('assets/images/user/03.jpg') }}" alt="profile-pic">
+                                            <div class="crm-p-image bg-primary">
+                                                <i class="las la-pen upload-button"></i>
+                                                <input class="file-upload" type="file" accept="image/*">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="furl">Facebook Url:</label>
+                                        <input type="text" class="form-control" id="furl" placeholder="Facebook Url">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="turl">Twitter Url:</label>
+                                        <input type="text" class="form-control" id="turl" placeholder="Twitter Url">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="instaurl">Instagram Url:</label>
+                                        <input type="text" class="form-control" id="instaurl" placeholder="Instagram Url">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lurl">Linkedin Url:</label>
+                                        <input type="text" class="form-control" id="lurl" placeholder="Linkedin Url">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 col-lg-8">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <div class="header-title">
+                                    <h4 class="card-title">Informations Client</h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="new-user-info">
+                                    <form>
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label for="fname">Nom:</label>
+                                                <input type="text" class="form-control" id="fname" placeholder="First Name">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="lname">Prenom:</label>
+                                                <input type="text" class="form-control" id="lname" placeholder="Last Name">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="add1">Adresse:</label>
+                                                <input type="text" class="form-control" id="add1" placeholder="Street Address 1">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="add2">Telephone:</label>
+                                                <input type="text" class="form-control" id="add2" placeholder="Street Address 2">
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label for="cname">Nom de l'entreprise:</label>
+                                                <input type="text" class="form-control" id="cname" placeholder="Company Name">
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <label>Pays:</label>
+                                                <div class="dropdown bootstrap-select form-control">
+                                                    <select name="type" class="selectpicker form-control" data-style="py-0" tabindex="null">
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>Ville:</label>
+                                                <div class="dropdown bootstrap-select form-control">
+                                                    <select name="type" class="selectpicker form-control" data-style="py-0" tabindex="null">
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="email">Email:</label>
+                                                <input type="email" class="form-control" id="email" placeholder="Email">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="pno">Code Client:</label>
+                                                <input type="text" class="form-control" id="pno" placeholder="Pin Code">
+                                            </div>
+
+                                        </div>
+                                        <hr>
+
+                                        <button type="submit" class="btn btn-primary">Add New User</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+
+
+{% block javascripts %}
+
+{% endblock %}

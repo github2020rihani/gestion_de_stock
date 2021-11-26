@@ -1,63 +1,61 @@
-
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html>
 <head>
+    <title>Login</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{% block title %} {% endblock %}</title>
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta content="template language" name="keywords">
+    <meta content="Tamerlan Soziev" name="author">
+    <meta content="Admin dashboard html template" name="description">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="favicon.png" rel="shortcut icon">
+    <link href="apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
+    <link href="{{asset('app/assetes/bower_components/select2/dist/css/select2.min.css')}}" rel="stylesheet">
+    <link href="{{asset('app/assetes/bower_components/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet">
+    <link href="{{asset('app/assetes/bower_components/dropzone/dist/dropzone.css')}}" rel="stylesheet">
+    <link href="{{asset('app/assetes/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('app/assetes/bower_components/fullcalendar/dist/fullcalendar.min.css')}}" rel="stylesheet">
+    <link href="{{asset('app/assetes/bower_components/perfect-scrollbar/css/perfect-scrollbar.min.css')}}" rel="stylesheet">
+    <link href="{{asset('app/assetes/bower_components/slick-carousel/slick/slick.css')}}" rel="stylesheet">
+    <link href="{{asset('app/assetes/css/main.css?version=4.5.0')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('app/css/custom.css') }}">
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="https://templates.iqonic.design/posdash/html/assets/images/favicon.ico" />
-    <link rel="stylesheet" href="{{ asset('assets/css/backend-plugin.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/css/backende209.css?v=1.0.0')}}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/%40fortawesome/fontawesome-free/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/remixicon/fonts/remixicon.css')}}">  </head>
-<body class=" ">
-<!-- loader Start -->
-<div id="loading">
-    <div id="loading-center">
+</head>
+<body class="auth-wrapper">
+<div class="all-wrapper menu-side with-pattern">
+    <div class="auth-box-w">
+        <div class="logo-w">
+            <a href="#"><img alt="" src="{{ asset('app/images/logo-soffal.png') }}" style="width: 69%"></a>
+        </div>
+        <h4 class="auth-header">
+           Connexion
+        </h4>
+{#        <form action="">#}
+{#            <div class="form-group">#}
+{#                <label for="">Username</label><input class="form-control" placeholder="Enter your username" type="text">#}
+{#                <div class="pre-icon os-icon os-icon-user-male-circle"></div>#}
+{#            </div>#}
+{#            <div class="form-group">#}
+{#                <label for="">Password</label><input class="form-control" placeholder="Enter your password" type="password">#}
+{#                <div class="pre-icon os-icon os-icon-fingerprint"></div>#}
+{#            </div>#}
+{#            <div class="buttons-w">#}
+{#                <button class="btn btn-primary">Log me in</button>#}
+{#                <div class="form-check-inline">#}
+{#                    <label class="form-check-label"><input class="form-check-input" type="checkbox">Remember Me</label>#}
+{#                </div>#}
+{#            </div>#}
+{#        </form>#}
+        {%  block contentForm %} {% endblock %}
+
     </div>
 </div>
-<!-- loader END -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-<div class="wrapper">
-    <section class="login-content">
-        <div class="container">
-            <div class="row align-items-center justify-content-center height-self-center">
-                <div class="col-lg-8">
-                <div class="card auth-card">
-                    <div class="card-body p-0">
-                        <div class="d-flex align-items-center auth-content">
-                            <div class="col-lg-7 align-self-center">
-                           {%  block contentForm %} {% endblock %}
-                            </div>
-                            <div class="col-lg-5 content-right">
-                                <img src="../assets/images/login/01.png" class="img-fluid image-right" alt="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-    </section>
-</div>
-
-<!-- Backend Bundle JavaScript -->
-<script src="{{ asset('assets/js/backend-bundle.min.js') }}"></script>
-
-<!-- Table Treeview JavaScript -->
-<script src="{{ asset('assets/js/table-treeview.js') }}"></script>
-
-<!-- Chart Custom JavaScript -->
-<script src="{{asset('assets/js/customizer.js') }}"></script>
-
-<script  src="{{asset('assets/js/chart-custom.js')}}"></script>
-
-<!-- app JavaScript -->
-<script src="{{ asset('assets/js/app.js') }}"></script>
+<script src="{{ asset('assets/jquery_validate/js/jquery.validate.min.js') }}" rel="stylesheet"></script>
+<script src="{{ asset('assets/jquery_validate/js/additional-methods.min.js') }}" rel="stylesheet"></script>
+<script src="{{ asset('assets/jquery_validate/js/messages_fr.js') }}" rel="stylesheet"></script>
+<script src="{{ asset('app/js/formValidate.js') }}"></script>
 </body>
-
 </html>

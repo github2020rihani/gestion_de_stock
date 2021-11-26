@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}  Crée un devis {% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+       {% block smenu %}
+           <ul class="breadcrumb">
+               <li class="breadcrumb-item">
+                   <a href="{{ path('dashboard_personelle') }}">Tableau de bord</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <a href="{{ path('perso_index_devis') }}">devis</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <span>Crée </span>
+               </li>
+           </ul>
+       {% endblock %}
+
+        {% block content %}
+            <div class="content-box">
+                <div class="row">
+                    <div class="col-sm-12 col-xxxl-12">
+                        <div class="element-wrapper">
+                            <h6 class="element-header">
+                               Crée un devis
+                            </h6>
+                            <div class="element-box" style="min-height: 360px">
+                                <form method="post" action="{{ path('perso_add_devis') }}" class="formAddDevis">
+                                    <input type="hidden" class="fodecChecked" name="fodecChecked" value="">
+
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="validationCustom01">Client</label>
+                                            <select name="customers"
+                                                    class="form-control customers js-example-basic-single">
+                                                <option value="0" selected disabled>Choisir un client</option>
+                                                {% for c in customers %}
+                                                    <option value="{{ c.id }}">{{ c.nom }} {{ c.prenom }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="validationCustom01">Date de création</label>
+                                            <input type="text" class="form-control date_creation"
+                                                   id="validationCustom01" required=""
+                                                   value="{{ ('now')| date('d/m/Y') }}" disabled
+                                                   name="date_creation">
+                                        </div>
+
+                                        <div class="col-md-4 mb-3">
+                                            <label for="validationCustom01">Total TTC</label>
+                                            <input type="text" class="form-control tottalTTC"
+                                                   value="0.000" style="font-size: 25px; color: red; font-weight: bold"
+                                                   id="validationCustom01" required="" disabled
+                                                   name="tottalTTC">
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-lightborder">
+                                            <thead>
+                                            <tr id="ligne_article_1">
+                                                <th scope="col">#</th>
+                                                <th scope="col">Réference</th>
+                                                <th scope="col">Désignation</th>
+                                                <th scope="col">Stock</th>
+                                                <th scope="col">Qte</th>
+                                                <th scope="col">Remise %</th>
+                                                <th scope="col">P.Vente TTC</th>
+                                                <th scope="col">Total</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="tbodyLingeArticle">
+
+                                            </tbody>
+
+
+                                        </table>
+
+                                    </div>
+                                    <button type="button" class="mt-2 btn btn-primary float-right addLingneArticle"><i
+                                                class="fa fa-plus"></i>Autre
+                                    </button>
+                                    <button type="button" class="mt-5 btn btn-primary addDevis w-100"
+                                    ><i
+                                                class="fa fa-save"></i> Enregistrer
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        {% endblock %}
+
+{% block javascripts %}
+    <script>   $(document).ready(function () {
+            $('.js-example-basic-single').select2();
+        });
+
+    </script>
+    <script src="{{ asset('app/js/comercial/devis/add.js') }}"></script>
+{% endblock %}

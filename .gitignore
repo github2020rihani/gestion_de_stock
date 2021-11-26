@@ -1,6 +1,11 @@
 
+
 ###> symfony/framework-bundle ###
-/.env.local
+/composer.lock
+/psymfony.lock
+/public/uploads/*
+/.env
+/.env.test
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php

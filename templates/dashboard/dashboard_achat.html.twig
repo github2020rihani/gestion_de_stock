@@ -1,0 +1,313 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} tableau de bord{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+       {% block smenu %}
+           <ul class="breadcrumb">
+               <li class="breadcrumb-item">
+                   <a href="{{ path('dashboard_achat') }}">Tableau de bord</a>
+               </li>
+           </ul>
+       {% endblock %}
+        {% block content %}
+            <div class="content-box">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="element-wrapper">
+                            <div class="element-actions">
+                                {#                                                        <form class="form-inline justify-content-sm-end">#}
+                                {#                                                                <select class="form-control form-control-sm">#}
+                                {#                                                                        <option value="Pending">#}
+                                {#                                                                                Today#}
+                                {#                                                                        </option>#}
+                                {#                                                                        <option value="Active">#}
+                                {#                                                                                Last Week#}
+                                {#                                                                        </option>#}
+                                {#                                                                        <option value="Cancelled">#}
+                                {#                                                                                Last 30 Days#}
+                                {#                                                                        </option>#}
+                                {#                                                                </select>#}
+                                {#                                                        </form>#}
+                            </div>
+                            <h6 class="element-header">
+                                Sales Dashboard
+                            </h6>
+                            <div class="element-content">
+                                <div class="row">
+                                    <div class="col-sm-4 col-xxxl-3">
+                                        <a class="element-box el-tablo" href="#">
+                                            <div class="label">
+                                                Products Sold
+                                            </div>
+                                            <div class="value">
+                                                57
+                                            </div>
+                                            <div class="trending trending-up-basic">
+                                                <span>12%</span><i class="os-icon os-icon-arrow-up2"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-4 col-xxxl-3">
+                                        <a class="element-box el-tablo" href="#">
+                                            <div class="label">
+                                                Gross Profit
+                                            </div>
+                                            <div class="value">
+                                                $457
+                                            </div>
+                                            <div class="trending trending-down-basic">
+                                                <span>12%</span><i class="os-icon os-icon-arrow-down"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-4 col-xxxl-3">
+                                        <a class="element-box el-tablo" href="#">
+                                            <div class="label">
+                                                New Customers
+                                            </div>
+                                            <div class="value">
+                                                125
+                                            </div>
+                                            <div class="trending trending-down-basic">
+                                                <span>9%</span><i class="os-icon os-icon-arrow-down"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="d-none d-xxxl-block col-xxxl-3">
+                                        <a class="element-box el-tablo" href="#">
+                                            <div class="label">
+                                                Refunds Processed
+                                            </div>
+                                            <div class="value">
+                                                $294
+                                            </div>
+                                            <div class="trending trending-up-basic">
+                                                <span>12%</span><i class="os-icon os-icon-arrow-up2"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if articles %}
+                    <div class="row">
+                        <div class="col-sm-8 col-xxxl-6">
+                            <div class="element-wrapper">
+                                <h6 class="element-header">
+                                    Liste des articles epuisée
+                                </h6>
+                                <div class="element-box-tp">
+
+                                    <div class="controls-above-table">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <form class="form-inline justify-content-sm-end">
+                                                    <input class="form-control searchArticleEpuise form-control-sm rounded bright"
+                                                           name="keysa"
+                                                           placeholder="Recherche par réference d'article" type="text">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tableArticlesEpuise">
+                                        <div class="table-responsive ">
+                                            <table class="table table-bordered table-lg table-v2 table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th>
+                                                        Réference
+                                                    </th>
+                                                    <th>
+                                                        Désignation
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                {% for ar in articles %}
+                                                    <tr>
+                                                        <td>{{ ar.article.ref }}</td>
+                                                        <td>{{ ar.article.description }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="controls-below-table">
+                                            <div class="table-records-info">
+                                            </div>
+                                            <div class="table-records-pages">
+                                                {{ knp_pagination_render(articles) }}
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-4 d-xxxl-none">
+                            <!--START - Top Selling Chart-->
+                            <div class="element-wrapper">
+                                <h6 class="element-header">
+                                    Top Selling Today
+                                </h6>
+                                <div class="element-box">
+                                    <div class="el-chart-w">
+                                        <canvas height="120" id="donutChart" width="120"></canvas>
+                                        <div class="inside-donut-chart-label">
+                                            <strong>142</strong><span>Total Orders</span>
+                                        </div>
+                                    </div>
+                                    <div class="el-legend condensed">
+                                        <div class="row">
+                                            <div class="col-auto col-xxxxl-6 ml-sm-auto mr-sm-auto col-6">
+                                                <div class="legend-value-w">
+                                                    <div class="legend-pin legend-pin-squared"
+                                                         style="background-color: #6896f9;"></div>
+                                                    <div class="legend-value">
+                                                        <span>Prada</span>
+                                                        <div class="legend-sub-value">
+                                                            14 Pairs
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="legend-value-w">
+                                                    <div class="legend-pin legend-pin-squared"
+                                                         style="background-color: #85c751;"></div>
+                                                    <div class="legend-value">
+                                                        <span>Maui Jim</span>
+                                                        <div class="legend-sub-value">
+                                                            26 Pairs
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 d-lg-none d-xxl-block">
+                                                <div class="legend-value-w">
+                                                    <div class="legend-pin legend-pin-squared"
+                                                         style="background-color: #806ef9;"></div>
+                                                    <div class="legend-value">
+                                                        <span>Gucci</span>
+                                                        <div class="legend-sub-value">
+                                                            17 Pairs
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="legend-value-w">
+                                                    <div class="legend-pin legend-pin-squared"
+                                                         style="background-color: #d97b70;"></div>
+                                                    <div class="legend-value">
+                                                        <span>Armani</span>
+                                                        <div class="legend-sub-value">
+                                                            12 Pairs
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--END - Top Selling Chart-->
+                        </div>
+                    </div>
+                {% endif %}
+                {% if prixs %}
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="element-wrapper">
+                                <h6 class="element-header">
+                                    Liste des prix
+                                </h6>
+                                <div class="element-box-tp">
+
+                                    <div class="controls-above-table">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <form class="form-inline justify-content-sm-end">
+                                                    <input class="form-control form-control-sm rounded bright searchArticlePrix"
+                                                           name="keypa"
+                                                           placeholder="Recherche par réference d'article" type="text">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tableArticlePrix">
+
+                                        <div class="table-responsive ">
+                                            <table class="table table-bordered table-lg table-v2 table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th>
+                                                        Réference
+                                                    </th>
+                                                    <th>
+                                                        Désignation
+                                                    </th>
+                                                    <th>
+                                                        PU ACHAT HT
+                                                    </th>
+                                                    <th>
+                                                        PU ACHAT TTC
+                                                    </th>
+                                                    <th>
+                                                        PU VENTE HT
+                                                    </th>
+                                                    <th>
+                                                        PU VENTE TTC
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for p in prixs %}
+                                                    <tr>
+                                                        <td>{{ p.article.ref }}</td>
+                                                        <td>{{ p.article.description }}</td>
+                                                        <td>{{ p.puAchaHT }}</td>
+                                                        <td>{{ p.phAchatTTC }}</td>
+                                                        <td>{{ p.puVenteHT }}</td>
+                                                        <td>{{ p.puVenteTTC }}</td>
+                                                    </tr>
+                                                {% endfor %}
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="controls-below-table">
+                                            <div class="table-records-info">
+                                                {#                                        Showing records 1 - 5#}
+                                            </div>
+                                            <div class="table-records-pages">
+                                                {{ knp_pagination_render(prixs) }}
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+        {% endblock %}
+
+
+{% block javascripts %}
+    <script src="{{ asset('app/js/admin/dashboard/index.js') }}"></script>
+
+
+{% endblock %}

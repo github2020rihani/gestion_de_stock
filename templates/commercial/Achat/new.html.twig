@@ -1,0 +1,195 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {% if article %} Modifier un  {% else %}  Ajouter une nouvelle {% endif %} achat {% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .container:hover input ~ .checkmark {
+            background-color: #ccc;
+        }
+
+        /* When the checkbox is checked, add a blue background */
+        .container input:checked ~ .checkmark {
+            background-color: #2196F3;
+        }
+
+        /* Create the checkmark/indicator (hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the checkmark when checked */
+        .container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        /* Style the checkmark/indicator */
+        .container .checkmark:after {
+            left: 9px;
+            top: 5px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+        .container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+    </style>
+{% endblock %}
+       {% block smenu %}
+           <ul class="breadcrumb">
+               <li class="breadcrumb-item">
+                   <a href="{{ path('dashboard_super_admin') }}">Tableau de bord</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <a href="{{ path('index_achat') }}">achats</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <span>{% if article %} Modifier {% else %}  Ajouter {% endif %}</span>
+               </li>
+           </ul>
+       {% endblock %}
+
+        {% block content %}
+            <div class="content-box">
+                <div class="row">
+                    <div class="col-sm-9 col-xxxl-9">
+                        <div class="element-wrapper">
+                            <h6 class="element-header">
+                                {% if article %} Modifier un  {% else %}  Ajouter une nouvelle {% endif %} achat
+                            </h6>
+                            <div class="element-box" style="min-height: 360px">
+                                <form method="post" action="{{ path('add_achat') }}" class="formAddAchat">
+                                    <input type="hidden" class="fodecChecked" name="fodecChecked" value="">
+
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="validationCustom01">Fournisseur</label>
+                                            <select name="fournisseur"
+                                                    class="form-control fournisseur js-example-basic-single">
+                                                <option value="0" selected disabled>Choisir un fournisseur</option>
+                                                {% for f in fournisseurs %}
+                                                    <option value="{{ f.id }}">{{ f.nom }} {{ f.prenom }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="validationCustom01">N achat</label>
+                                            <input type="text" class="form-control numero_achat" id="validationCustom01"
+                                                   required=""
+                                                   name="numero_achat">
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="validationCustom01">Date de création</label>
+                                            <input type="text" class="form-control date_creation"
+                                                   id="validationCustom01" required=""
+                                                   value="{{ ('now')| date('d/m/Y') }}" disabled
+                                                   name="date_creation">
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-lightborder">
+                                            <thead>
+                                            <tr>
+                                                <th class="text-center" scope="col" colspan="7">Article</th>
+                                                <th class="text-center" scope="col" colspan="2">Vente</th>
+                                            </tr>
+                                            <tr id="ligne_achat_1">
+                                                <th scope="col">#</th>
+                                                <th scope="col">Réference</th>
+                                                <th scope="col">Désignation</th>
+                                                <th scope="col">PU HT Net</th>
+                                                <th scope="col">Qte</th>
+                                                <th scope="col">TVA (%)</th>
+                                                <th scope="col">PU TTC</th>
+                                                <th scope="col">Marge (%)</th>
+                                                <th scope="col">P.Vente TTC</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="tbodyLingeAchat">
+
+                                            </tbody>
+
+
+                                        </table>
+
+                                    </div>
+                                    <button type="button" class="mt-2 btn btn-primary float-right addLingeAchat"><i
+                                                class="fa fa-plus"></i>Autre
+                                    </button>
+                                    <button type="button" class="mt-5 btn btn-primary addAchat w-100"
+                                    ><i
+                                                class="fa fa-save"></i>Enregistrer
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-xxxl-3">
+                        <!--START - Top Selling Chart-->
+                        <div class="element-wrapper">
+                            <h6 class="element-header">
+                                Total
+                            </h6>
+                            <div class="element-box" style="background-color: rgba(12,12,12,0.25)">
+                                <div class="form-check">
+                                    <label class="container"><b style="font-size: 18px">Fodec</b>
+                                        <input type="checkbox"  class="fodec" name="fodec" value="">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <hr>
+                                <h4 class="card-title">Total HT</h4>
+                                <p class="card-text total_ht">0.00</p>
+                                <h4 class="card-title">Remise</h4>
+                                <p class="card-text remise">0.00</p>
+                                <h4 class="card-title">Total TVA</h4>
+                                <p class="card-text total_tva">0.00</p>
+                                <h4 class="card-title">Timbre</h4>
+                                <p class="card-text timbre">0.600</p>
+                                <h4 class="card-title">Transports</h4>
+                                <p class="card-text transport">0.00</p>
+                                <hr>
+                                <h4 class="card-title">Total TTC</h4>
+                                <p class="card-text total_ttc">0.000</p>
+
+
+                            </div>
+                        </div>
+                        <!--END - Top Selling Chart-->
+                    </div>
+                </div>
+            </div>
+
+
+        {% endblock %}
+
+{% block javascripts %}
+    <script>   $(document).ready(function () {
+            $('.js-example-basic-single').select2();
+        });
+
+    </script>
+    <script src="{{ asset('app/js/superAdmin/achat/addAchat.js') }}"></script>
+{% endblock %}

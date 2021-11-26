@@ -1,0 +1,164 @@
+<div class="menu-mobile menu-activated-on-click color-scheme-dark">
+    <div class="mm-logo-buttons-w">
+        <a class="mm-logo" href="#"><img src="{{ asset('app/images/logo-soffal.png') }}"><span>Soffal</span></a>
+        <div class="mm-buttons">
+{#            <div class="mr-2">#}
+{#                {% if is_granted('ROLE_ADMIN') %}#}
+{#                    #}{#                    <a href="{{ path('profile', {id: app.user.id}) }}"><i class="os-icon os-icon-user-male-circle2" style="color: white"></i><span></span></a>#}
+
+{#                {% elseif is_granted('ROLE_SUPER_ADMIN')  %}#}
+{#                    <a href="{{ path('super_admin_profile', {id: app.user.id}) }}"><i class="os-icon os-icon-user-male-circle2" style="color: white"></i><span></span></a>#}
+
+{#                {% endif %}#}
+
+
+{#            </div>#}
+{#            <div class="mr-2">#}
+{#                {% if  is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_PROPRIETAIRE') or is_granted('ROLE_ADMIN') %}#}
+{#                    <a href="{{ path('list_notifications') }}"><i#}
+{#                                class="fa fa-bell" style="color: white"></i><span> </span></a>#}
+{#                {% endif %}#}
+{#            </div>#}
+{#            <div class="mr-2">#}
+{#                {% if  is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_PROPRIETAIRE') or is_granted('ROLE_ADMIN') %}#}
+
+
+
+{#                    <a href="{{ path('logout') }}"><i#}
+{#                                class="os-icon os-icon-signs-11" style="color: white"></i></a>#}
+
+
+{#                {% endif %}#}
+{#            </div>#}
+            <div class="content-panel-open">
+                <div class="os-icon os-icon-grid-circles"></div>
+            </div>
+            <div class="mobile-menu-trigger">
+                <div class="os-icon os-icon-hamburger-menu-1"></div>
+            </div>
+        </div>
+    </div>
+    <div class="menu-and-user">
+        <div class="logged-user-w">
+            <div class="avatar-w">
+                    <img alt="" class="avatar_current_user" src="{{ asset('app/assetes/img/avatar1.png')  }}">
+            </div>
+            <div class="logged-user-info-w">
+                <div class="logged-user-name">
+                    {{app.user.lastName }} {{app.user.firstName }}
+                </div>
+                <div class="logged-user-role">
+                    Super Admin
+                </div>
+            </div>
+        </div>
+        <!--------------------
+        START - Mobile Menu List
+        -------------------->
+        <ul class="main-menu">
+            <li class="{% if app.request.attributes.get('_route') in [ 'dashboard_super_admin' ] %} selected {% endif %}">
+                <a href="{{ path('dashboard_super_admin') }}">
+                    <div class="icon-w">
+                        <div class="icon-home {% if app.request.attributes.get('_route') in ['dashboard_super_admin'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+                    </div>
+                    <span>Tableau de bord</span></a>
+
+            </li>
+            <li class="{% if app.request.attributes.get('_route') in [ 'index_category' , 'add_category', 'edit_category'] %} selected {% endif %}">
+                <a href="{{ path('index_category') }}">
+                    <div class="icon-w">
+
+                        <div class="icon-organization {% if app.request.attributes.get('_route') in ['index_category' ,  'add_category', 'edit_category'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+                    </div>
+                    <span>Catégories</span></a>
+
+            </li>
+            {#    <li class="{% if app.request.attributes.get('_route') in [ 'index_departement' , 'add_departement' , 'edit_departement' ] %} selected {% endif %}">#}
+            {#        <a href="{{ path('index_departement') }}">#}
+            {#            <div class="icon-w">#}
+            {#                <div class="icon-screen-tablet {% if app.request.attributes.get('_route') in ['index_departement' , 'add_departement' , 'edit_departement'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>#}
+            {#            </div>#}
+            {#            <span>Département</span></a>#}
+
+            {#    </li>#}
+            <li class="{% if app.request.attributes.get('_route') in [ 'index_user' , 'edit_user' , 'add_user' ] %} selected {% endif %}">
+                <a href="{{ path('index_user') }}">
+                    <div class="icon-w">
+                        <div class="icon-lock-open {% if app.request.attributes.get('_route') in ['index_user' ,'edit_user' , 'add_user'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+                    </div>
+                    <span>Comptes</span></a>
+
+            </li>
+            <li class="{% if app.request.attributes.get('_route') in [ 'index_article', 'add_article', 'edit_article' ] %} selected {% endif %}">
+                <a href="{{ path('index_article') }}">
+                    <div class="icon-w">
+                        <div class="icon-tag{% if app.request.attributes.get('_route') in [ 'index_article', 'add_article', 'edit_article'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+                    </div>
+                    <span>Articles</span></a>
+
+            </li>
+            <li class="{% if app.request.attributes.get('_route') in [ 'index_fournisseur', 'add_fournisseur' , 'edit_fournisseur'] %} selected {% endif %}">
+                <a href="{{ path('index_fournisseur') }}">
+                    <div class="icon-w">
+                        <div class="icon-user{% if app.request.attributes.get('_route') in ['index_fournisseur', 'add_fournisseur' , 'edit_fournisseur'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+                    </div>
+                    <span>Fournisseurs</span></a>
+
+            </li>
+            <li class="has-sub-menu">
+                <a href="{{ path('index_achat') }}">
+                    <div class="icon-w">
+                        <div class="os-icon os-icon-layers"></div>
+                    </div>
+                    <span>Achat</span></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="{{ path('index_achat') }}">Liste des achats</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('add_achat') }}">Nouvelle achat</a>
+                    </li>
+
+                </ul>
+            </li>
+            <li class="{% if app.request.attributes.get('_route') in [ 'index_stock'] %} selected {% endif %}">
+                <a href="{{ path('index_stock') }}">
+                    <div class="icon-w">
+                        <div class="icon-layers {% if app.request.attributes.get('_route') in ['index_stock'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+                    </div>
+                    <span>Stock</span></a>
+
+            </li>
+            <li class="has-sub-menu">
+                <a href="{{ path('index_prix') }}">
+                    <div class="icon-w">
+                        <div class="os-icon os-icon-layers"></div>
+                    </div>
+                    <span>Prix</span></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="{{ path('index_prix') }}">Liste des prix</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('detail_articles') }}">Détail des articles</a>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li class="{% if app.request.attributes.get('_route') in [ 'index_inventaire'] %} selected {% endif %} ">
+                <a href="{{ path('index_inventaire') }}">
+                    <div class="icon-w">
+                        <div class="icon-note {% if app.request.attributes.get('_route') in ['index_stock'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+                    </div>
+                    <span>Inventaire</span></a>
+
+            </li>
+        </ul>
+
+        <!--------------------
+        END - Mobile Menu List
+        -------------------->
+
+    </div>
+</div>

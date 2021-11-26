@@ -1,0 +1,153 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {%  if client %} Modifier {% else%}  Ajouter {% endif %} un  client {% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+        {% block content %}
+    <!-- Wrapper Start -->
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-4">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <div class="header-title">
+                                    <h4 class="card-title">{%  if client %} Modifier {% else%}  Ajouter {% endif %} un  client</h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="form-group">
+                                        <div class="crm-profile-img-edit position-relative">
+                                            <img class="crm-profile-pic rounded avatar-100" src="{{ asset('assets/images/user/03.jpg') }}" alt="profile-pic">
+                                            <div class="crm-p-image bg-primary">
+                                                <i class="las la-pen upload-button"></i>
+                                                <input class="file-upload" type="file" accept="image/*">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="furl">Facebook Url:</label>
+                                        <input type="text" class="form-control" id="furl" placeholder="Facebook Url">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="turl">Twitter Url:</label>
+                                        <input type="text" class="form-control" id="turl" placeholder="Twitter Url">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="instaurl">Instagram Url:</label>
+                                        <input type="text" class="form-control" id="instaurl" placeholder="Instagram Url">
+                                    </div>
+{#                                    <div class="form-group">#}
+{#                                        <label for="lurl">Linkedin Url:</label>#}
+{#                                        <input type="text" class="form-control" id="lurl" placeholder="Linkedin Url">#}
+{#                                    </div>#}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 col-lg-8">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <div class="header-title">
+                                    <h4 class="card-title">Informations Client</h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+
+                                {%  if client %}
+                                    {{ form_start(form,{'method': 'post', 'action': path('edit_client' , {id: client.id}),'attr': {'novalidate': 'novalidate'}}) }}
+                                {% else%}
+                                    {{ form_start(form,{'method': 'post', 'action': path('add_client'),'attr': {'novalidate': 'novalidate'}}) }}
+                                {% endif %}
+                                <div class="new-user-info">
+                                    {{ form_start(form,{'method': 'post', 'action': path('add_client'),'attr': {'novalidate': 'novalidate'}}) }}
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label for="pno">Code Client:</label>
+                                                {{ form_widget(form.code , {'attr': {'class' : 'form-control' , 'placeholder': 'Enter Code'}}) }}
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="pno">Code Tva:</label>
+                                                {{ form_widget(form.codeTVA , {'attr': {'class' : 'form-control' , 'placeholder': 'Enter Code'}}) }}
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="fname">Nom:</label>
+                                                {{ form_widget(form.nom ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter Nom'}}) }}
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="lname">Prenom:</label>
+                                                {{ form_widget(form.prenom ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter Prenom'}}) }}
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="add1">Adresse:</label>
+                                                {{ form_widget(form.adresse ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter adresse'}}) }}
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <label for="add1">Pays:</label>
+                                                {{ form_widget(form.country ,{'attr': {'class' : 'form-control'}}) }}
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="add1">Ville:</label>
+                                                {{ form_widget(form.city ,{'attr': {'class' : 'form-control'}}) }}
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="add2">Telephone:</label>
+                                                {{ form_widget(form.telephone ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter telephone'}}) }}
+                                            </div>
+{#                                            <div class="form-group col-md-6">#}
+{#                                                <label for="email">Email:</label>#}
+{#                                                {{ form_widget(form.email ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter email'}}) }}#}
+{#                                            </div>#}
+
+                                        <hr>
+
+                                    <button type="submit" class="btn btn-primary mr-2">{%  if client %} Modifier {% else%}  Sauvargarder {% endif %}</button>
+                                    <button type="reset" class="btn btn-danger">Annuler</button>
+
+
+                                    {{ form_start(form) }}
+
+                                    {{ form_end(form) }}
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+
+
+{% block javascripts %}
+
+        <script>
+        var $country= $('#client_country');
+
+        $country.change(function() {
+            var $form = $(this).closest('form');
+            var data = {};
+            console.log($country.val());
+            data[$country.attr('name')] = $country.val();
+
+            $.ajax({
+                url : $form.attr('action'),
+                type: $form.attr('method'),
+                data : data,
+                success: function(html) {
+                    $('#client_city').replaceWith(
+                        $(html).find('#client_city')
+                    );
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

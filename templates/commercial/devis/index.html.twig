@@ -1,0 +1,159 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste des devis {% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+       {% block smenu %}
+           <ul class="breadcrumb">
+               <li class="breadcrumb-item">
+                   <a href="{{ path('dashboard_personelle') }}">Tableau de bord</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <a href="#">devis</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <span>Liste</span>
+               </li>
+           </ul>
+       {% endblock %}
+
+        {% block content %}
+
+            <div class="element-wrapper">
+                <h6 class="element-header">
+                    Liste des devis
+                </h6>
+                {{ include('default/FlashBag/flashBag.html.twig') }}
+
+                <div class="element-box">
+                    <h5 class="form-header">
+                        <a href="{{ path('perso_add_devis') }}" class="btn btn-primary add-list float-right mb-2"><i
+                                    class="las la-plus mr-3"></i>Crée un devis </a>
+
+                    </h5>
+
+                    <div class="form-desc">
+
+                    </div>
+
+                    {{ include('commercial/devis/include/_modal_confirm_transfertDevis.html.twig') }}
+                    <div class="table-responsive">
+
+                        <table id="dataTable1" width="100%" class="table table-striped table-lightfont table_devis">
+                            <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Numéro</th>
+                                <th>Client</th>
+                                <th>Total</th>
+                                <th>Fichier</th>
+                                <th>Transfert vers BL</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Date</th>
+                                <th>Numéro</th>
+                                <th>Client</th>
+                                <th>Total</th>
+                                <th>Fichier</th>
+                                <th>Transfert vers BL</th>
+                                <th>Action</th>
+                            </tr>
+                            </tfoot>
+                            <tbody class="ligth-body">
+                            {% for d in devis %}
+                                <tr style="{% if d.statusMAJ %} background-color: rgba(255,72,0,0.52) {% endif %}">
+                                    <td>{{ d.creadetAt|date('d/m/Y') }}</td>
+                                    <td>{{ perfex_devis }}{{ d.numero }}</td>
+                                    <td>{{ d.client.nom }} {{ d.client.prenom }}</td>
+                                    <td>{{ d.totalTTC|number_format(3) }}</td>
+                                    <td>
+                                    {%  if d.file %}    <a class="btn btn-sm btn-primary" href="{{ d.file }}" target="_blank" ><i class="fa fa-file"></i></a> {% else %} - {% endif %}
+
+                                    </td>
+                                    <td>
+                                        {% if d.status == 2 %}
+                                            <span class="mr-2 mb-2 badge badge-success"
+                                                  type="button"> Livrée  </span>
+                                        {% elseif d.status == 1 %}
+                                            <span class="mr-2 mb-2 badge badge-info"
+                                                  type="button"> En cours  </span>
+                                        {% else %}
+                                            <span class="mr-2 mb-2 badge badge-warning"
+                                                  type="button"> En Attente  </span>
+                                        {% endif %}
+                                    </td>
+                                    <td width="20%">
+                                        {% if d.statusMaj == 0 %}
+                                            <a class="  btn btn-sm btn-icon btn-info"
+                                               data-toggle="tooltip"
+                                               data-placement="top" title="" data-original-title="Consulter"
+                                               style="color: white"
+                                               href="{{ path('perso_detail_devis' , {id: d.id}) }}"
+                                            >
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        {% endif %}
+                                        {% if d.status == 2 %}
+
+                                        {% else %}
+                                            <a class="  btn btn-sm btn-icon btn-success"
+                                               data-toggle="tooltip"
+                                               data-placement="top" title="" data-original-title="Modifier"
+                                               style="color: white"
+                                               href="{{ path('perso_edit_devis', {id: d.id}) }}"
+                                                    {#                                                    href="{{ path('perso_print_devis2') }}"#}
+                                            >
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        {% endif %}
+
+                                        {% if d.statusMaj == 0 %}
+                                            <button class="  btn btn-sm btn-icon btn-danger printDevis"
+                                                    data-toggle="tooltip"
+                                                    type="button"
+                                                    data-id_devis= {{ d.id }}
+                                                    data-placement="top" title="" data-original-title="Imprimer"
+                                                    style="color: white"
+                                                    href=""
+                                            >
+                                                <i class="fa fa-print"></i>
+                                            </button>
+                                        {% endif %}
+                                        {% if d.statusMaj == 0 and d.status == 0 %}
+                                            <button class="  btn btn-sm btn-icon btn-dark transfertDevis"
+                                                    data-toggle="tooltip"
+                                                    type="button"
+                                                    data-id_devis= {{ d.id }}
+                                                    data-placement="top" title=""
+                                                    data-original-title="Tarasfert vers BL"
+                                                    style="color: white"
+                                                    href=""
+                                            >
+                                                <i class="fa fa-share"></i>
+                                            </button>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        {% endblock %}
+
+
+{% block javascripts %}
+    <script src="{{ asset('app/js/comercial/devis/index.js') }}"></script>
+
+{% endblock %}

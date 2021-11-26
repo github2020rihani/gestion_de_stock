@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste des clients {% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+       {% block smenu %}
+           <ul class="breadcrumb">
+               <li class="breadcrumb-item">
+                   <a href="{{ path('dashboard_personelle') }}">Tableau de bord</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <a href="#">clients</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <span>Liste</span>
+               </li>
+           </ul>
+       {% endblock %}
+
+        {% block content %}
+
+            <div class="element-wrapper">
+                <h6 class="element-header">
+                    Liste des clients
+                </h6>
+                {{ include('default/FlashBag/flashBag.html.twig') }}
+
+                <div class="element-box">
+                    <h5 class="form-header">
+                        <a href="{{ path('perso_add_client') }}" class="btn btn-primary add-list float-right mb-2"><i
+                                    class="las la-plus mr-3"></i>Ajouter un client </a>
+
+                    </h5>
+
+                    <div class="form-desc">
+
+                    </div>
+
+
+                    <div class="table-responsive">
+
+                        <table id="dataTable1" width="100%" class="table table-striped table-lightfont">
+                            <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>TVA/CIN</th>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Adresse</th>
+                                <th>Telephone</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Code</th>
+                                <th>TVA/CIN</th>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Adresse</th>
+                                <th>Téléphone</th>
+
+                                <th>Actions</th>
+                            </tr>
+                            </tfoot>
+                            <tbody class="ligth-body">
+                            {% for cl in clients %}
+                                <tr>
+                                    <td>{{ cl.code }}</td>
+                                    <td>{{ cl.codeTVA }}</td>
+                                    <td>{{ cl.nom }}</td>
+                                    <td>{{ cl.prenom }}</td>
+                                    <td>{{ cl.adresse }}</td>
+                                    <td>{{ cl.telephone }}</td>
+
+                                    <td width="5%">
+
+                                        <div class="d-flex align-items-center list-action">
+
+
+                                            <a class="  btn btn-sm btn-icon btn-success"
+                                               data-toggle="tooltip"
+                                               data-placement="top" title="" data-original-title="Modifier"
+                                               style="color: white"
+                                               href="{{ path('perso_edit_client', {id: cl.id}) }}"
+                                            >
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+
+                                            <a class="  btn btn-sm btn-icon btn-danger"
+                                               data-toggle="tooltip"
+                                               data-placement="top" title="" data-original-title="Supprimer"
+                                               style="color: white"
+                                               onclick=" return confirm('Vous éte sur suprimer ce client')"
+
+                                               href="{{ path('perso_delete_client', {id: cl.id}) }}"
+                                            >
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        {% endblock %}
+
+
+{% block javascripts %}
+
+{% endblock %}

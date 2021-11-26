@@ -1,0 +1,298 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} tableau de bord{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+        {% block content %}
+
+<div class="element-wrapper compact pt-4">
+        <div class="element-actions"><a class="btn btn-primary btn-sm" href="{{ path('add_achat') }}"><i
+                                class="os-icon os-icon-ui-22"></i><span>Ajouter Achat</span></a>
+                <a class="btn btn-success btn-sm" href="{{ path('add_article') }}"><i
+                                class="os-icon os-icon-ui-22"></i><span>Ajouter Article</span></a>
+        </div>
+
+        <h6 class="element-header">État des stocks</h6>
+        {{ include('default/FlashBag/flashBag.html.twig') }}
+        <div class="row">
+                <div class="col-sm-9 col-lg-10">
+                        <div class="element-wrapper">
+                                <div class="element-box">
+                                        <div class="table-responsive">
+                                                <table class="table table-lightborder">
+                                                        <thead>
+                                                        <th>Réf article</th>
+                                                        <th>Designation</th>
+                                                        <th>Stock</th>
+                                                        <th class="text-center">Status</th>
+                                                        <th>Inventé</th>
+                                                        <th>Date Entree</th>
+
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for s in stocks %}
+                                                                <tr>
+                                                                        <td class="nowrap">{{ s.article.ref }}</td>
+                                                                        <td>
+                                                                                {{ s.article.description }}
+                                                                        </td>
+                                                                        <td class=" old_qte_{{ s.article.id }}">{{ s.qte }}</td>
+                                                                        <td class="text-center">
+                                                                                {% if  s.qte > 10 %}
+                                                                                        <span id="status_{{ s.article.id }}"
+                                                                                              class="badge badge-success">En
+                                                        stock
+                                                    </span>
+
+                                                                                {% elseif  s.qte >0 and s.qte < 10 %}
+                                                                                        <span id="status_{{ s.article.id }}"
+                                                                                              class="badge badge-warning">Pré
+                                                        epuisée
+                                                    </span>
+
+                                                                                {% elseif s.qte == 0 %}
+                                                                                        <div id="status_{{ s.article.id }}"
+                                                                                             class="badge badge-danger">Epuisée
+                                                                                        </div>
+
+
+                                                                                {% endif %}
+                                                                        </td>
+                                                                        <td width="10%" id="statutInventer_{{ s.article.id }}">
+                                                                                {% if s.inventer %}
+
+                                                                                        <span id="status_{{ s.article.id }}"
+                                                                                              class="badge badge-success">
+                                                        Inventé
+                                                    </span>
+                                                                                {% else %}
+                                                                                        <span id="status_{{ s.article.id }}"
+                                                                                              class="badge badge-warning">En
+                                                        En Attente
+                                                    </span>
+                                                                                {% endif %}
+                                                                        </td>
+                                                                        <td>
+                                                                                {{ s.dateEntree|date('d/m/Y') }}
+                                                                        </td>
+                                                                </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                        <tfoot>
+                                                        <tr>
+                                                                <td>
+                                                                        <div class="page-item active" aria-current="page">
+                                                                                {{ knp_pagination_render(stocks) }}
+                                                                        </div>
+                                                                </td>
+                                                        </tr>
+                                                        </tfoot>
+
+                                                </table>
+
+                                        </div>
+
+                                </div>
+                        </div>
+                </div>
+                <div class="col-sm-3 col-lg-2">
+                        <div class="element-wrapper">
+                                <div class="element-wrapper">
+                                        <div class="element-box"><h5 class="form-header">Pie Chart</h5>
+                                                <div class="form-desc"></div>
+                                                <div class="el-chart-w">
+                                                        <div class="chartjs-size-monitor">
+                                                                <div class="chartjs-size-monitor-expand">
+                                                                        <div class=""></div>
+                                                                </div>
+                                                                <div class="chartjs-size-monitor-shrink">
+                                                                        <div class=""></div>
+                                                                </div>
+                                                        </div>
+                                                        <canvas height="187" id="pieChart1" width="187" class="chartjs-render-monitor"
+                                                                style="display: block; width: 187px; height: 187px;"></canvas>
+                                                </div>
+                                        </div>
+                                </div>
+
+                        </div>
+                </div>
+        </div>
+
+
+        <h6 class="element-header">Liste des prix</h6>
+        <div class="row">
+                <div class="col-sm-9 col-lg-10">
+                        <div class="element-wrapper">
+                                <div class="element-box">
+                                        <div class="table-responsive">
+                                                <table class="table table-lightborder">
+                                                        <thead>
+                                                        <tr>
+
+                                                                <th>Réf article</th>
+                                                                <th>Designation</th>
+                                                                <th>Pu achat HT</th>
+                                                                <th>Pu achat TTC</th>
+                                                                <th>Pu vente HT</th>
+                                                                <th>Pu vente TTC</th>
+                                                                <th>Tva</th>
+                                                                <th>Taux benefice</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for p in prixs %}
+
+                                                                <tr>
+                                                                        <td>{{ p.article.ref }}</td>
+                                                                        <td>{{ p.article.description }}</td>
+                                                                        <td><input type="text"
+                                                                                   class="form-control pachatnet pachatnet_{{ loop.index }}"
+                                                                                   id="puAchaHT_{{ p.id }}" disabled data-index="{{ loop.index }}"
+                                                                                   value="{{ p.puAchaHT|number_format(3) }}"></td>
+                                                                        <td><input type="text" class="form-control pachatttc_{{ loop.index }}"
+                                                                                   id="phAchatTTC_{{ p.id }}" disabled
+                                                                                   value="{{ p.phAchatTTC|number_format(3) }}"></td>
+                                                                        <td><input type="text" class="form-control pventeht_{{ loop.index }}"
+                                                                                   id="puVenteHT_{{ p.id }}" disabled
+                                                                                   value="{{ p.puVenteHT|number_format(3) }}"></td>
+                                                                        <td><input type="text"
+                                                                                   class="form-control pventettc pventettc_{{ loop.index }}"
+                                                                                   id="puVenteTTC_{{ p.id }}" disabled data-index="{{ loop.index }}"
+                                                                                   value="{{ p.puVenteTTC|number_format(3) }}"></td>
+                                                                        <td><input type="text" class="form-control" id="tva_{{ p.id }}" disabled
+                                                                                   value="{{ p.tva|number_format(1) }}" readonly></td>
+                                                                        <td width="10%"><input type="text"
+                                                                                               class="form-control taux_{{ loop.index }}"
+                                                                                               id="taux_{{ p.id }}" disabled
+                                                                                               value="{{ p.taux|number_format(3) }}"></td>
+                                                                </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                        <tfoot>
+                                                        <tr>
+                                                                <td>
+                                                                        <div class="page-item active" aria-current="page">
+                                                                                {{ knp_pagination_render(stocks) }}
+                                                                        </div>
+                                                                </td>
+                                                        </tr>
+                                                        </tfoot>
+
+                                                </table>
+
+                                        </div>
+                                </div>
+                        </div>
+
+                </div>
+                <div class="col-sm-3 col-lg-2">
+
+                        <div class="element-wrapper"><h6 class="element-header">Users </h6>
+                                <div class="element-box-tp">
+
+                                        <div class="users-list-w">
+                                                {% for u in users %}
+                                                        {% if u.status == 1 %}
+                                                                <div id="statusUser_{{ u.id }}"  class="user-w with-status status-green">
+
+                                                                        <div class="user-avatar-w">
+                                                                                <div class="user-avatar"><img alt="" src="img/avatar1.jpg"></div>
+                                                                        </div>
+                                                                        <div class="user-name"><h6 class="user-title">{{ u.firstName }} {{ u.lastName }}</h6>
+                                                                                {% if u.roles[0] == 'ROLE_SUPER_ADMIN' %}
+                                                                                        <div class="user-role"> SuperAdmin</div>
+
+                                                                                {% elseif u.roles[0] == 'ROLE_ADMIN' %}
+                                                                                        <div class="user-role"> Administrateur</div>
+
+                                                                                {% elseif u.roles[0] == 'ROLE_GERANT' %}
+                                                                                        <div class="user-role"> Gérant</div>
+                                                                                {% else %}
+                                                                                        Responsable
+                                                                                {% endif %}
+                                                                        </div>
+                                                                        {% if u.status == 1 %}
+
+                                                                                <a id="btn_statusUser_{{ u.id }}" class="btn btn-sm btn-danger btn_changeStatus mr-2"
+                                                                                   data-toggle="tooltip"
+                                                                                   data-placement="top" title="" data-original-title="Désactiver" data-id="{{ u.id }}"
+                                                                                   style="color: white"
+                                                                                >
+                                                                                        <i class="fa fa-lock"></i>
+                                                                                </a>
+
+                                                                        {% else %}
+
+
+
+                                                                                <a id="btn_statusUser_{{ u.id }}" class="btn btn-sm btn-danger btn_changeStatus mr-2"
+                                                                                   data-toggle="tooltip"
+                                                                                   data-placement="top" title="" data-original-title="Activer" data-id="{{ u.id }}"
+                                                                                   style="color: white"
+                                                                                >
+                                                                                        <i class="fa fa-unlock"></i>
+                                                                                </a>
+                                                                        {% endif %}
+                                                                </div>
+                                                        {% else %}
+                                                                <div id="statusUser_{{ u.id }}"  class="user-w with-status status-red">
+                                                                        <div class="user-avatar-w">
+                                                                                <div class="user-avatar"><img alt="" src="img/avatar1.jpg"></div>
+                                                                        </div>
+                                                                        <div class="user-name"><h6 class="user-title">{{ u.firstName }} {{ u.lastName }}</h6>
+                                                                                {% if u.roles[0] == 'ROLE_SUPER_ADMIN' %}
+                                                                                        <div class="user-role"> SuperAdmin</div>
+
+                                                                                {% elseif u.roles[0] == 'ROLE_ADMIN' %}
+                                                                                        <div class="user-role"> Administrateur</div>
+
+                                                                                {% elseif u.roles[0] == 'ROLE_GERANT' %}
+                                                                                        <div class="user-role"> Gérant</div>
+                                                                                {% else %}
+                                                                                        Responsable
+                                                                                {% endif %}
+                                                                        </div>
+                                                                        {% if u.status == 1 %}
+
+                                                                                <a id="btn_statusUser_{{ u.id }}" class="btn btn-sm btn-danger btn_changeStatus mr-2"
+                                                                                   data-toggle="tooltip"
+                                                                                   data-placement="top" title="" data-original-title="Désactiver" data-id="{{ u.id }}"
+                                                                                   style="color: white"
+                                                                                >
+                                                                                        <i class="fa fa-lock"></i>
+                                                                                </a>
+
+                                                                        {% else %}
+
+
+
+                                                                                <a id="btn_statusUser_{{ u.id }}" class="btn btn-sm btn-danger btn_changeStatus mr-2"
+                                                                                   data-toggle="tooltip"
+                                                                                   data-placement="top" title="" data-original-title="Activer" data-id="{{ u.id }}"
+                                                                                   style="color: white" >
+                                                                                        <i class="fa fa-unlock"></i>
+                                                                                </a>
+                                                                        {% endif %}
+                                                                </div>
+                                                        {% endif %}
+
+                                                {% endfor %}
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+
+        </div>
+
+        {% endblock %}
+
+
+        {% block javascripts %}
+<script src="{{ asset('app/js/user/index.js') }}"></script>
+
+{% endblock %}

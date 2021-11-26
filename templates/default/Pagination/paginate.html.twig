@@ -1,0 +1,55 @@
+<div class="dataTables_paginate paging_simple_numbers" id="dataTable1_paginate">
+    <ul class="pagination">
+        {% if first is defined and current != first %}
+            <li class="paginate_button page-item previous previous" id="dataTable1_previous"><a
+                        href="{{ path(route, query|merge({(pageParameterName): first})) }}"
+                        aria-controls="dataTable1"
+                        data-dt-idx="0" tabindex="0"
+                        rel="prev"
+                        class="page-link">Prémiere</a>
+            </li>
+        {% endif %}
+        {% if previous is defined %}
+            <li class="paginate_button page-item previous previous" id="dataTable1_previous"><a
+                        href="{{ path(route, query|merge({(pageParameterName): previous})) }}"
+                        aria-controls="dataTable1"
+                        data-dt-idx="0" tabindex="0"
+                        rel="prev"
+                        class="page-link">Précedent</a>
+            </li>
+        {% endif %}
+
+
+
+        {% for page in pagesInRange %}
+            {% if page != current %}
+                <li class="paginate_button page-item "><a
+                            href="{{ path(route, query|merge({(pageParameterName): page})) }}"
+                            aria-controls="dataTable1" data-dt-idx="1" tabindex="0"
+                            class="page-link">{{ page }}</a></li>
+            {% else %}
+                <li class="paginate_button page-item active "><a
+                            href="{{ path(route, query|merge({(pageParameterName): page})) }}"
+                            aria-controls="dataTable1" data-dt-idx="1" tabindex="0"
+                            class="page-link">{{ page }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if next is defined %}
+            <li class="paginate_button page-item next" id="dataTable1_next"><a
+                        href="{{ path(route, query|merge({(pageParameterName): next})) }}" aria-controls="dataTable1"
+                        data-dt-idx="7" tabindex="0"
+                        rel="next"
+                        class="page-link">Suivant</a></li>
+        {% endif %}
+        {% if last is defined and current != last %}
+            <li class="paginate_button page-item previous previous" id="dataTable1_previous"><a
+                        href="{{ path(route, query|merge({(pageParameterName): last})) }}"
+                        aria-controls="dataTable1"
+                        data-dt-idx="0" tabindex="0"
+                        rel="prev"
+                        class="page-link">Derniere</a>
+            </li>
+        {% endif %}
+    </ul>
+</div>

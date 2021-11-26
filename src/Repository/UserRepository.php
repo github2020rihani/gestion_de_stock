@@ -36,6 +36,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    public function findUserByDepartementSaufSuperAdmin($currentUser){
+        return $this->createQueryBuilder('u')
+            ->where('u.id != :id_currentUser')
+            ->setParameter('id_currentUser', $currentUser)
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

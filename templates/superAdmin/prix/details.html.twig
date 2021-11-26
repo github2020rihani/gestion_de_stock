@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste des articles {% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+       {% block smenu %}
+           <ul class="breadcrumb">
+               <li class="breadcrumb-item">
+                   <a href="{{ path('dashboard_super_admin') }}">Tableau de bord</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <a href="{{ path('index_prix') }}">prixs</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <span>Liste</span>
+               </li>
+           </ul>
+       {% endblock %}
+
+        {% block content %}
+
+            <div class="element-wrapper">
+                <h6 class="element-header">
+                    Liste des articles
+                </h6>
+                {{ include('default/FlashBag/flashBag.html.twig') }}
+
+                <div class="element-box">
+
+
+                    <div class="table-responsive">
+
+                        <table id="dataTable1" width="100%" class="table table-striped table-lightfont">
+                            <thead>
+                            <tr>
+                                <th>Réf article</th>
+                                <th>Designation</th>
+                                <th>Pu achat HT</th>
+                                <th>Pu achat TTC</th>
+                                <th>Pu vente HT</th>
+                                <th>Pu vente TTC</th>
+                                <th>Tva</th>
+                                <th>Taux benefice</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Réf article</th>
+                                <th>Designation</th>
+                                <th>Pu achat HT</th>
+                                <th>Pu achat TTC</th>
+                                <th>Pu vente HT</th>
+                                <th>Pu vente TTC</th>
+                                <th>Tva</th>
+                                <th>Taux benefice</th>
+                            </tr>
+                            </tfoot>
+                            <tbody class="ligth-body">
+                            {% for p in prixs %}
+                                <tr>
+                                    <td>{{ p.article.ref }}</td>
+                                    <td>{{ p.article.description }}</td>
+                                    <td width="10%"><input type="text" class="form-control pachatnet pachatnet_{{ loop.index }}" id="puAchaHT_{{ p.id }}" data-index="{{ loop.index }}" disabled
+                                                           value="{{ p.puAchaHT|number_format(3) }}"></td>
+                                    <td width="10%"><input type="text" class="form-control pachatttc_{{ loop.index }}" id="phAchatTTC_{{ p.id }}" disabled
+                                                           value="{{ p.phAchatTTC|number_format(3) }}"></td>
+                                    <td width="10%"><input type="text" class="form-control pventeht_{{ loop.index }}" id="puVenteHT_{{ p.id }}" disabled
+                                                           value="{{ p.puVenteHT|number_format(3) }}"></td>
+                                    <td width="10%"><input type="text" class="form-control pventettc pventettc_{{ loop.index }}" id="puVenteTTC_{{ p.id }}" data-index="{{ loop.index }}" disabled
+                                                           value="{{ p.puVenteTTC|number_format(3) }}"></td>
+                                    <td width="10%"><input type="text" class="form-control" id="tva_{{ p.id }}" disabled
+                                                           value="{{ p.tva|number_format(1) }}" readonly></td>
+                                    <td width="10%"><input type="text" class="form-control taux_{{ loop.index }}" id="taux_{{ p.id }}" disabled
+                                                           value="{{ p.taux|number_format(3) }}"></td>
+
+
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        {% endblock %}
+
+
+{% block javascripts %}
+
+{% endblock %}

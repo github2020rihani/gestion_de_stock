@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste des fournisseurs {% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+       {% block smenu %}
+           <ul class="breadcrumb">
+               <li class="breadcrumb-item">
+                   <a href="{{ path('dashboard_achat') }}">Tableau de bord</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <a href="#">fournisseurs</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <span>Liste</span>
+               </li>
+           </ul>
+       {% endblock %}
+
+        {% block content %}
+
+            <div class="element-wrapper">
+                <h6 class="element-header">
+                    Liste des fournisseurs
+                </h6>
+                {{ include('default/FlashBag/flashBag.html.twig') }}
+
+                <div class="element-box">
+                    <h5 class="form-header">
+                        <a href="{{ path('achat_add_fournisseur') }}" class="btn btn-primary add-list float-right mb-2"><i
+                                    class="las la-plus mr-3"></i>Ajouter un fournisseur </a>
+
+                    </h5>
+
+                    <div class="form-desc">
+
+                    </div>
+
+
+                    <div class="table-responsive">
+
+                        <table id="dataTable1" width="100%" class="table table-striped table-lightfont">
+                            <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Adresse</th>
+                                <th>Telephone</th>
+                                <th>Email</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Code</th>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Adresse</th>
+                                <th>Téléphone</th>
+                                <th>Email</th>
+                                <th>Actions</th>
+                            </tr>
+                            </tfoot>
+                            <tbody class="ligth-body">
+                            {% for f in fournisseurs %}
+                                <tr>
+                                    <td>{{ f.code }}</td>
+                                    <td>{{ f.nom }}</td>
+                                    <td>{{ f.prenom }}</td>
+                                    <td>{{ f.adresse }}</td>
+                                    <td>{{ f.telephone }}</td>
+                                    <td>{{ f.email }}</td>
+                                    <td width="5%">
+
+                                        <div class="d-flex align-items-center list-action">
+
+
+                                            <a class="  btn btn-sm btn-icon btn-success"
+                                               data-toggle="tooltip"
+                                               data-placement="top" title="" data-original-title="Modifier"
+                                               style="color: white"
+                                               href="{{ path('achat_edit_fournisseur', {id: f.id}) }}"
+                                            >
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+
+                                            <a class="  btn btn-sm btn-icon btn-danger"
+                                               data-toggle="tooltip"
+                                               data-placement="top" title="" data-original-title="Supprimer"
+                                               style="color: white"
+                                               onclick=" return confirm('Vous éte sur suprimer ce fournisseur')"
+
+                                               href="{{ path('achat_delete_fournisseur', {id: f.id}) }}"
+                                            >
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        {% endblock %}
+
+
+{% block javascripts %}
+
+{% endblock %}

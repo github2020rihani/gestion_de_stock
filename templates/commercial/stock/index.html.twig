@@ -1,0 +1,133 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste de stock {% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+       {% block smenu %}
+           <ul class="breadcrumb">
+               <li class="breadcrumb-item">
+                   <a href="{{ path('dashboard_super_admin') }}">Tableau de bord</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <a href="#">stock</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <span>Liste</span>
+               </li>
+           </ul>
+       {% endblock %}
+
+        {% block content %}
+
+            <div class="element-wrapper">
+                <h6 class="element-header">
+                    Liste de stock
+                </h6>
+                {{ include('default/FlashBag/flashBag.html.twig') }}
+                {{ include('superAdmin/stock/_modalInventaire.html.twig') }}
+
+                <div class="element-box">
+
+                    <div class="table-responsive">
+
+                        <table id="dataTable1" width="100%" class="table table_stock table-striped table-lightfont">
+                            <thead>
+                            <tr>
+                                <th>Réf d'article</th>
+                                <th>Désignation</th>
+                                <th>Stock</th>
+                                <th>Statut</th>
+                                <th>Inventé</th>
+
+
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Réf article</th>
+                                <th>Designation</th>
+                                <th>Stock</th>
+                                <th>Statut</th>
+                                <th>Inventé</th>
+                            </tr>
+                            </tfoot>
+                            <tbody class="ligth-body">
+                            {% for s in stocks %}
+                                <tr>
+                                    <td>{{ s.article.ref }}</td>
+                                    <td>{{ s.article.description }}</td>
+                                    <td class="old_qte_{{ s.article.id }}">{{ s.qte }}</td>
+                                    <td>
+                                        {% if  s.qte > 10 %}
+                                            <span id="status_{{ s.article.id }}"
+                                                  class="badge badge-success">En
+                                                        stock
+                                                    </span>
+
+                                        {% elseif  s.qte >0 and s.qte < 10 %}
+                                            <span id="status_{{ s.article.id }}"
+                                                  class="badge badge-warning">Pré
+                                                        epuisée
+                                                    </span>
+
+                                        {% elseif s.qte == 0 %}
+                                            <div id="status_{{ s.article.id }}"
+                                                 class="badge badge-danger">Epuisée
+                                            </div>
+
+
+                                        {% endif %}
+                                    </td>
+                                    <td width="10%" id="statutInventer_{{ s.article.id }}">
+                                        {%  if s.inventer %}
+
+                                            <span id="status_{{ s.article.id }}"
+                                                  class="badge badge-success">
+                                                        Inventé
+                                                    </span>
+                                        {% else %}
+                                            <span id="status_{{ s.article.id }}"
+                                                  class="badge badge-warning">En
+                                                        En Attente
+                                                    </span>
+                                            {% endif %}
+                                    </td>
+
+
+
+
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        {% endblock %}
+
+
+{% block javascripts %}
+    <script src="{{ asset('app/js/superAdmin/stock/stock.js') }}"></script>
+
+{% endblock %}

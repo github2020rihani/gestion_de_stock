@@ -1,0 +1,306 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Profile {% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+       {% block smenu %}
+           <ul class="breadcrumb">
+               <li class="breadcrumb-item">
+                   <a href="{{ path('dashboard_super_admin') }}">Tableau de bord</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <a href="#">Profile</a>
+               </li>
+
+           </ul>
+       {% endblock %}
+
+        {% block content %}
+
+<div class="content-box">
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="user-profile compact">
+                <div class="up-head-w" style="background-image:url({{asset('../img/profile_bg1.jpg')}})">
+                    <div class="up-social">
+                        <a href="#"><i class="os-icon os-icon-twitter"></i></a><a href="#"><i
+                                    class="os-icon os-icon-facebook"></i></a>
+                    </div>
+                    <div class="up-main-info">
+                        <h2 class="up-header">
+                            {{ app.user.firstName }}  {{ app.user.lastName }}
+                        </h2>
+                        <h6 class="up-sub-header">
+                            {% if app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
+                                SuperAdmin
+
+                            {% elseif app.user.roles[0] == 'ROLE_ADMIN' %}
+                                Administrateur
+
+                            {% elseif app.user.roles[0] == 'ROLE_ACHAT' %}
+                                Achat
+                            {% elseif app.user.roles[0] == 'ROLE_GERANT' %}
+                                Gérant
+
+                            {% else %}
+                                Responsable
+                            {% endif %}
+                        </h6>
+                    </div>
+                    <svg class="decor" width="842px" height="219px" viewBox="0 0 842 219"
+                         preserveAspectRatio="xMaxYMax meet" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                         xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g transform="translate(-381.000000, -362.000000)" fill="#FFFFFF">
+                            <path class="decor-path"
+                                  d="M1223,362 L1223,581 L381,581 C868.912802,575.666667 1149.57947,502.666667 1223,362 Z"></path>
+                        </g>
+                    </svg>
+                </div>
+                <div class="up-controls">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="value-pair">
+                                <div class="label">
+                                    Status:
+                                </div>
+                                <div class="value badge badge-pill badge-success">
+                                    Online
+                                </div>
+                            </div>
+                        </div>
+{#                        <div class="col-sm-6 text-right">#}
+{#                            <a class="btn btn-primary btn-sm" href=""><i class="os-icon os-icon-link-3"></i><span>Add to Friends</span></a>#}
+{#                        </div>#}
+                    </div>
+                </div>
+{#                <div class="up-contents">#}
+{#                    <div class="m-b">#}
+{#                        <div class="row m-b">#}
+{#                            <div class="col-sm-6 b-r b-b">#}
+{#                                <div class="el-tablo centered padded-v">#}
+{#                                    <div class="value">#}
+{#                                        25#}
+{#                                    </div>#}
+{#                                    <div class="label">#}
+{#                                        Products Sold#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="col-sm-6 b-b">#}
+{#                                <div class="el-tablo centered padded-v">#}
+{#                                    <div class="value">#}
+{#                                        315#}
+{#                                    </div>#}
+{#                                    <div class="label">#}
+{#                                        Friends#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="padded">#}
+{#                            <div class="os-progress-bar primary">#}
+{#                                <div class="bar-labels">#}
+{#                                    <div class="bar-label-left">#}
+{#                                        <span>Profile Completion</span><span class="positive">+10</span>#}
+{#                                    </div>#}
+{#                                    <div class="bar-label-right">#}
+{#                                        <span class="info">72/100</span>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="bar-level-1" style="width: 100%">#}
+{#                                    <div class="bar-level-2" style="width: 80%">#}
+{#                                        <div class="bar-level-3" style="width: 30%"></div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="os-progress-bar primary">#}
+{#                                <div class="bar-labels">#}
+{#                                    <div class="bar-label-left">#}
+{#                                        <span>Status Unlocked</span><span class="positive">+5</span>#}
+{#                                    </div>#}
+{#                                    <div class="bar-label-right">#}
+{#                                        <span class="info">45/100</span>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="bar-level-1" style="width: 100%">#}
+{#                                    <div class="bar-level-2" style="width: 30%">#}
+{#                                        <div class="bar-level-3" style="width: 10%"></div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="os-progress-bar primary">#}
+{#                                <div class="bar-labels">#}
+{#                                    <div class="bar-label-left">#}
+{#                                        <span>Followers</span><span class="negative">-12</span>#}
+{#                                    </div>#}
+{#                                    <div class="bar-label-right">#}
+{#                                        <span class="info">74/100</span>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="bar-level-1" style="width: 100%">#}
+{#                                    <div class="bar-level-2" style="width: 80%">#}
+{#                                        <div class="bar-level-3" style="width: 60%"></div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+{#            <div class="element-wrapper">#}
+{#                <div class="element-box">#}
+{#                    <h6 class="element-header">#}
+{#                        User Activity#}
+{#                    </h6>#}
+{#                    <div class="timed-activities compact">#}
+{#                        <div class="timed-activity">#}
+{#                            <div class="ta-date">#}
+{#                                <span>21st Jan, 2017</span>#}
+{#                            </div>#}
+{#                            <div class="ta-record-w">#}
+{#                                <div class="ta-record">#}
+{#                                    <div class="ta-timestamp">#}
+{#                                        <strong>11:55</strong> am#}
+{#                                    </div>#}
+{#                                    <div class="ta-activity">#}
+{#                                        Created a post called <a href="#">Register new symbol</a> in Rogue#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="ta-record">#}
+{#                                    <div class="ta-timestamp">#}
+{#                                        <strong>2:34</strong> pm#}
+{#                                    </div>#}
+{#                                    <div class="ta-activity">#}
+{#                                        Commented on story <a href="#">How to be a leader</a> in <a#}
+{#                                                href="#">Financial</a> category#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="ta-record">#}
+{#                                    <div class="ta-timestamp">#}
+{#                                        <strong>7:12</strong> pm#}
+{#                                    </div>#}
+{#                                    <div class="ta-activity">#}
+{#                                        Added <a href="#">John Silver</a> as a friend#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="timed-activity">#}
+{#                            <div class="ta-date">#}
+{#                                <span>3rd Feb, 2017</span>#}
+{#                            </div>#}
+{#                            <div class="ta-record-w">#}
+{#                                <div class="ta-record">#}
+{#                                    <div class="ta-timestamp">#}
+{#                                        <strong>9:32</strong> pm#}
+{#                                    </div>#}
+{#                                    <div class="ta-activity">#}
+{#                                        Added <a href="#">John Silver</a> as a friend#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="ta-record">#}
+{#                                    <div class="ta-timestamp">#}
+{#                                        <strong>5:14</strong> pm#}
+{#                                    </div>#}
+{#                                    <div class="ta-activity">#}
+{#                                        Commented on story <a href="#">How to be a leader</a> in <a#}
+{#                                                href="#">Financial</a> category#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+        </div>
+        <div class="col-sm-7">
+            <div class="element-wrapper">
+                <div class="element-box">
+                    <form id="formValidate" action="{{ path('edit_profile') }}" method="post"  novalidate>
+                        <div class="element-info">
+                            <div class="element-info-with-icon">
+                                <div class="element-info-icon">
+                                    <div class="os-icon os-icon-wallet-loaded"></div>
+                                </div>
+                                <div class="element-info-text">
+                                    <h5 class="element-inner-header">
+                                        Profile
+                                    </h5>
+                                    <div class="element-inner-desc">
+{#                                        Validation of the form is made possible using powerful validator plugin for#}
+{#                                        bootstrap. <a href="http://1000hz.github.io/bootstrap-validator/"#}
+{#                                                      target="_blank">Learn more about Bootstrap Validator</a>#}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                            <legend><span>Détails</span></legend>
+                            {{ include('default/FlashBag/flashBag.html.twig') }}
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="">Nom</label><input class="form-control"
+                                                                                data-error="Please input your First Name"
+                                                                                value="{{ app.user.firstName }}"
+                                                                        name="firstName"
+                                                                                required="required" type="text">
+                                        <div class="help-block form-text with-errors form-control-feedback"></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="">Prénom</label><input class="form-control"
+                                                                              data-error="Please input your Last Name"
+                                                                               value="{{ app.user.lastName }}"
+                                                                           name="lastName"
+                                                                              required="required" type="text">
+                                        <div class="help-block form-text with-errors form-control-feedback"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="">Email</label><input class="form-control"
+                                                                                data-error="Please input your First Name"
+                                                                                value="{{ app.user.email }}"
+                                                                          name="email"
+                                                                                required="required" type="email">
+                                        <div class="help-block form-text with-errors form-control-feedback"></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="">Mot de passe</label><input class="form-control"
+                                                                              data-error="Please input your Last Name"
+                                                                               value=""
+                                                                                 name="password"
+                                                                              type="password">
+                                        <div class="help-block form-text with-errors form-control-feedback"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        <div class="form-buttons-w">
+                            <button class="btn btn-primary" type="submit"> Modifier</button>
+                        </div>
+                        </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% endblock %}
+
+
+    {% block javascripts %}
+
+{% endblock %}

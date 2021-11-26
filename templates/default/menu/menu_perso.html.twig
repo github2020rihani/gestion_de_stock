@@ -1,0 +1,105 @@
+<ul class="main-menu">
+    <li class="sub-header">
+        <span>Layouts</span>
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in [ 'dashboard_personelle' ] %} selected {% endif %}">
+        <a href="{{ path('dashboard_personelle') }}">
+            <div class="icon-w">
+                <div class="icon-home {% if app.request.attributes.get('_route') in ['dashboard_personelle'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+            </div>
+            <span>Tableau de bord</span></a>
+
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in [ 'perso_index_client' , 'perso_add_client', 'perso_edit_client'] %} selected {% endif %}">
+        <a href="{{ path('perso_index_client') }}">
+            <div class="icon-w">
+
+                <div class="icon-user {% if app.request.attributes.get('_route') in ['perso_index_client' ,  'perso_add_client',  'perso_edit_client'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+            </div>
+            <span>Client</span></a>
+
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in ['perso_index_devis' , 'perso_index_invoice', 'perso_detail_devis',
+        'perso_add_devis', 'perso_edit_devis', 'perso_index_bl', 'perso_transfert_devi', 'perso_detail_invoice',
+        'perso_add_bl',  'perso_detail_bl', 'perso_edit_bl'] %} selected {% endif %} has-sub-menu">
+        <a href="{{ path('achat_index_achat') }}">
+            <div class="icon-w">
+                <div class="icon-basket"></div>
+            </div>
+            <span>Ventes</span></a>
+        <div class="sub-menu-w">
+            <div class="sub-menu-header">
+                Ventes
+            </div>
+            <div class="sub-menu-icon">
+                <i class="os-icon os-icon-layers{% if app.request.attributes.get('_route') in ['perso_index_devis' , 'perso_add_devis', 'perso_detail_devis',
+                    'perso_edit_devis', 'perso_index_bl', 'perso_edit_bl', 'perso_detail_bl',
+                    'perso_transfert_devi', 'perso_transfert_devi', 'perso_add_bl', 'perso_index_invoice', 'perso_detail_invoice'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></i>
+            </div>
+            <div class="sub-menu-i">
+                <ul class="sub-menu">
+                    <li>
+                        <a href="{{ path('perso_index_devis') }}"
+                           style="{% if app.request.attributes.get('_route') in ['perso_index_devis' , 'perso_add_devis',
+                           'perso_edit_devis', 'perso_detail_devis',
+                           'perso_transfert_devi'] %} color: #0a7cf8; font-weight: bold {% endif %}">
+                            Liste de devis</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('perso_index_bl') }}"
+                           style="{% if app.request.attributes.get('_route') in ['perso_index_bl', 'perso_add_bl' ,'perso_detail_bl', 'perso_edit_bl'] %} color: #0a7cf8; font-weight: bold {% endif %}">
+                            Liste bons de livraison</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('perso_index_invoice') }}"
+                           style="{% if app.request.attributes.get('_route') in ['perso_index_invoice', 'perso_detail_invoice'] %} color: #0a7cf8; font-weight: bold {% endif %}">
+                            Liste des Factures</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </li>
+
+    <li class="{% if app.request.attributes.get('_route') in [ 'perso_detail_articles' ] %} selected {% endif %} has-sub-menu">
+        <a href="#">
+            <div class="icon-w">
+                <div class="icon-list {% if app.request.attributes.get('_route') in [ 'perso_detail_articles'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+
+            </div>
+            <span>Article</span></a>
+        <div class="sub-menu-w">
+
+            <div class="sub-menu-i">
+                <ul class="sub-menu">
+
+                    <li>
+                        <a href="{{ path('perso_detail_articles') }}"
+                           style="{% if app.request.attributes.get('_route') in ['perso_detail_articles'] %} color: #0a7cf8 ; font-weight: bold{% endif %}">Liste des prix</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('perso_index_article') }}"
+                           style="{% if app.request.attributes.get('_route') in ['perso_index_articles'] %} color: #0a7cf8 ; font-weight: bold{% endif %}">Liste des articles</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('perso_index_stock') }}"
+                           style="{% if app.request.attributes.get('_route') in ['perso_detail_articles'] %} color: #0a7cf8 ; font-weight: bold{% endif %}">Stock</a>
+                    </li>
+
+
+                </ul>
+            </div>
+        </div>
+    </li>
+
+
+    <li class="{% if app.request.attributes.get('_route') in [ 'perso_index_inventaire'] %} selected {% endif %} has-sub-menu">
+        <a href="{{ path('perso_index_inventaire') }}">
+            <div class="icon-w">
+                <div class="icon-note {% if app.request.attributes.get('_route') in ['perso_index_stock'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+            </div>
+            <span>Inventaire</span></a>
+    </li>
+
+
+</ul>

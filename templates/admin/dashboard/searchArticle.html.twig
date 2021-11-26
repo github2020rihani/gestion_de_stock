@@ -1,0 +1,32 @@
+<div class="table-responsive ">
+    <table class="table table-bordered table-lg table-v2 table-striped">
+        <thead>
+        <tr>
+            <th>
+                Réference
+            </th>
+            <th>
+                Désignation
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for ar in articles %}
+            <tr>
+                <td>{{ ar.article.ref }}</td>
+                <td>{{ ar.article.description }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="controls-below-table">
+    <div class="table-records-info">
+    </div>
+    <div class="table-records-pages">
+        {{ knp_pagination_render(articles) }}
+
+    </div>
+</div>

@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {% if departement %} Modifier {% else %}  Ajouter {% endif %}un département {% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+       {% block smenu %}
+           <ul class="breadcrumb">
+               <li class="breadcrumb-item">
+                   <a href="index.html">Tableau de bord</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <a href="index.html">départements</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <span>{% if departement %} Modifier {% else %}  Ajouter {% endif %}</span>
+               </li>
+           </ul>
+       {% endblock %}
+
+        {% block content %}
+<div class="element-wrapper">
+    <div class="element-box">
+
+        {% if departement %}
+            {{ form_start(form,{'method': 'post', 'action': path('edit_departement', {id: departement.id}),'attr': {'class': 'needs-validation' , 'novalidate' : 'novalidate' , 'id' : 'formValidate' }}) }}
+
+        {% else %}
+            {{ form_start(form,{'method': 'post', 'action': path('add_departement'),'attr': {'class': 'needs-validation' , 'novalidate' : 'novalidate' , 'id' : 'formValidate' }}) }}
+
+        {% endif %}
+        <h5 class="form-header">
+            {% if departement %} Modifier {% else %}  Ajouter {% endif %}un département
+        </h5>
+        <div class="form-desc">
+            {{ include('default/FlashBag/flashBag.html.twig') }}
+
+        </div>
+        <div class="form-group">
+            <label>Code de département *</label>
+            {{ form_widget(form.codeDeppart ,{'attr': {'class' : 'form-control' , 'placeholder': 'Entre code  du département'}}) }}
+            <div class="help-block form-text with-errors form-control-feedback"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Libélle *</label>
+            {{ form_widget(form.libelle , {'attr': {'class' : 'form-control' , 'placeholder': 'Entre le  libelle du département'}}) }}
+            <div class="help-block form-text with-errors form-control-feedback">  </div>
+            <div class="invalid-feedback">
+
+            </div>
+        </div>
+        <div class="form-buttons-w">
+            <button type="submit" class="btn btn-primary mr-2">{%  if departement %} Modifier {% else%}  Enregistrer {% endif %}</button>
+            <button type="reset" class="btn btn-danger">Annuler</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}
+
+
+{% block javascripts %}
+
+{% endblock %}

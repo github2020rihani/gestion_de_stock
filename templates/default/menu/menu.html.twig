@@ -1,0 +1,134 @@
+<ul class="main-menu">
+    <li class="sub-header">
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in [ 'dashboard_super_admin' ] %} selected {% endif %}">
+        <a href="{{ path('dashboard_super_admin') }}">
+            <div class="icon-w">
+                <div class="icon-home {% if app.request.attributes.get('_route') in ['dashboard_super_admin'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+            </div>
+            <span>Tableau de bord</span></a>
+
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in [ 'index_category' , 'add_category', 'edit_category'] %} selected {% endif %}">
+        <a href="{{ path('index_category') }}">
+            <div class="icon-w">
+
+                <div class="icon-organization {% if app.request.attributes.get('_route') in ['index_category' ,  'add_category', 'edit_category'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+            </div>
+            <span>Catégories</span></a>
+
+    </li>
+{#    <li class="{% if app.request.attributes.get('_route') in [ 'index_departement' , 'add_departement' , 'edit_departement' ] %} selected {% endif %}">#}
+{#        <a href="{{ path('index_departement') }}">#}
+{#            <div class="icon-w">#}
+{#                <div class="icon-screen-tablet {% if app.request.attributes.get('_route') in ['index_departement' , 'add_departement' , 'edit_departement'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>#}
+{#            </div>#}
+{#            <span>Département</span></a>#}
+
+{#    </li>#}
+    <li class="{% if app.request.attributes.get('_route') in [ 'index_user' , 'edit_user' , 'add_user' ] %} selected {% endif %}">
+        <a href="{{ path('index_user') }}">
+            <div class="icon-w">
+                <div class="icon-lock-open {% if app.request.attributes.get('_route') in ['index_user' ,'edit_user' , 'add_user'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+            </div>
+            <span>Comptes</span></a>
+
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in [ 'index_article', 'add_article', 'edit_article' ] %} selected {% endif %}">
+        <a href="{{ path('index_article') }}">
+            <div class="icon-w">
+                <div class="icon-tag{% if app.request.attributes.get('_route') in [ 'index_article', 'add_article', 'edit_article'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+            </div>
+            <span>Articles</span></a>
+
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in [ 'index_fournisseur', 'add_fournisseur' , 'edit_fournisseur'] %} selected {% endif %}">
+        <a href="{{ path('index_fournisseur') }}">
+            <div class="icon-w">
+                <div class="icon-user{% if app.request.attributes.get('_route') in ['index_fournisseur', 'add_fournisseur' , 'edit_fournisseur'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+            </div>
+            <span>Fournisseurs</span></a>
+
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in [ 'index_achat', 'add_achat' , 'edit_achat', 'detail_achat'] %} selected {% endif %} has-sub-menu">
+        <a href="{{ path('index_achat') }}">
+            <div class="icon-w">
+                <div class="icon-basket"></div>
+            </div>
+            <span>Achat</span>
+        </a>
+
+        <div class="sub-menu-w">
+            <div class="sub-menu-header">
+                Achat
+            </div>
+            <div class="sub-menu-icon">
+                <i class="os-icon os-icon-layers{% if app.request.attributes.get('_route') in [ 'index_achat', 'add_achat' , 'edit_achat' , 'detail_achat'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></i>
+            </div>
+            <div class="sub-menu-i">
+                <ul class="sub-menu">
+                    <li>
+                        <a href="{{ path('add_achat') }}"
+                           style="{% if app.request.attributes.get('_route') in ['add_achat'] %} color: #0a7cf8; font-weight: bold {% endif %}">Nouvelle
+                            achat</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('index_achat') }}"
+                           style="{% if app.request.attributes.get('_route') in ['index_achat', 'detail_achat', 'edit_achat'] %} color: #0a7cf8; font-weight: bold {% endif %}">Liste
+                            d'achats</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in [ 'index_stock'] %} selected {% endif %}">
+        <a href="{{ path('index_stock') }}">
+            <div class="icon-w">
+                <div class="icon-layers {% if app.request.attributes.get('_route') in ['index_stock'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+            </div>
+            <span>Stock</span></a>
+
+    </li>
+    <li class="{% if app.request.attributes.get('_route') in [ 'index_prix', 'detail_articles' ] %} selected {% endif %} has-sub-menu">
+        <a href="{{ path('index_prix') }}">
+            <div class="icon-w">
+                <div class="icon-list {% if app.request.attributes.get('_route') in [ 'index_prix', 'detail_articles'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+
+            </div>
+            <span>Prix</span></a>
+        <div class="sub-menu-w">
+            <div class="sub-menu-header">
+                Prix
+            </div>
+            <div class="sub-menu-icon">
+                <i class="fa fa-money"></i>
+            </div>
+            <div class="sub-menu-i">
+                <ul class="sub-menu">
+                    <li class="active">
+                        <a href="{{ path('index_prix') }}"
+                           style="{% if app.request.attributes.get('_route') in ['index_prix'] %} color: #0a7cf8; font-weight: bold {% endif %}">Prix</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('detail_articles') }}"
+                           style="{% if app.request.attributes.get('_route') in ['detail_articles'] %} color: #0a7cf8 ; font-weight: bold{% endif %}">Liste
+                            d'articles</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </li>
+
+    <li class="{% if app.request.attributes.get('_route') in [ 'index_inventaire'] %} selected {% endif %} has-sub-menu">
+        <a href="{{ path('index_inventaire') }}">
+            <div class="icon-w">
+                <div class="icon-note {% if app.request.attributes.get('_route') in ['index_stock'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+            </div>
+            <span>Inventaire</span></a>
+
+    </li>
+
+
+</ul>
