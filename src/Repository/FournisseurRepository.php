@@ -20,17 +20,29 @@ class FournisseurRepository extends ServiceEntityRepository
     }
 
 
-    public function findByCodeAndEmail($email , $code) {
+    public function findByCodeAndEmail($email ) {
         return $this->createQueryBuilder('f')
             ->where('f.email = :email')
-            ->orWhere('f.code = :code')
-            ->setParameter('code', $code)
             ->setParameter('email', $email)
             ->orderBy('f.id', 'ASC')
             ->getQuery()
             ->getResult()
             ;
     }
+    public function getLastFournisseur() {
+        return $this->createQueryBuilder('f')
+            ->orderBy('f.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult()
+            ;
+
+    }
+
+
+
+
+
     public function findByCode($code) {
         return $this->createQueryBuilder('f')
             ->where('f.code = :code')

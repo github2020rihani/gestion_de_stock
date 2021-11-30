@@ -119,7 +119,7 @@ function addLigneAchat() {
 
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="puttc[]" value="0.000" data-index = "${index}" class="form-control puttc puttc_${index}" readonly>
+                                                    <input type="text" name="puttc[]" value="0.000" data-index = "${index}" class="form-control puttc puttc_${index}">
 
                                                 </td>
                                                 <td>
@@ -177,6 +177,7 @@ function addLigneAchat() {
                     changePUHTNET();
                     changePVenteTTC();
                     changeQte();
+                    changepuTTC();
 
 
                 }
@@ -191,7 +192,32 @@ function addLigneAchat() {
 
 }
 
+function changepuTTC() {
+    var tva = 1.19;
+    var puttc = 0;
+    var puhtNet = 0;
 
+    $('.puttc').blur("input", function (e) {
+        var index = $(this).data('index');
+        $(this).attr('value', $(this).val())
+        puttc = parseFloat($(this).val()).toFixed(3);
+        puhtNet = parseFloat($(this).val()) / tva;
+        $('.puhtnet_' + index).val(parseFloat(puhtNet).toFixed(3));
+        $('.puhtnet_' + index).attr('value', parseFloat(puhtNet).toFixed(3))
+
+        var puhtnet = parseFloat($(this).val());
+        var pventettc = $('.pventettc_' + index).val();
+        if (pventettc) {
+            marge = (((pventettc - puttc) / puttc) * 100).toFixed(2);
+            $('.marge_' + index).val(marge);
+        }
+        //
+        calculerTotal(index);
+
+
+    })
+
+}
 
 function selectArticle(index) {
     $('.selectArticle_' + index).change(function () {

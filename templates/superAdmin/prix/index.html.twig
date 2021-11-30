@@ -38,6 +38,7 @@
                             <tr>
                                 <th>Réf article</th>
                                 <th>Designation</th>
+                                <th>Qte</th>
                                 <th>Pu achat HT</th>
                                 <th>Pu achat TTC</th>
                                 <th>Pu vente HT</th>
@@ -51,6 +52,7 @@
                             <tr>
                                 <th>Réf article</th>
                                 <th>Designation</th>
+                                <th>Qte</th>
                                 <th>Pu achat HT</th>
                                 <th>Pu achat TTC</th>
                                 <th>Pu vente HT</th>
@@ -65,6 +67,7 @@
                                 <tr>
                                     <td>{{ p.article.ref }}</td>
                                     <td>{{ p.article.description }}</td>
+                                    <td><b>{{ p.qte }}</b></td>
                                     <td width="10%"><input type="text" class="form-control pachatnet pachatnet_{{ loop.index }}" id="puAchaHT_{{ p.id }}" data-index="{{ loop.index }}"
                                                value="{{ p.puAchaHT|number_format(3) }}"></td>
                                     <td width="10%"><input type="text" class="form-control pachatttc_{{ loop.index }}" id="phAchatTTC_{{ p.id }}" disabled

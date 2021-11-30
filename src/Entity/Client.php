@@ -36,8 +36,7 @@ class  Client
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank(message="Prénom est vide")
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $prenom;
 

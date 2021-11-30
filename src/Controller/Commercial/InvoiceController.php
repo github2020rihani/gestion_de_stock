@@ -5,6 +5,7 @@ namespace App\Controller\Commercial;
 
 
 use App\Entity\BondLivraison;
+use App\Entity\History;
 use App\Entity\Invoice;
 use App\Entity\InvoiceArticle;
 use App\Repository\ArticleRepository;
@@ -245,7 +246,7 @@ class InvoiceController extends AbstractController
     public function edit(Request $request, Invoice $invoice)
     {
         $customers = $this->clientRepository->findAll();
-        $articles = $this->prixRepository->findAll();
+        $articles = $this->prixRepository->getArticleWithPrixInStocked();
         $tva = $_ENV['TVA_ARTICLE_PERCENT'];
         $totalHt = 0;
         $totalRemise = 0;
@@ -425,9 +426,10 @@ class InvoiceController extends AbstractController
         $codeClient = $invoice->getCustomer()->getCode();
         $yearBl = $invoice->getYear();
         $numBl = $invoice->getNumero();
+        $date = new \DateTime();
 
         $mypath = $uploadDir . 'invoice/customer_' . $codeClient;
-        $newFilename = 'invoice_' . $numBl . '_' . $yearBl . '.pdf';
+        $newFilename = 'invoice_' . $numBl . '_' . $yearBl.'_'.$date->getTimestamp() . '.pdf';
         $pdfFilepath = $uploadDir . 'invoice/customer_' . $codeClient . '/' . $newFilename;
         if (!is_dir($mypath)) {
             mkdir($mypath, 0777, TRUE);
@@ -439,6 +441,14 @@ class InvoiceController extends AbstractController
 //            unlink($pdfFilepath);
 //        }
         file_put_contents($pdfFilepath, $output);
+        $history = new History();
+        $history->setType('FACTURE');
+        $history->setFile($baseurl);
+        $history->setCreatedBy($this->getUser());
+        $history->setBl($invoice);
+        $this->em->persist($history);
+        $this->em->flush();
+
 
         $invoice->setFile($baseurl);
         $this->em->persist($invoice);
@@ -503,15 +513,21 @@ class InvoiceController extends AbstractController
             }
 
             //check bl et devis
-            $d =$this->devisRepository->find($id->getBonLivraison()->getDevi()->getId());
-            if ($d) {
-                $this->em->remove($d);
-                $this->em->flush();
+            if ($id->getBonLivraison() and  $id->getBonLivraison()->getDevi()) {
+                $d =$this->devisRepository->find($id->getBonLivraison()->getDevi()->getId());
+                if ($d) {
+                    $this->em->remove($d);
+                    $this->em->flush();
+                }
             }
-            $bl = $this->bondLivraisonRepository->find($id->getBonLivraison()->getId());
-            if ($bl) {
-                $this->em->remove($bl);
-                $this->em->flush();
+
+            if ($id->getBonLivraison()) {
+                $bl = $this->bondLivraisonRepository->find($id->getBonLivraison()->getId());
+                if ($bl) {
+                    $this->em->remove($bl);
+                    $this->em->flush();
+                }
+
             }
 
 

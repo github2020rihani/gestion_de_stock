@@ -19,20 +19,31 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
-    public function findArticles() {
+    public function findArticles()
+    {
         return $this->createQueryBuilder('a')
             ->getQuery()
-            ->getArrayResult()
-            ;
+            ->getArrayResult();
     }
-    public function getArticleById($idArticle) {
+
+    public function findArticlesAllStock()
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.prixes', 'p')
+            ->where('a.stocks = true')
+            ->andWhere('p.qte > 0')
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    public function getArticleById($idArticle)
+    {
         return $this->createQueryBuilder('a')
             ->where('a.id = :id_article')
             ->setParameter('id_article', $idArticle)
             ->getQuery()
             ->setMaxResults(1)
-            ->getArrayResult()
-            ;
+            ->getArrayResult();
     }
 
     // /**

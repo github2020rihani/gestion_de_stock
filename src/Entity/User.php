@@ -149,6 +149,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $invoices;
 
+    /**
+     * @ORM\OneToMany(targetEntity=History::class, mappedBy="createdBy")
+     */
+    private $histories;
+
 
 
     public function __construct()
@@ -164,6 +169,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->devis = new ArrayCollection();
         $this->bondLivraisons = new ArrayCollection();
         $this->invoices = new ArrayCollection();
+        $this->histories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -597,6 +603,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($invoice->getCreadetBy() === $this) {
                 $invoice->setCreadetBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|History[]
+     */
+    public function getHistories(): Collection
+    {
+        return $this->histories;
+    }
+
+    public function addHistory(History $history): self
+    {
+        if (!$this->histories->contains($history)) {
+            $this->histories[] = $history;
+            $history->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistory(History $history): self
+    {
+        if ($this->histories->removeElement($history)) {
+            // set the owning side to null (unless already changed)
+            if ($history->getCreatedBy() === $this) {
+                $history->setCreatedBy(null);
             }
         }
 

@@ -21,9 +21,9 @@ class FournisseurType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('code',TextType::class)
+//            ->add('code',TextType::class)
             ->add('nom',TextType::class)
-            ->add('prenom',TextType::class)
+//            ->add('prenom',TextType::class)
             ->add('adresse',TextType::class)
             ->add('country', EntityType::class, [
                     'class' => Country::class,

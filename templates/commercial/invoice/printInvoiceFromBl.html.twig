@@ -6822,7 +6822,8 @@
                                                 <th class="per25 text-center">Remise</th>
                                                 <th class="per25 text-center">Prix Unitaire</th>
                                                 <th class="per25 text-center">Total HT</th>
-
+                                                <th class="per25 text-center">TVA</th>
+                                                <th class="per25 text-center">Total TTC</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -6833,6 +6834,9 @@
                                                     <td class="qty">{{ a['remise'] }}</td>
                                                     <td class="text-center">{{ a['puttc']|number_format(3) }}</td>
                                                     <td class="text-center">{{ a['totalht']|number_format(3) }}</td>
+                                                    <td class="text-center">  19 %  </td>
+                                                    {%  set totalTTCaRT =   a['puttc']|number_format(3) * a['qte'] %}
+                                                    <td class="text-center">  {{totalTTCaRT|number_format(3) }}   </td>
                                                 </tr>
                                             {% endfor %}
                                             </tbody>

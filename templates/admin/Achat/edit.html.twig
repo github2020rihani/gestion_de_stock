@@ -186,7 +186,7 @@
                                                                value="{{ article['puttc']|number_format(3) }}"
                                                                data-index="{{ loop.index }}"
                                                                class="form-control puttc  puttc_{{ loop.index }}"
-                                                               readonly>
+                                                               >
 
                                                     </td>
                                                     <td>
@@ -231,12 +231,7 @@
                             </h6>
                             <div class="element-box" style="background-color: rgba(12,12,12,0.25)">
 
-                                <div class="form-check">
-                                    <label class="container"><b style="font-size: 18px">Fodec</b>
-                                        <input type="checkbox"  class="fodec" name="fodec" value="" {% if achat['fodec'] %} checked {% endif %}>
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
+
                                 <hr>
                                 <h4 class="card-title">Total HT</h4>
                                 <p class="card-text total_ht">{% if achat['totalHT'] %} {{ achat['totalHT']|number_format(3) }} {% else %} 0.000 {% endif %}</p>
@@ -251,7 +246,12 @@
                                 <hr>
                                 <h4 class="card-title">Total TTC</h4>
                                 <p class="card-text total_ttc">{% if achat['totalTTC'] %} {{ achat['totalTTC']|number_format(3) }} {% else %} 0.000 {% endif %}</p>
-
+                                <div class="form-check">
+                                    <label class="container"><b style="font-size: 18px">Fodec</b>
+                                        <input type="checkbox"  class="fodec" name="fodec" value="" {% if achat['fodec'] %} checked {% endif %}>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <!--END - Top Selling Chart-->

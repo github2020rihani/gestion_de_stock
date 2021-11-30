@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller\Commercial;
+
 use App\Entity\Client;
 use App\Form\ClientType;
 use App\Repository\ClientRepository;
@@ -21,27 +22,34 @@ class ClientController extends AbstractController
     /**
      * @Route("/new", name="perso_add_client")
      */
-    public function add(Request $request , EntityManagerInterface $em): Response
+    public function add(Request $request, EntityManagerInterface $em, ClientRepository $clientRepository): Response
     {
         $clients = new Client();
-        $form = $this->createForm(ClientType::class,$clients);
+        $form = $this->createForm(ClientType::class, $clients);
         $form->handleRequest($request);
+        $lastCustomer = $clientRepository->getLastCustomer();
+        if ($lastCustomer) {
+            $numCustomer = $_ENV['PREFIX_CUSTOMER'] . $lastCustomer->getId() + 1;
 
-        if($form->isSubmitted() && $form->isValid()    ){
+        } else {
+            $numCustomer = $_ENV['PREFIX_CUSTOMER'] . '1';
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $email = $clients->getEmail();
 
-                $em->persist($clients);
-                $em->flush();
+            $clients->setCode($numCustomer);
+            $em->persist($clients);
+            $em->flush();
 
             $em->flush();
-            $this->addFlash('success',' Successfully added');
+            $this->addFlash('success', ' Successfully added');
 
             return $this->redirectToRoute('perso_index_client');
         }
 
 
-
-        return $this->render('commercial/client/new.html.twig',[
+        return $this->render('commercial/client/new.html.twig', [
             'form' => $form->createView(),
             'client' => ''
         ]);
@@ -51,11 +59,11 @@ class ClientController extends AbstractController
     /**
      * @Route("/", name="perso_index_client")
      */
-    public function index( Request $request , EntityManagerInterface $em, ClientRepository $clientRepository): Response
+    public function index(Request $request, EntityManagerInterface $em, ClientRepository $clientRepository): Response
     {
         $clients = $clientRepository->findAll();
-        return $this->render('commercial/client/index.html.twig',[
-            'clients' =>$clients
+        return $this->render('commercial/client/index.html.twig', [
+            'clients' => $clients
         ]);
     }
 
@@ -67,9 +75,9 @@ class ClientController extends AbstractController
         if ($clients) {
             $em->remove($clients);
             $em->flush();
-            $this->addFlash('success',' Successfully deleted');
-        }else{
-            $this->addFlash('error',' error deleted');
+            $this->addFlash('success', ' Successfully deleted');
+        } else {
+            $this->addFlash('error', ' error deleted');
         }
         return $this->redirectToRoute('perso_index_client');
     }
@@ -81,26 +89,21 @@ class ClientController extends AbstractController
     public function edit(Client $client, Request $request, EntityManagerInterface $em): Response
     {
 
-        $form = $this->createForm(ClientType::class,$client);
+        $form = $this->createForm(ClientType::class, $client);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($client);
             $em->flush();
-            $this->addFlash('success',' Successfully edit');
+            $this->addFlash('success', ' Successfully edit');
 
             return $this->redirectToRoute('perso_index_client');
         }
 
-        return $this->render('commercial/client/new.html.twig',[
+        return $this->render('commercial/client/new.html.twig', [
             'form' => $form->createView(),
             'client' => $client
         ]);
     }
-
-
-
-
-
 
 
 }

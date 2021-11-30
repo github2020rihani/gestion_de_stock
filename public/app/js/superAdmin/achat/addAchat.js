@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    addLigneAchat();
+    addLigneAchata();
     CheckedFodec();
 
     $('.addAchat').click(function () {
@@ -74,7 +74,7 @@ var error = false;
 var index;
 var lingArt = [];
 
-function addLigneAchat() {
+function addLigneAchata() {
     $('.addLingeAchat').click(function () {
         countArticle++;
         lingArt.push(1);
@@ -118,7 +118,7 @@ function addLigneAchat() {
 
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="puttc[]" value="0.000" data-index = "${index}" class="form-control puttc puttc_${index}" readonly>
+                                                    <input type="text" name="puttc[]" value="0.000" data-index = "${index}" class="form-control puttc puttc_${index}" >
 
                                                 </td>
                                                 <td>
@@ -172,6 +172,7 @@ function addLigneAchat() {
                     //changePUHTnET
                     changePUHTNET();
                     changePVenteTTC();
+                    changepuTTC();
                     changeQte();
 
 
@@ -188,7 +189,6 @@ function addLigneAchat() {
 }
 
 
-
 function selectArticle(index) {
     $('.selectArticle_' + index).change(function () {
         error = false;
@@ -197,10 +197,10 @@ function selectArticle(index) {
 
         $('.selectArticle').each(function () {
             if ($(this).val() == art) {
-                articleExiste ++;
+                articleExiste++;
             }
         })
-        if (parseInt(articleExiste) >= 2){
+        if (parseInt(articleExiste) >= 2) {
             toastr.error('cet article a été choisir , veuillez choisir un autre');
             //check calculer
             $(this).parent().parent().remove();
@@ -236,7 +236,6 @@ function selectArticle(index) {
         }
 
 
-
         $.ajax({
             url: Routing.generate('get_articles_byId'),
             type: "POST",
@@ -245,9 +244,9 @@ function selectArticle(index) {
                 // console.log(data)
                 if (data) {
                     $('.descriptionarticle_' + index).text(data[0].description);
-                    ('.puhtnet' +  index).val(0.000);
-                    $('.qte' +  index).val(0);
-                    $('.puttc_' +  index).val(0.000);
+                    ('.puhtnet' + index).val(0.000);
+                    $('.qte' + index).val(0);
+                    $('.puttc_' + index).val(0.000);
                     $('.marge' + index).val(0.000);
                     $('.pventettc ' + index).val(0.000);
 
@@ -279,7 +278,6 @@ function selectArticle(index) {
                     $('.total_tva').text(totalTVA.toFixed(3))
                     $('.total_ttc').text(totalTTC.toFixed(3));
                     return false;
-
 
 
                 }
@@ -319,6 +317,34 @@ function changePUHTNET() {
     })
 
 }
+
+function changepuTTC() {
+    var tva = 1.19;
+    var puttc = 0;
+    var puhtNet = 0;
+
+    $('.puttc').blur("input", function (e) {
+        var index = $(this).data('index');
+        $(this).attr('value', $(this).val())
+        puttc = parseFloat($(this).val()).toFixed(3);
+        puhtNet = parseFloat($(this).val()) / tva;
+        $('.puhtnet_' + index).val(parseFloat(puhtNet).toFixed(3));
+        $('.puhtnet_' + index).attr('value', parseFloat(puhtNet).toFixed(3))
+
+        var puhtnet = parseFloat($(this).val());
+        var pventettc = $('.pventettc_' + index).val();
+        if (pventettc) {
+            marge = (((pventettc - puttc) / puttc) * 100).toFixed(2);
+            $('.marge_' + index).val(marge);
+        }
+        //
+        calculerTotal(index);
+
+
+    })
+
+}
+
 
 function changePVenteTTC() {
 

@@ -51,6 +51,16 @@ class PrixRepository extends ServiceEntityRepository
             ->getArrayResult()
             ;
     }
+    public function getArticleWithPrixInStocked()
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p', 'article')
+            ->leftJoin('p.article', 'article')
+            ->where('p.qte > 0')
+            ->getQuery()
+            ->getArrayResult()
+            ;
+    }
     public function getArticleById($idArticle)
     {
         return $this->createQueryBuilder('p')

@@ -52,7 +52,7 @@ class globalController extends AbstractController
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
-     * @Route("personelle/api/articles_fom_prix", name="api_get_articles_from_prix", options={"expose" = true})
+     * @Route("personelle/api/articles_fom_prix_devis", name="api_get_articles_from_prix_devis", options={"expose" = true})
      */
     public function getArticlesAndPrix() {
         $articles = $this->prixRepository->getArticleWithPrix();
@@ -68,7 +68,34 @@ class globalController extends AbstractController
 
         return $this->json($data);
 
-    }    /**
+    }
+
+
+        /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Route("personelle/api/articles_fom_prix", name="api_get_articles_from_prix", options={"expose" = true})
+     */
+    public function getArticlesAndPrixStocked() {
+//        $articles = $this->prixRepository->getArticleWithPrix();
+        $articles = $this->prixRepository->getArticleWithPrixInStocked();
+        if ($articles) {
+            $message = 'yes';
+            $success = true ;
+            $data = $articles ;
+        }else{
+            $data = '';
+            $message = 'no';
+            $success = false ;
+        }
+
+        return $this->json($data);
+
+    }
+
+
+
+    /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @Route("personelle/api/get_article", name="perso_get_articles_byId", options={"expose" = true})

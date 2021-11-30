@@ -29,15 +29,22 @@ class FournisseurController extends AbstractController
         $fournisseurs = new Fournisseur();
         $form = $this->createForm(FournisseurType::class, $fournisseurs);
         $form->handleRequest($request);
-        $fourniseurExiste = $fournisseurRepository->findByCodeAndEmail($form->get('email')->getData(), $form->get('code')->getData());
+        $fourniseurExiste = $fournisseurRepository->findByCodeAndEmail($form->get('email')->getData());
+        $lastFourniseur = $fournisseurRepository->getLastFournisseur();
+        if ($lastFourniseur) {
+            $numF = $_ENV['PREFIX_FOUR'].$lastFourniseur->getId() + 1;
+        }else{
+            $numF = $_ENV['PREFIX_FOUR'].'1';
+        }
         if ($fourniseurExiste) {
-            $this->addFlash('warning', 'il ya un fournisseur existe avec cet email ou code');
+            $this->addFlash('warning', 'il ya un fournisseur existe avec cet email');
             return $this->render('superAdmin/fournisseur/new.html.twig', [
                 'form' => $form->createView(),
                 'fournisseur' => ''
             ]);
         }
         if ($form->isSubmitted() && $form->isValid()) {
+            $fournisseurs->setCode($numF);
             $em->persist($fournisseurs);
             $em->flush();
             $this->addFlash('success', ' Successfully added');
@@ -92,7 +99,6 @@ class FournisseurController extends AbstractController
 
         $form = $this->createForm(FournisseurType::class, $fournisseur);
         $form->handleRequest($request);
-        $oldCode = $fournisseur->getCode();
         $oldEmail = $fournisseur->getEmail();
         $fourniseurExiste= '';
 
@@ -101,16 +107,13 @@ class FournisseurController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($oldCode != $form->get('code')->getData()) {
-                $fourniseurExiste = $fournisseurRepository->findByCode($form->get('code')->getData());
 
-            }
             if ($oldEmail != $form->get('email')->getData()) {
                 $fourniseurExiste = $fournisseurRepository->findByEmail($form->get('email')->getData());
 
             }
             if ($fourniseurExiste) {
-                $this->addFlash('warning', 'il ya un fournisseur existe avec cet email ou code');
+                $this->addFlash('warning', 'il ya un fournisseur existe avec cet email');
                 return $this->render('superAdmin/fournisseur/new.html.twig', [
                     'form' => $form->createView(),
                     'fournisseur' => $fournisseur

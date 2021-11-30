@@ -106,12 +106,18 @@ class Invoice
      */
     private $invoiceArticles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=History::class, mappedBy="invoice")
+     */
+    private $histories;
+
     public function __construct()
     {
         $this->status = 0;
         $this->createdAt = new \DateTime('now');
         $this->timbre = $_ENV['TIMBRE'];
         $this->invoiceArticles = new ArrayCollection();
+        $this->histories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -335,6 +341,36 @@ class Invoice
             // set the owning side to null (unless already changed)
             if ($invoiceArticle->getInvoice() === $this) {
                 $invoiceArticle->setInvoice(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|History[]
+     */
+    public function getHistories(): Collection
+    {
+        return $this->histories;
+    }
+
+    public function addHistory(History $history): self
+    {
+        if (!$this->histories->contains($history)) {
+            $this->histories[] = $history;
+            $history->setInvoice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistory(History $history): self
+    {
+        if ($this->histories->removeElement($history)) {
+            // set the owning side to null (unless already changed)
+            if ($history->getInvoice() === $this) {
+                $history->setInvoice(null);
             }
         }
 

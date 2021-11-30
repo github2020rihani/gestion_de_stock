@@ -67,7 +67,7 @@ function addLingeArticle() {
         lingArt.push(1);
         index = lingArt.length;
         $.ajax({
-            url: Routing.generate('api_get_articles_from_prix'),
+            url: Routing.generate('api_get_articles_from_prix_devis'),
             type: "POST",
             success: function (data) {
                 console.log(data[0].qte);

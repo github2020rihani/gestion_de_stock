@@ -25,11 +25,11 @@ class ClientType extends AbstractType
 
         $builder
             ->add('nom',TextType::class)
-            ->add('prenom',TextType::class)
+//            ->add('prenom',TextType::class)
             ->add('adresse',TextType::class)
             ->add('telephone',TextType::class)
 //            ->add('email',EmailType::class)
-            ->add('code',TextType::class)
+//            ->add('code',TextType::class)
             ->add('codeTVA',TextType::class)
             ->add('country', EntityType::class, [
                     'class' => Country::class,

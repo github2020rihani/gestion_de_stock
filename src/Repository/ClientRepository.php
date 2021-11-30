@@ -19,6 +19,16 @@ class ClientRepository extends ServiceEntityRepository
         parent::__construct($registry, Client::class);
     }
 
+
+
+    public function getLastCustomer() {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult()
+            ;
+    }
     // /**
     //  * @return Client[] Returns an array of Client objects
     //  */

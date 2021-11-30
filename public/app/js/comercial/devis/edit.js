@@ -73,7 +73,7 @@ function addLingeArticle() {
         index = lingArt.length;
         var contentListArticle = '';
         $.ajax({
-            url: Routing.generate('api_get_articles_from_prix'),
+            url: Routing.generate('api_get_articles_from_prix_devis'),
             type: "POST",
             success: function (data) {
                 console.log(data[0].qte);
