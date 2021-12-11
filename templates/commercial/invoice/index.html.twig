@@ -109,8 +109,11 @@
                                                 <span class="mr-2 mb-2 badge badge-warning">En attente  </span>
                                             {% elseif invoice.status == 1 %}
                                                 <span class="mr-2 mb-2 badge badge-info"> En cours </span>
-                                            {% else %}
+                                            {% elseif invoice.status == 2 %}
                                                 <span class="mr-2 mb-2 badge badge-success"> Terminée </span>
+                                                {% else %}
+                                                    <span class="mr-2 mb-2 badge badge-success"> paiement en cours </span>
+
                                             {% endif %}
                                         </td>
                                         <td>
@@ -154,14 +157,16 @@
                                             >
                                                 <i class="fa fa-eye"></i>
                                             </a>
-
+                                            {%  if invoice.status != 3 and   invoice.status != 2 %}
                                             <a class="  btn btn-sm btn-icon btn-success"
                                                data-toggle="tooltip"
                                                data-placement="top" title="" data-original-title="Paiement"
                                                style="color: white"
-                                               href="">
+                                               href="{{ path('perso_paiement_invoice' , {id: invoice.id}) }}">
                                                 <i class="fa fa-cc"></i>
                                             </a>
+                                            {% endif %}
+                                            {%  if invoice.status != 2 %}
                                             {% if invoice.bonLivraison and  invoice.bonLivraison %}
 {#                                                <button class="  btn btn-sm btn-icon btn-success changePaiement"#}
 {#                                                        data-target="#onboardingSlideModal"#}
@@ -187,6 +192,7 @@
 
                                                 </a>
                                             {% endif %}
+                                            {% endif %}
 
 
                                             <button class="  btn btn-sm btn-icon btn-danger printInvoice"
@@ -200,7 +206,7 @@
                                                 <i class="fa fa-print"></i>
                                             </button>
 
-                                            {%  if invoice.status != 2 %}
+                                            {%  if invoice.status != 3 and   invoice.status != 2 %}
                                             <a class="  btn btn-sm btn-icon btn-danger deleteInvoice"
                                                data-placement="top" title=""
                                                href="{{ path('perso_delete_invoice' , {id :invoice.id}) }}"
@@ -212,6 +218,16 @@
 
                                             </a>
                                             {% endif %}
+                                            {%  if invoice.status == 3 %}
+                                                <a class="  btn btn-sm btn-icon btn-success"
+                                                   data-toggle="tooltip"
+                                                   data-placement="top" title="" data-original-title="Paiement"
+                                                   href="{{ path('perso_paiement_invoice_part2', {id: invoice.id}) }}"
+                                                   style="color: white">
+                                                    <i class="fa fa-cc"></i>
+                                                </a>
+                                            {% endif %}
+
                                         </td>
 
                                     </tr>

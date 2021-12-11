@@ -445,7 +445,7 @@ class InvoiceController extends AbstractController
         $history->setType('FACTURE');
         $history->setFile($baseurl);
         $history->setCreatedBy($this->getUser());
-        $history->setBl($invoice);
+        $history->setInvoice($invoice);
         $this->em->persist($history);
         $this->em->flush();
 

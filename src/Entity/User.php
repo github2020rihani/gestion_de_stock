@@ -154,6 +154,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $histories;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Depense::class, mappedBy="addedBy")
+     */
+    private $depenses;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ArticlesVendue::class, mappedBy="addedBy")
+     */
+    private $articlesVendues;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Payemet::class, mappedBy="addedBy")
+     */
+    private $payemets;
+
 
 
     public function __construct()
@@ -170,6 +185,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->bondLivraisons = new ArrayCollection();
         $this->invoices = new ArrayCollection();
         $this->histories = new ArrayCollection();
+        $this->depenses = new ArrayCollection();
+        $this->articlesVendues = new ArrayCollection();
+        $this->payemets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -633,6 +651,96 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($history->getCreatedBy() === $this) {
                 $history->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Depense[]
+     */
+    public function getDepenses(): Collection
+    {
+        return $this->depenses;
+    }
+
+    public function addDepense(Depense $depense): self
+    {
+        if (!$this->depenses->contains($depense)) {
+            $this->depenses[] = $depense;
+            $depense->setAddedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepense(Depense $depense): self
+    {
+        if ($this->depenses->removeElement($depense)) {
+            // set the owning side to null (unless already changed)
+            if ($depense->getAddedBy() === $this) {
+                $depense->setAddedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ArticlesVendue[]
+     */
+    public function getArticlesVendues(): Collection
+    {
+        return $this->articlesVendues;
+    }
+
+    public function addArticlesVendue(ArticlesVendue $articlesVendue): self
+    {
+        if (!$this->articlesVendues->contains($articlesVendue)) {
+            $this->articlesVendues[] = $articlesVendue;
+            $articlesVendue->setAddedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticlesVendue(ArticlesVendue $articlesVendue): self
+    {
+        if ($this->articlesVendues->removeElement($articlesVendue)) {
+            // set the owning side to null (unless already changed)
+            if ($articlesVendue->getAddedBy() === $this) {
+                $articlesVendue->setAddedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Payemet[]
+     */
+    public function getPayemets(): Collection
+    {
+        return $this->payemets;
+    }
+
+    public function addPayemet(Payemet $payemet): self
+    {
+        if (!$this->payemets->contains($payemet)) {
+            $this->payemets[] = $payemet;
+            $payemet->setAddedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayemet(Payemet $payemet): self
+    {
+        if ($this->payemets->removeElement($payemet)) {
+            // set the owning side to null (unless already changed)
+            if ($payemet->getAddedBy() === $this) {
+                $payemet->setAddedBy(null);
             }
         }
 

@@ -1,0 +1,101 @@
+<div class="step-content" id="stepContent2">
+    <fieldset>
+        <legend>Informations du client</legend>
+    </fieldset>
+    <style>
+        td{
+            width: 50%;
+        }
+    </style>
+    {% if   invoice['existBl'] %}
+        <table class="table table-compact">
+            <tr>
+                <td>Code Tva</td>
+                <td>{{ invoice['bonLivraison']['customer']['codeTVA'] }}</td>
+            </tr>
+            <tr>
+                <td>Nom & Prénom</td>
+                <td>{{ invoice['bonLivraison']['customer']['nom'] }}</td>
+            </tr>
+            <tr>
+                <td>Adresse</td>
+                <td>{{ invoice['bonLivraison']['customer']['adresse'] }}
+                    -{{ invoice['bonLivraison']['customer']['country']['name'] }}
+                    - {{ invoice['bonLivraison']['customer']['city']['name'] }}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>{{ invoice['bonLivraison']['customer']['email'] }}</td>
+            </tr>
+        </table>
+    {% else %}
+        <table class="table table-compact">
+            <tr>
+                <td>Code Tva</td>
+                <td>{{ invoice['customer']['codeTVA'] }}</td>
+            </tr>
+            <tr>
+                <td>Nom & Prénom</td>
+                <td>{{ invoice['customer']['nom'] }}</td>
+            </tr>
+            <tr>
+                <td>Adresse</td>
+                <td>{{ invoice['customer']['adresse'] }} -{{ invoice['customer']['country']['name'] }}
+                    - {{ invoice['customer']['city']['name'] }}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>{{ invoice['customer']['email'] }}</td>
+            </tr>
+        </table>
+    {% endif %}
+    <fieldset>
+        <legend>Informations de facture</legend>
+    </fieldset>
+    <table class="table table-compact">
+        <tr>
+            <td >Numéro</td>
+            <td class="text-left">{{ PREFIX_FACT }}{{ invoice['numero'] }}</td>
+        </tr>
+        <tr>
+            <td>Date</td>
+            <td>{{ invoice['createdAt']|date('d/m/Y h:m') }}</td>
+        </tr>
+        <tr>
+            <td>Elaboré par</td>
+            <td>{{ invoice['creadetBy']['firstName'] }} {{ invoice['creadetBy']['lastName'] }}  </td>
+        </tr>
+        <tr>
+            <td>Type de paiement</td>
+            <td>
+                {% if invoice['existBl'] %}
+                {% if invoice['bonLivraison']['typePayement'] == 1 %}
+                Escpece
+                {% elseif invoice['bonLivraison']['typePayement'] == 2 %}
+                Carte
+                {% elseif invoice['bonLivraison']['typePayement'] == 3 %}
+                    Cheque
+                {% endif %}
+                {% else %}
+                {% if invoice['typePayement'] == 1 %}
+                Escpece
+                {% elseif invoice['typePayement'] == 2 %}
+                    Carte
+                    {% elseif invoice['typePayement'] == 3 %}
+                        Cheque
+                    {% endif %}
+
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>Total TTC</td>
+            <td>{{ invoice['totalTTC']|number_format(3) }}</td>
+        </tr>
+
+    </table>
+
+    <div class="form-buttons-w text-right">
+        <a class="btn btn-primary step-trigger-btn" href="#stepContent3"> Suivant</a>
+    </div>
+</div>

@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Modifier une dépense{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+       {% block smenu %}
+           <ul class="breadcrumb">
+               <li class="breadcrumb-item">
+                   <a href="{{ path('dashboard_super_admin') }}">Tableau de bord</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <a href="{{ path('perso_index_depense') }}">dépense</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <span> Modifier</span>
+               </li>
+           </ul>
+       {% endblock %}
+        {% block content %}
+            <div class="element-wrapper">
+                <div class="element-box">
+
+                    <form method="post" action="{{ path('perso_edit_depense' , {id: depense.id}) }}" class="">
+                    <h5 class="form-header">
+                        Modifier une dépense
+                    </h5>
+                    <div class="form-desc">
+                        {{ include('default/FlashBag/flashBag.html.twig') }}
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date *</label>
+
+                                <input type="date" class="form-control date_dep" id=""   value="{{ depense.date|date('Y-m-d') }}" name="date_dep">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Heure *</label>
+                                <input type="time" class="form-control date_dep" id=""  value="{{ depense.hour }}" name="hour">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Total TTC *</label>
+                                <input type="text" class="form-control total_ttc_dep" id="" value="{{ depense.totalTTC }}" name="total_ttc_dep">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Type *</label>
+                                <select class="js-example-basic-single type_dep article form-control" name="type_dep">
+                                    <option value="0" selected readonly>Coisir un type</option>
+                                    <option value="1" selected > Coisir un type Coisir un typeCoisir un type Coisir un type </option>
+                                    <option value="2" selected >Coisir un type</option>
+                                    <option value="3" selected >Coisir un type</option>
+
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Designation</label>
+                                <textarea class="form-control" rows="6" name="desc_dep">{{ depense.description }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-buttons-w">
+                        <button type="submit" class="btn btn-primary mr-2">Modifier</button>
+                        <button type="reset" class="btn btn-danger">Annuler</button>
+                    </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+
+
+
+        {% endblock %}
+
+
+{% block javascripts %}
+
+{% endblock %}

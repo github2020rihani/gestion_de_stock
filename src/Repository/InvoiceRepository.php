@@ -42,8 +42,10 @@ class InvoiceRepository extends ServiceEntityRepository
 
     public function getDataInvoice($id) {
         return $this->createQueryBuilder('i')
-            ->select('i', 'bl','bla', 'c', 'ci', 'co', 'a')
+            ->select('i', 'bl','bla', 'c', 'ci', 'co', 'a', 'devi', 'user')
             ->leftJoin('i.bonLivraison', 'bl')
+            ->leftJoin('i.creadetBy', 'user')
+            ->leftJoin('bl.devi', 'devi')
             ->leftJoin('bl.bonlivraisonArticles', 'bla')
             ->leftJoin('bla.article', 'a')
             ->leftJoin('bl.customer', 'c')
@@ -57,8 +59,10 @@ class InvoiceRepository extends ServiceEntityRepository
     }
     public function getDataInvoiceSeul($id) {
         return $this->createQueryBuilder('i')
-            ->select('i', 'ia', 'c', 'ci', 'co', 'a')
+            ->select('i', 'ia', 'c', 'ci', 'co', 'a' ,'user')
             ->leftJoin('i.invoiceArticles', 'ia')
+            ->leftJoin('i.creadetBy', 'user')
+
             ->leftJoin('ia.article', 'a')
             ->leftJoin('i.customer', 'c')
             ->leftJoin('c.city', 'ci')

@@ -111,6 +111,16 @@ class Invoice
      */
     private $histories;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ArticlesVendue::class, mappedBy="invoice")
+     */
+    private $articlesVendues;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Payemet::class, mappedBy="invoice")
+     */
+    private $payemets;
+
     public function __construct()
     {
         $this->status = 0;
@@ -118,6 +128,8 @@ class Invoice
         $this->timbre = $_ENV['TIMBRE'];
         $this->invoiceArticles = new ArrayCollection();
         $this->histories = new ArrayCollection();
+        $this->articlesVendues = new ArrayCollection();
+        $this->payemets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -371,6 +383,66 @@ class Invoice
             // set the owning side to null (unless already changed)
             if ($history->getInvoice() === $this) {
                 $history->setInvoice(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ArticlesVendue[]
+     */
+    public function getArticlesVendues(): Collection
+    {
+        return $this->articlesVendues;
+    }
+
+    public function addArticlesVendue(ArticlesVendue $articlesVendue): self
+    {
+        if (!$this->articlesVendues->contains($articlesVendue)) {
+            $this->articlesVendues[] = $articlesVendue;
+            $articlesVendue->setInvoice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticlesVendue(ArticlesVendue $articlesVendue): self
+    {
+        if ($this->articlesVendues->removeElement($articlesVendue)) {
+            // set the owning side to null (unless already changed)
+            if ($articlesVendue->getInvoice() === $this) {
+                $articlesVendue->setInvoice(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Payemet[]
+     */
+    public function getPayemets(): Collection
+    {
+        return $this->payemets;
+    }
+
+    public function addPayemet(Payemet $payemet): self
+    {
+        if (!$this->payemets->contains($payemet)) {
+            $this->payemets[] = $payemet;
+            $payemet->setInvoice($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayemet(Payemet $payemet): self
+    {
+        if ($this->payemets->removeElement($payemet)) {
+            // set the owning side to null (unless already changed)
+            if ($payemet->getInvoice() === $this) {
+                $payemet->setInvoice(null);
             }
         }
 

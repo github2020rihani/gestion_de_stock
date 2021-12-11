@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label for="">Montant du cheque</label>
+            <input style="font-size: 20px; color: black" class="form-control montant" value="0.000"  pattern="[0-9]" name="montant"  type="text">
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label  style="opacity: 1" for="">Montant reste</label>
+
+            <input  style="font-size: 20px" class="form-control reste" value="0.000"   name="reste"  type="text" disabled>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label  style="opacity: 1" for="">Montant à retenue</label>
+
+            <input  style="font-size: 20px" class="form-control retenue" value="0.000"   name="retenue"  type="text" disabled>
+        </div>
+    </div>
+</div>
+<div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="">Numéro de cheque</label>
+                <input style="font-size: 20px; color: black" class="form-control num_cheque" pattern="[0-9]" name="num_cheque"  type="text">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label style="opacity: 0" for="">Importer le check</label>
+
+                <div class="panel panel_add1">
+                    <div class="button_outer button_outer1" data-name="" data-order="4">
+                        <div class="btn_upload">
+                            <input type="file" id="upload_file4" data-name=""
+                                   title="Télécharger" class="btnUploadDoc btnUploadDoc1"
+                                   data-loc="Locataire" data-id="4" name="file_cheque"
+                                   onchange="processSelectedFiles(this)"
+                                   style="cursor: pointer;">
+                            <span class="text_file4">Importer le cheque</span> <span id="file4"></span>
+                        </div>
+                        <div class="processing_bar processing_bar1"></div>
+                        <div class="success_box"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</div>

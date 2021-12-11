@@ -1,0 +1,121 @@
+<div class="step-content active" id="stepContent1">
+    <div class="tab-pane active" id="Locatairegarant0">
+        {% if invoice['existBl'] %}
+        {%  if invoice['bonLivraison'] and invoice['bonLivraison']['existDevi'] %}
+        <div class="row" style="border-bottom: 1px solid #dee2e6;margin-bottom: 15px;">
+            <div class="col-md-10">
+                <h5>
+                    <ul>
+                        <li> Devis</li>
+                    </ul>
+                </h5>
+            </div>
+            <div class="col-md-2 pull-right" style="margin-bottom: 15px;">
+                <div class="panel panel_add1">
+                    <div class="button_outer button_outer1" data-name="" data-order="1">
+                        <div class="btn_upload">
+                            <input type="file" id="upload_file1" data-name=""
+                                   title="Télécharger" class="btnUploadDoc btnUploadDoc1"
+                                   data-loc="Locataire" data-id="1" name="file_devi"
+                                   onchange="processSelectedFiles(this)"
+                                   style="cursor: pointer;">
+                            <span class="text_file1">Importer</span> <span id="file1"></span>
+                        </div>
+                        <div class="processing_bar processing_bar1"></div>
+                        <div class="success_box"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if invoice['existBl'] %}
+        <div class="row" style="border-bottom: 1px solid #dee2e6;margin-bottom: 15px;">
+            <div class="col-md-10">
+                <h5>
+                    <ul>
+                        <li>Bon de livraison</li>
+                    </ul>
+                </h5>
+            </div>
+            <div class="col-md-2 pull-right" style="margin-bottom: 15px;">
+                <div class="panel panel_add1">
+                    <div class="button_outer button_outer1" data-name="" data-order="1">
+                        <div class="btn_upload">
+                            <input type="file" id="upload_file2" data-name=""
+                                   title="Télécharger" class="btnUploadDoc btnUploadDoc1"
+                                   data-loc="Locataire" data-id="2" name="file_bl"
+                                   onchange="processSelectedFiles(this)"
+                                   style="cursor: pointer;">
+                            <span class="text_file2">Importer</span> <span id="file2"></span>
+                        </div>
+                        <div class="processing_bar processing_bar1"></div>
+                        <div class="success_box"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="row" style="border-bottom: 1px solid #dee2e6;margin-bottom: 15px;">
+            <div class="col-md-10">
+                <h5>
+                    <ul>
+                        <li>Facture</li>
+                    </ul>
+                </h5>
+            </div>
+            <div class="col-md-2 pull-right" style="margin-bottom: 15px;">
+                <div class="panel panel_add1">
+                    <div class="button_outer button_outer1" data-name="" data-order="1">
+                        <div class="btn_upload">
+                            <input type="file" id="upload_file3" data-name=""
+                                   title="Télécharger" class="btnUploadDoc btnUploadDoc1"
+                                   data-loc="Locataire" data-id="3" name="file_invoice"
+                                   onchange="processSelectedFiles(this)"
+                                   style="cursor: pointer;">
+                            <span class="text_file3">Importer</span> <span id="file3"></span>
+                        </div>
+                        <div class="processing_bar processing_bar1"></div>
+                        <div class="success_box"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+            {% else  %}
+                <div class="row" style="border-bottom: 1px solid #dee2e6;margin-bottom: 15px;">
+                    <div class="col-md-10">
+                        <h5>
+                            <ul>
+                                <li>Facture</li>
+                            </ul>
+                        </h5>
+                    </div>
+                    <div class="col-md-2 pull-right" style="margin-bottom: 15px;">
+                        <div class="panel panel_add1">
+                            <div class="button_outer button_outer1" data-name="" data-order="1">
+                                <div class="btn_upload">
+                                    <input type="file" id="upload_file3" data-name=""
+                                           title="Télécharger" class="btnUploadDoc btnUploadDoc1"
+                                           data-loc="Locataire" data-id="3" name="file_invoice"
+                                           onchange="processSelectedFiles(this)"
+                                           style="cursor: pointer;">
+                                    <span class="text_file3">Importer</span> <span id="file3"></span>
+                                </div>
+                                <div class="processing_bar processing_bar1"></div>
+                                <div class="success_box"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+        {% endif %}
+
+    </div>
+
+    <div class="form-buttons-w text-right">
+        <a class="btn btn-primary step-trigger-btn" href="#stepContent2"> Suivant</a>
+    </div>
+</div>

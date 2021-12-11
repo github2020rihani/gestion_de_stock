@@ -116,6 +116,11 @@ class BondLivraison
      */
     private $histories;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ArticlesVendue::class, mappedBy="bl")
+     */
+    private $articlesVendues;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
@@ -124,6 +129,7 @@ class BondLivraison
         $this->bonlivraisonArticles = new ArrayCollection();
         $this->invoices = new ArrayCollection();
         $this->histories = new ArrayCollection();
+        $this->articlesVendues = new ArrayCollection();
 
     }
 
@@ -396,6 +402,36 @@ class BondLivraison
             // set the owning side to null (unless already changed)
             if ($history->getBl() === $this) {
                 $history->setBl(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ArticlesVendue[]
+     */
+    public function getArticlesVendues(): Collection
+    {
+        return $this->articlesVendues;
+    }
+
+    public function addArticlesVendue(ArticlesVendue $articlesVendue): self
+    {
+        if (!$this->articlesVendues->contains($articlesVendue)) {
+            $this->articlesVendues[] = $articlesVendue;
+            $articlesVendue->setBl($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticlesVendue(ArticlesVendue $articlesVendue): self
+    {
+        if ($this->articlesVendues->removeElement($articlesVendue)) {
+            // set the owning side to null (unless already changed)
+            if ($articlesVendue->getBl() === $this) {
+                $articlesVendue->setBl(null);
             }
         }
 

@@ -1,0 +1,80 @@
+<div class="step-content active" id="stepContent1">
+    <div class="tab-pane active" id="Locatairegarant0">
+        {% if payement['invoice']['existBl'] %}
+        {%  if payement['invoice']['bonLivraison'] and payement['invoice']['bonLivraison']['existDevi'] %}
+        <div class="row" style="border-bottom: 1px solid #dee2e6;margin-bottom: 15px;">
+            <div class="col-md-10">
+                <h5>
+                    <ul>
+                        <li> Devis</li>
+                    </ul>
+                </h5>
+            </div>
+            <div class="col-md-2 pull-right" style="margin-bottom: 15px;">
+                <div class="panel panel_add1">
+                    <a class="btn btn-md btn-primary" target="_blank" href="{{ payement['file_devi'] }}">Consulter</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if payement['invoice']['existBl'] %}
+        <div class="row" style="border-bottom: 1px solid #dee2e6;margin-bottom: 15px;">
+            <div class="col-md-10">
+                <h5>
+                    <ul>
+                        <li>Bon de livraison</li>
+                    </ul>
+                </h5>
+            </div>
+            <div class="col-md-2 pull-right" style="margin-bottom: 15px;">
+                <div class="panel panel_add1">
+                    <a class="btn btn-md btn-primary" target="_blank" href="{{ payement['file_bl'] }}">Consulter</a>
+
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="row" style="border-bottom: 1px solid #dee2e6;margin-bottom: 15px;">
+            <div class="col-md-10">
+                <h5>
+                    <ul>
+                        <li>Facture</li>
+                    </ul>
+                </h5>
+            </div>
+            <div class="col-md-2 pull-right" style="margin-bottom: 15px;">
+                <div class="panel panel_add1">
+                    <a class="btn btn-md btn-primary" target="_blank" href="{{ payement['file_invoice'] }}">Consulter</a>
+
+                </div>
+
+            </div>
+
+        </div>
+            {% else  %}
+                <div class="row" style="border-bottom: 1px solid #dee2e6;margin-bottom: 15px;">
+                    <div class="col-md-10">
+                        <h5>
+                            <ul>
+                                <li>Facture</li>
+                            </ul>
+                        </h5>
+                    </div>
+                    <div class="col-md-2 pull-right" style="margin-bottom: 15px;">
+                        <div class="panel panel_add1">
+                            <a class="btn btn-md btn-primary" target="_blank" href="{{ payement['file_invoice'] }}">Consulter</a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+        {% endif %}
+
+    </div>
+
+    <div class="form-buttons-w text-right">
+        <a class="btn btn-primary step-trigger-btn" href="#stepContent2"> Suivant</a>
+    </div>
+</div>

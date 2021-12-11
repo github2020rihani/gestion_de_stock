@@ -1,0 +1,109 @@
+<div class="step-content" id="stepContent2">
+    <fieldset>
+        <legend>Informations du client</legend>
+    </fieldset>
+    <style>
+        td{
+            width: 50%;
+        }
+    </style>
+    {% if   payement['invoice']['existBl'] %}
+        <table class="table table-compact">
+            <tr>
+                <td>Code Tva</td>
+                <td>{{ payement['invoice']['bonLivraison']['customer']['codeTVA'] }}</td>
+            </tr>
+            <tr>
+                <td>Nom & Prénom</td>
+                <td>{{ payement['invoice']['bonLivraison']['customer']['nom'] }}</td>
+            </tr>
+            <tr>
+                <td>Adresse</td>
+                <td>{{ payement['invoice']['bonLivraison']['customer']['adresse'] }}
+                    -{{ payement['invoice']['bonLivraison']['customer']['country']['name'] }}
+                    - {{ payement['invoice']['bonLivraison']['customer']['city']['name'] }}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>{{ payement['invoice']['bonLivraison']['customer']['email'] }}</td>
+            </tr>
+        </table>
+    {% else %}
+        <table class="table table-compact">
+            <tr>
+                <td>Code Tva</td>
+                <td>{{ payement['invoice']['customer']['codeTVA'] }}</td>
+            </tr>
+            <tr>
+                <td>Nom & Prénom</td>
+                <td>{{ payement['invoice']['customer']['nom'] }}</td>
+            </tr>
+            <tr>
+                <td>Adresse</td>
+                <td>{{ payement['invoice']['customer']['adresse'] }} -{{ payement['invoice']['customer']['country']['name'] }}
+                    - {{ payement['invoice']['customer']['city']['name'] }}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>{{ payement['invoice']['customer']['email'] }}</td>
+            </tr>
+        </table>
+    {% endif %}
+    <fieldset>
+        <legend>Informations de facture</legend>
+    </fieldset>
+    <table class="table table-compact">
+        <tr>
+            <td >Numéro</td>
+            <td class="text-left">{{ PREFIX_FACT }}{{ payement['invoice']['numero'] }}</td>
+        </tr>
+        <tr>
+            <td>Date</td>
+            <td>{{ payement['invoice']['createdAt']|date('d/m/Y h:m') }}</td>
+        </tr>
+        <tr>
+            <td>Elaboré par</td>
+            <td>{{ payement['invoice']['creadetBy']['firstName'] }} {{ payement['invoice']['creadetBy']['lastName'] }}  </td>
+        </tr>
+        <tr>
+            <td>Type de paiement</td>
+            <td>
+                {% if payement['invoice']['existBl'] %}
+                {% if payement['invoice']['bonLivraison']['typePayement'] == 1 %}
+                Escpece
+                {% elseif payement['invoice']['bonLivraison']['typePayement'] == 2 %}
+                Carte
+                {% elseif payement['invoice']['bonLivraison']['typePayement'] == 3 %}
+                    Cheque
+                {% endif %}
+                {% else %}
+                {% if payement['invoice']['typePayement'] == 1 %}
+                Escpece
+                {% elseif payement['invoice']['typePayement'] == 2 %}
+                    Carte
+                    {% elseif payement['invoice']['typePayement'] == 3 %}
+                        Cheque
+                    {% endif %}
+
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>Total TTC</td>
+            <td>{{ payement['invoice']['totalTTC']|number_format(3) }}</td>
+        </tr>
+        <tr style="background-color: grey; opacity: 0.5;">
+            <td style="color: white; font-weight: bold; font-size: 18px">Montant payer </td>
+            <td style="font-size: 18px; font-weight: bold; color: red">{{ payement['montant']|number_format(3) }}</td>
+        </tr>
+        <tr style="background-color: grey; opacity: 0.5;">
+            <td style="color: white; font-weight: bold; font-size: 18px">Total reste</td>
+            <td style="font-size: 18px; font-weight: bold; color: red">{{ payement['reste']|number_format(3) }}</td>
+        </tr>
+
+    </table>
+
+    <div class="form-buttons-w text-right">
+        <a class="btn btn-primary step-trigger-btn" href="#stepContent3"> Suivant</a>
+    </div>
+</div>
