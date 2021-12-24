@@ -68,9 +68,9 @@ function addLingeArticle() {
                                                                 <td width="30%">
                                                                   <select class="js-example-basic-single type_dep article" name="type_dep[]">
                                                         <option value="0" selected readonly>Coisir un type</option>
-                                                        <option value="1" selected > Coisir un type Coisir un typeCoisir un type Coisir un type </option>
-                                                        <option value="2" selected >Coisir un type</option>
-                                                        <option value="3" selected >Coisir un type</option>
+                                                        <option value="1"  > Carburant / Gasoil </option>
+                                                        <option value="2"  >Recharge téléphone</option>
+                                                        <option value="3"  >Avance</option>
                                                        
 
                                                     </select>

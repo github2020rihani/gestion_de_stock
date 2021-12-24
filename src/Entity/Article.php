@@ -130,7 +130,7 @@ class Article
     private $invoiceArticles;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $qteReserved;
 
@@ -145,6 +145,7 @@ class Article
         $this->qte = new ArrayCollection();
         $this->stocked = false;
         $this->invoiceArticles = new ArrayCollection();
+        $this->remise = 0 ;
     }
 
     public function getId(): ?int

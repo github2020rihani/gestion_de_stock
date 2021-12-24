@@ -54,10 +54,9 @@
                             <div class="form-group">
                                 <label>Type *</label>
                                 <select class="js-example-basic-single type_dep article form-control" name="type_dep">
-                                    <option value="0" selected readonly>Coisir un type</option>
-                                    <option value="1" selected > Coisir un type Coisir un typeCoisir un type Coisir un type </option>
-                                    <option value="2" selected >Coisir un type</option>
-                                    <option value="3" selected >Coisir un type</option>
+                                    <option value="1"  {%  if depense.type = "1" %} selected {% endif%} > Carburant / Gasoil </option>
+                                    <option value="2"  {%  if depense.type = "2" %} selected {% endif%} >Recharge téléphone</option>
+                                    <option value="3"  {%  if depense.type = "3" %} selected {% endif%}  >Avance</option>
 
 
                                 </select>

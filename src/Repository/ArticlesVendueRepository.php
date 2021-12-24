@@ -19,6 +19,19 @@ class ArticlesVendueRepository extends ServiceEntityRepository
         parent::__construct($registry, ArticlesVendue::class);
     }
 
+
+    public function getArticlesVendus()
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a', 'bl' , 'invoice', 'artbl', 'c')
+            ->leftJoin('a.bl', 'bl')
+            ->leftJoin('a.invoice', 'invoice')
+            ->leftJoin('invoice.invoiceArticles', 'artinv')
+            ->leftJoin('bl.bonlivraisonArticles', 'artbl')
+            ->leftJoin('bl.customer', 'c')
+            ->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return ArticlesVendue[] Returns an array of ArticlesVendue objects
     //  */

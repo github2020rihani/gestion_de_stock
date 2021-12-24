@@ -32,7 +32,7 @@ class FournisseurController extends AbstractController
         $fourniseurExiste = $fournisseurRepository->findByCodeAndEmail($form->get('email')->getData());
         $lastFourniseur = $fournisseurRepository->getLastFournisseur();
         if ($lastFourniseur) {
-            $numF = $_ENV['PREFIX_FOUR'].$lastFourniseur->getId() + 1;
+            $numF = $_ENV['PREFIX_FOUR'].''.($lastFourniseur->getId() + 1);
         }else{
             $numF = $_ENV['PREFIX_FOUR'].'1';
         }

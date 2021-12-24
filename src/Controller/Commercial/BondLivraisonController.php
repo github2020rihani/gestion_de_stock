@@ -136,7 +136,14 @@ class BondLivraisonController extends AbstractController
         $customers = $this->clientRepository->findAll();
         $tva = $_ENV['TVA_ARTICLE_PERCENT'];
         $tva_percent = $_ENV['TVA_ARTICLE'];
-        //get last bl
+        $year = date('Y');
+        $lastBl = $this->bondLivraisonRepository->getLastBlWithCurrentYear($year);
+        if ($lastBl) {
+            $lastId = 000 + $lastBl->getId() + 1;
+            $numero_bl = '000' . $lastId;
+        } else {
+            $numero_bl = '0001';
+        }     //get last bl
         $year = date('Y');
         $lastBl = $this->bondLivraisonRepository->getLastBlWithCurrentYear($year);
         if ($lastBl) {

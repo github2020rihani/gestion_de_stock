@@ -114,6 +114,8 @@ class PayementController extends AbstractController
                 $article_vendue = new ArticlesVendue();
                 $article_vendue->setCreatedAt($date);
                 $article_vendue->setAddedBy($this->getUser());
+                $article_vendue->setInvoice($this->invoiceRepository->find($dataInvoice['id']));
+
                 $article_vendue->setBl($this->bondLivraisonRepository->find($dataInvoice['bonLivraison']['id']));
                 $this->em->persist($article_vendue);
                 $this->em->flush();
@@ -173,6 +175,8 @@ class PayementController extends AbstractController
             //change status devis et bl and upload file
             if ($file_bl) {
                 $blObject = $this->bondLivraisonRepository->find($dataInvoice['bonLivraison']['id']);
+                $nameCustomer = $blObject->getCustomer()->getNom() . ' ' . $blObject->getCustomer()->getPrenom();
+                $payement->setCustomer($nameCustomer);
                 $blObject->setStatus(2);
                 $this->em->persist($blObject);
                 $this->em->flush();
@@ -280,6 +284,8 @@ class PayementController extends AbstractController
             //invoice seul
             if ($dataInvoice['typePayement'] == 1) //espece
             {
+                $nameCustomer = $invoiceObj->getCustomer()->getNom() . ' ' . $invoiceObj->getCustomer()->getPrenom();
+                $payement->setCustomer($nameCustomer);
                 $payement->setTypePayement(1);
                 if ((float)$montant > (float)$totalTTc) {
                     $re = (float)$totalTTc - (float)$montant;
@@ -391,7 +397,7 @@ class PayementController extends AbstractController
         if ($filesCheque) {
             $typesPayement[] = 'Cheque';
 
-        }else{
+        } else {
             $typesPayement[] = 'Espece';
 
         }
@@ -423,7 +429,7 @@ class PayementController extends AbstractController
         $this->em->flush();
 
         if ($file_cheque) {
-            $newFilenameCheque = 'cheque_'.$date->getTimestamp().'_'. $invoiceObject['numero'] . '_' . $invoiceObject['year'] . $file_cheque->guessExtension();
+            $newFilenameCheque = 'cheque_' . $date->getTimestamp() . '_' . $invoiceObject['numero'] . '_' . $invoiceObject['year'] . $file_cheque->guessExtension();
 
             $baseurlCheque = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . '/uploads/caisse/' . $nameFloder . '/' . $newFilenameCheque;
             $file_cheque->move(
@@ -444,10 +450,6 @@ class PayementController extends AbstractController
         $this->em->flush();
 
 
-    }
-
-    public function generateRecupayement()
-    {
     }
 
 

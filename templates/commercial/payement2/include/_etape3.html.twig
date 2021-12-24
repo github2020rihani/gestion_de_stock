@@ -1,28 +1,28 @@
 <div class="step-content" id="stepContent3">
     <div class="form-group">
-        <h2 class="text-center">Type de paiement</h2>
-        <h6 class="text-center" style="font-size: 30px; color: green; text-align: center; font-weight: bold">
-            {% if payement['invoice']['existBl'] %}
-                {% if payement['invoice']['bonLivraison']['typePayement'] == 1 %}
-                    Escpece
-                {% elseif payement['invoice']['bonLivraison']['typePayement'] == 2 %}
-                    Carte
-                {% elseif payement['invoice']['bonLivraison']['typePayement'] == 3 %}
-                    Cheque
-                {% endif %}
-            {% else %}
-                {% if payement['invoice']['typePayement'] == 1 %}
-                    Escpece
-                {% elseif payement['invoice']['typePayement'] == 2 %}
-                    Carte
-                {% elseif payement['invoice']['typePayement'] == 3 %}
-                    Cheque
-                {% endif %}
+{#        <h2 class="text-center">Type de paiement</h2>#}
+{#        <h6 class="text-center" style="font-size: 30px; color: green; text-align: center; font-weight: bold">#}
+{#            {% if payement['invoice']['existBl'] %}#}
+{#                {% if payement['invoice']['bonLivraison']['typePayement'] == 1 %}#}
+{#                    Escpece#}
+{#                {% elseif payement['invoice']['bonLivraison']['typePayement'] == 2 %}#}
+{#                    Carte#}
+{#                {% elseif payement['invoice']['bonLivraison']['typePayement'] == 3 %}#}
+{#                    Cheque#}
+{#                {% endif %}#}
+{#            {% else %}#}
+{#                {% if payement['invoice']['typePayement'] == 1 %}#}
+{#                    Escpece#}
+{#                {% elseif payement['invoice']['typePayement'] == 2 %}#}
+{#                    Carte#}
+{#                {% elseif payement['invoice']['typePayement'] == 3 %}#}
+{#                    Cheque#}
+{#                {% endif %}#}
 
-            {% endif %}
-        </h6>
+{#            {% endif %}#}
+{#        </h6>#}
 
-        <hr>
+{#        <hr>#}
 
         <div class="row">
             <div class="col-md-4">

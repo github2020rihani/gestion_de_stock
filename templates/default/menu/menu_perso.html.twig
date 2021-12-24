@@ -108,10 +108,10 @@
             <span>Dépense</span></a>
     </li>
 
-    <li class="{% if app.request.attributes.get('_route') in [ 'perso_paiement_invoice', 'perso_articles_Vendues' ] %} selected {% endif %} has-sub-menu">
+    <li class="{% if app.request.attributes.get('_route') in [ 'perso_paiement_invoice', 'perso_articles_Vendues' , 'perso_index_caisse'] %} selected {% endif %} has-sub-menu">
         <a href="#">
             <div class="icon-w">
-                <div class="icon-list {% if app.request.attributes.get('_route') in [ 'perso_paiement_invoice', 'perso_articles_Vendues'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+                <div class="icon-list {% if app.request.attributes.get('_route') in [ 'perso_paiement_invoice', 'perso_articles_Vendues', 'perso_index_caisse'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
 
             </div>
             <span>Journalier</span></a>
@@ -125,8 +125,8 @@
                            style="{% if app.request.attributes.get('_route') in ['perso_articles_Vendues'] %} color: #0a7cf8 ; font-weight: bold{% endif %}">Liste des articles vendue</a>
                     </li>
                     <li>
-                        <a href="{{ path('perso_index_article') }}"
-                           style="{% if app.request.attributes.get('_route') in ['perso_paiement_invoice'] %} color: #0a7cf8 ; font-weight: bold{% endif %}">Caisse</a>
+                        <a href="{{ path('perso_index_caisse') }}"
+                           style="{% if app.request.attributes.get('_route') in ['perso_index_caisse'] %} color: #0a7cf8 ; font-weight: bold{% endif %}">Caisse</a>
                     </li>
 
 

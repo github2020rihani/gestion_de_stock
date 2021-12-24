@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DepenseRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -51,9 +53,25 @@ class Depense
      * @ORM\Column(type="datetime")
      */
     private $date;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $numero;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $year;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Payemet::class, mappedBy="depense")
+     */
+    private $payemets;
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->payemets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -141,6 +159,60 @@ class Depense
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getNumero(): ?string
+    {
+        return $this->numero;
+    }
+
+    public function setNumero(string $numero): self
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    public function getYear(): ?string
+    {
+        return $this->year;
+    }
+
+    public function setYear(string $year): self
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Payemet[]
+     */
+    public function getPayemets(): Collection
+    {
+        return $this->payemets;
+    }
+
+    public function addPayemet(Payemet $payemet): self
+    {
+        if (!$this->payemets->contains($payemet)) {
+            $this->payemets[] = $payemet;
+            $payemet->setDepense($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayemet(Payemet $payemet): self
+    {
+        if ($this->payemets->removeElement($payemet)) {
+            // set the owning side to null (unless already changed)
+            if ($payemet->getDepense() === $this) {
+                $payemet->setDepense(null);
+            }
+        }
 
         return $this;
     }

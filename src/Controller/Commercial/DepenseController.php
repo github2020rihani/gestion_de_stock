@@ -42,6 +42,16 @@ class DepenseController extends AbstractController
      */
     public function add(Request $request)
     {
+        $perfix_depense = $_ENV['PREFIX_DEPENSE'];
+
+        $year = date('Y');
+        $lastDep = $this->depenseRepository->getLastDep($year);
+        if ($lastDep) {
+            $lastId = 000 + $lastDep->getId() + 1;
+            $numDep = '000' . $lastId;
+        } else {
+            $numDep = '0001';
+        }
 
         if ($request->isMethod('post')) {
             $date_depense = $request->get('date_dep');
@@ -59,6 +69,8 @@ class DepenseController extends AbstractController
             foreach ($dataRes as $key => $date) {
                 $depense = new Depense();
                 $depense->setType($type_dep[$key]);
+                $depense->setYear($year);
+                $depense->setNumero($numDep);
                 $depense->setDescription($desc_dep[$key]);
                 $depense->setTotalTTC($total_ttc_dep[$key]);
                 $depense->setDate(new \DateTime($date[0]));
@@ -74,6 +86,8 @@ class DepenseController extends AbstractController
                 $payment->setMontant($total_ttc_dep[$key]);
                 $payment->setTypePayement(1);
                 $payment->setType('Dépence');
+                $payment->setDepense($depense);
+
                 $this->em->persist($payment);
                 $this->em->flush();
 

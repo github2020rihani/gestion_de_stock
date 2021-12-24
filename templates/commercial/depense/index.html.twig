@@ -50,7 +50,7 @@
                                 <th>Type</th>
                                 <th>Designation</th>
                                 <th>Total ttc</th>
-{#                                <th>Actions</th>#}
+                                {#                                <th>Actions</th>#}
                             </tr>
                             </thead>
                             <tfoot>
@@ -61,7 +61,7 @@
                                 <th>Type</th>
                                 <th>Designation</th>
                                 <th>Total ttc</th>
-{#                                <th>Actions</th>#}
+                                {#                                <th>Actions</th>#}
                             </tr>
                             </tfoot>
                             <tbody class="ligth-body">
@@ -70,38 +70,47 @@
                                     <td>{{ d.addedBy.firstName }} {{ d.addedBy.lastName }}</td>
                                     <td>{{ d.date|date('d/m/Y') }}</td>
                                     <td>{{ d.hour }}</td>
-                                    <td>{{ d.type }}</td>
+                                    <td>{% if d.type == "1" %}
+                                            Carburant / Gasoil
+                                        {% elseif  d.type == "2" %}
+                                            Recharge téléphone
+                                            {% elseif  d.type == "3" %}
+                                                Avance
+                                        {% endif %}
+
+
+                                    </td>
                                     <td>{{ d.description }}</td>
                                     <td>{{ d.totalTTC }}</td>
 
 
                                     {#                                    <td width="5%">#}
 
-{#                                        <div class="d-flex align-items-center list-action">#}
+                                    {#                                        <div class="d-flex align-items-center list-action">#}
 
 
-{#                                            <a class="  btn btn-sm btn-icon btn-success"#}
-{#                                               data-toggle="tooltip"#}
-{#                                               data-placement="top" title="" data-original-title="Modifier"#}
-{#                                               style="color: white"#}
-{#                                               href="{{ path('perso_edit_depense', {id: d.id}) }}"#}
-{#                                            >#}
-{#                                                <i class="fa fa-edit"></i>#}
-{#                                            </a>#}
+                                    {#                                            <a class="  btn btn-sm btn-icon btn-success"#}
+                                    {#                                               data-toggle="tooltip"#}
+                                    {#                                               data-placement="top" title="" data-original-title="Modifier"#}
+                                    {#                                               style="color: white"#}
+                                    {#                                               href="{{ path('perso_edit_depense', {id: d.id}) }}"#}
+                                    {#                                            >#}
+                                    {#                                                <i class="fa fa-edit"></i>#}
+                                    {#                                            </a>#}
 
-{#                                            <a class="  btn btn-sm btn-icon btn-danger"#}
-{#                                               data-toggle="tooltip"#}
-{#                                               data-placement="top" title="" data-original-title="Supprimer"#}
-{#                                               style="color: white"#}
-{#                                               onclick=" return confirm('Vous éte sur suprimer ce client')"#}
+                                    {#                                            <a class="  btn btn-sm btn-icon btn-danger"#}
+                                    {#                                               data-toggle="tooltip"#}
+                                    {#                                               data-placement="top" title="" data-original-title="Supprimer"#}
+                                    {#                                               style="color: white"#}
+                                    {#                                               onclick=" return confirm('Vous éte sur suprimer ce client')"#}
 
-{#                                               href="{{ path('perso_delete_client', {id: cl.id}) }}"#}
-{#                                            >#}
-{#                                                <i class="fa fa-trash"></i>#}
-{#                                            </a>#}
+                                    {#                                               href="{{ path('perso_delete_client', {id: cl.id}) }}"#}
+                                    {#                                            >#}
+                                    {#                                                <i class="fa fa-trash"></i>#}
+                                    {#                                            </a>#}
 
-{#                                        </div>#}
-{#                                    </td>#}
+                                    {#                                        </div>#}
+                                    {#                                    </td>#}
 
                                 </tr>
                             {% endfor %}

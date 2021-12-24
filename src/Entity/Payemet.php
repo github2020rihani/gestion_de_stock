@@ -94,6 +94,16 @@ class Payemet
      */
     private $typesPayements = [];
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Depense::class, inversedBy="payemets")
+     */
+    private $depense;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $customer;
+
 
 
     public function getId(): ?int
@@ -279,6 +289,30 @@ class Payemet
     public function setTypesPayements(?array $typesPayements): self
     {
         $this->typesPayements = $typesPayements;
+
+        return $this;
+    }
+
+    public function getDepense(): ?Depense
+    {
+        return $this->depense;
+    }
+
+    public function setDepense(?Depense $depense): self
+    {
+        $this->depense = $depense;
+
+        return $this;
+    }
+
+    public function getCustomer(): ?string
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(string $customer): self
+    {
+        $this->customer = $customer;
 
         return $this;
     }

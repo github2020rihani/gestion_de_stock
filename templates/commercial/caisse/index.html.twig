@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Caisse {% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+       {% block smenu %}
+           <ul class="breadcrumb">
+               <li class="breadcrumb-item">
+                   <a href="{{ path('dashboard_personelle') }}">Tableau de bord</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <a href="#">Caisse</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <span>Liste</span>
+               </li>
+           </ul>
+       {% endblock %}
+
+        {% block content %}
+
+            <div class="element-wrapper">
+                <h6 class="element-header">
+                    Caisse
+                </h6>
+                {{ include('default/FlashBag/flashBag.html.twig') }}
+
+                <div class="element-box">
+                    <h5 class="form-header">
+                    </h5>
+
+                    <div class="form-desc">
+
+                    </div>
+
+
+                    <div class="table-responsive">
+
+                        <table id="dataTable1" width="100%" class="table table-striped table-lightfont">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Date</th>
+                                <th>Numéro</th>
+                                <th>Client</th>
+                                <th>Montant</th>
+                                <th>N cheque</th>
+                                <th>Espece</th>
+                                <th>Reste</th>
+                                <th>Retenue</th>
+                                <th>Type paiement</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th></th>
+                                <th>Date</th>
+                                <th>Numéro</th>
+                                <th>Client</th>
+                                <th>Montant</th>
+                                <th>N cheque</th>
+                                <th>Espece</th>
+                                <th>Reste</th>
+                                <th>Retenue</th>
+                                <th>Type paiement</th>
+                                <th>Action</th>
+
+                            </tr>
+                            </tfoot>
+                            <tbody class="ligth-body">
+                            {% for c in data %}
+                            <tr style="{%  if  c['typeD'] !='Facture' %} background-color: rgba(255,0,0,0.12) {% endif %}">
+                                <td>{{  c['typeD']  }}</td>
+                                <td>{{ c['date']|date('d/m/Y - g:ia') }}</td>
+                                <td>{{  c['num']  }}</td>
+                                <td>{%  if c['nomCustomer'] %}  {{ c['nomCustomer']}}  {% endif %}</td>
+                                <td>{{ c['montant'] }}</td>
+                                <td>{%  if c['ncheque'] is not null %} {{ c['ncheque']}} {% endif %}</td>
+                                <td>
+                                    {%  if  c['typeD'] !='Facture' %} - {% endif %}
+                                    {%  if c['espece'] is not null %} {{ c['espece'] }} {% else %} 0.000 {% endif %}
+                                </td>
+                                <td>{%  if c['reste'] is not null %} {{ c['reste'] }} {% else %} 0.000 {% endif %}</td>
+                                <td>{%  if c['retenu'] is not null %} {{ c['retenu'] }} {% else %} 0.000 {% endif %}</td>
+                                <td>{{ c['tp']}}</td>
+                                <td>
+                                    <a href="" class="btn btn-info btn-sm" title="détail"><i class="fa fa-eye"></i> </a>
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+                            <tr>
+                                <td colspan="10">Montant Caisse</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="10">Total Espece</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="10">Total Cheque</td>
+                                <td></td>
+                            </tr>
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        {% endblock %}
+
+
+{% block javascripts %}
+
+{% endblock %}
