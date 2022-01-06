@@ -27,6 +27,17 @@ class AchatRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+
+    public function getLastAchatWithCurrentYear($year) {
+        return $this->createQueryBuilder('a')
+            ->where('a.year = :year')
+            ->setParameter('year', $year)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     public function getDetailAchat($id)
     {
         return $this->createQueryBuilder('a')

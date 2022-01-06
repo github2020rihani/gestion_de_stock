@@ -57,8 +57,22 @@ class AchatController extends AbstractController
     public function new(Request $request)
     {
         $achat = new Achat();
+        $year = date('Y');
         $fournisseurs = $this->fournisseurRepository->findAll();
         $articles = $this->articleRepository->findAll();
+
+        $lastAchat = $this->achatRepository->getLastAchatWithCurrentYear($year);
+
+        if ($lastAchat) {
+            $lastId = 000 + $lastAchat->getId() + 1;
+            $numAchat = '000' . $lastId;
+        } else {
+            $numAchat = '0001';
+        }
+
+
+
+
         if ($request->isMethod('POST')) {
 
             $numero_achat = $request->get('numero_achat');
@@ -102,6 +116,8 @@ class AchatController extends AbstractController
             $achat->setTotalHT((float)number_format($totalHt , 3));
             $achat->setTotalTVA((float)number_format($totalTva , 3));
             $achat->setTotalTTC((float)number_format($totalTTC , 3));
+            $achat->setYear($year);
+            $achat->setNumId($numAchat);
                 //save achat
             $achat->setFournisseur($this->fournisseurRepository->find($fournisseur));
             $achat->setNumero($numero_achat);

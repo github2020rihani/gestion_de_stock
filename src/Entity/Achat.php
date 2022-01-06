@@ -84,6 +84,16 @@ class Achat
      */
     private $tronsport;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $numId;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $year;
+
     public function __construct()
     {
         $this->achatArticles = new ArrayCollection();
@@ -265,6 +275,30 @@ class Achat
     public function setTronsport(?float $tronsport): self
     {
         $this->tronsport = $tronsport;
+
+        return $this;
+    }
+
+    public function getNumId(): ?int
+    {
+        return $this->numId;
+    }
+
+    public function setNumId(int $numId): self
+    {
+        $this->numId = $numId;
+
+        return $this;
+    }
+
+    public function getYear(): ?string
+    {
+        return $this->year;
+    }
+
+    public function setYear(?string $year): self
+    {
+        $this->year = $year;
 
         return $this;
     }
