@@ -1,0 +1,150 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Avoirs {% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+       {% block smenu %}
+           <ul class="breadcrumb">
+               <li class="breadcrumb-item">
+                   <a href="{{ path('dashboard_personelle') }}">Tableau de bord</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <a href="#">Avoirs</a>
+               </li>
+               <li class="breadcrumb-item">
+                   <span>Liste</span>
+               </li>
+           </ul>
+       {% endblock %}
+
+        {% block content %}
+
+            <div class="element-wrapper">
+                <h6 class="element-header">
+                    Avoirs
+                </h6>
+                {{ include('default/FlashBag/flashBag.html.twig') }}
+
+                <div class="element-box">
+                    <h5 class="form-header">
+                        <a href="{{ path('add_avoir') }}" class="btn btn-primary add-list float-right mb-2"><i
+                                    class="las la-plus mr-3"></i>Ajouter un avoir </a>
+
+                    </h5>
+
+
+                    <div class="form-desc">
+
+                    </div>
+
+
+                    <div class="table-responsive">
+
+                        <table id="dataTable1" width="100%" class="table table-striped table-lightfont">
+                            <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Numéro</th>
+                                <th>Numéro Facture</th>
+                                <th>Client</th>
+                                <th>Montant</th>
+                                <th>Statut</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Date</th>
+                                <th>Numéro</th>
+                                <th>Numéro Facture</th>
+                                <th>Client</th>
+                                <th>Montant</th>
+                                <th>Statut</th>
+                                <th>Action</th>
+
+                            </tr>
+                            </tfoot>
+                            <tbody class="ligth-body">
+                            {% for a in avoirs %}
+                                <tr>
+                                    <td>{{ a.createdAt|date('d/m/Y') }}</td>
+                                    <td>{{ PREFIX_AVOIR }}{{ a.numero }}</td>
+                                    <td>{{ PREFIX_FACT }}{{ a.invoice.numero }}</td>
+                                    <td>{{ a.customer.nom }} {{ a.customer.prenom }}</td>
+                                    <td>{{ a.totalttc|number_format(3) }}</td>
+                                    <td>
+                                        {% if a.status %}
+                                            <span class="badge badge-success">Remboursée</span>
+                                        {% else %}
+                                            <span class="badge badge-danger">En cours</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {%  if a.status == false %}
+                                        <a class="  btn btn-sm btn-icon btn-success"
+                                           data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="Modifier"
+                                           style="color: white"
+                                           href="{{ path('edit_avoir', {id: a.id}) }}"
+                                        >
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        {% endif %}
+                                        <a class="  btn btn-sm btn-icon btn-info"
+                                           data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="Consulter"
+                                           style="color: white"
+                                           href="{{ path('edit_avoir', {id: a.id}) }}"
+
+                                        >
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        {%  if a.status == false %}
+                                        <a class="  btn btn-sm btn-icon btn-success"
+                                           data-toggle="tooltip"
+                                           data-placement="top" title="" data-original-title="Remboursement"
+                                           href="{{ path('rembourser_avoir', {id: a.id}) }}"
+
+                                           style="color: white">
+                                            <i class="fa fa-cc"></i>
+                                        </a>
+                                        {% endif %}
+                                        {%  if a.status %}
+
+
+                                            <a class="  btn btn-sm btn-icon btn-danger printInvoice"
+                                                    data-toggle="tooltip"
+                                                    type="button"
+                                                    data-id_avoir = "{{ a.id }}"
+                                                    data-placement="top" title="" data-original-title="Télécharger file"
+                                                    style="color: white"
+                                               target="_blank"
+                                                    href="{{ a.file }}"
+                                            >
+                                                <i class="fa fa-file"></i>
+                                            </a>
+                                        {% endif %}
+
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        {% endblock %}
+
+
+{% block javascripts %}
+
+{% endblock %}

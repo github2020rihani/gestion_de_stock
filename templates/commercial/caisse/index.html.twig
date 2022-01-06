@@ -51,7 +51,7 @@
                                 <th>Reste</th>
                                 <th>Retenue</th>
                                 <th>Type paiement</th>
-                                <th>Action</th>
+{#                                <th>Action</th>#}
                             </tr>
                             </thead>
                             <tfoot>
@@ -66,13 +66,13 @@
                                 <th>Reste</th>
                                 <th>Retenue</th>
                                 <th>Type paiement</th>
-                                <th>Action</th>
+{#                                <th>Action</th>#}
 
                             </tr>
                             </tfoot>
                             <tbody class="ligth-body">
                             {% for c in data %}
-                            <tr style="{%  if  c['typeD'] !='Facture' %} background-color: rgba(255,0,0,0.12) {% endif %}">
+                            <tr style="{%  if  c['typeD'] =='Dépence' %} background-color: rgba(222,180,101,0.12)  {% elseif  c['typeD'] =='Avoir' %}  background-color: rgba(255,0,0,0.12) {% endif %}">
                                 <td>{{  c['typeD']  }}</td>
                                 <td>{{ c['date']|date('d/m/Y - g:ia') }}</td>
                                 <td>{{  c['num']  }}</td>
@@ -86,23 +86,31 @@
                                 <td>{%  if c['reste'] is not null %} {{ c['reste'] }} {% else %} 0.000 {% endif %}</td>
                                 <td>{%  if c['retenu'] is not null %} {{ c['retenu'] }} {% else %} 0.000 {% endif %}</td>
                                 <td>{{ c['tp']}}</td>
-                                <td>
-                                    <a href="" class="btn btn-info btn-sm" title="détail"><i class="fa fa-eye"></i> </a>
-                                </td>
+{#                                <td>#}
+{#                                    <a href="" class="btn btn-info btn-sm" title="détail"><i class="fa fa-eye"></i> </a>#}
+{#                                </td>#}
                             </tr>
 
                             {% endfor %}
                             <tr>
-                                <td colspan="10">Montant Caisse</td>
-                                <td></td>
+                                <td colspan="9">Montant Caisse</td>
+                                <td>{{ total_caisse }}</td>
                             </tr>
                             <tr>
-                                <td colspan="10">Total Espece</td>
-                                <td></td>
+                                <td colspan="9">Total dépense</td>
+                                <td>{{ total_depense }}</td>
                             </tr>
                             <tr>
-                                <td colspan="10">Total Cheque</td>
-                                <td></td>
+                                <td colspan="9">Total Espece</td>
+                                <td>{{ totalEspese }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="9">Total Cheque</td>
+                                <td>{{ totalCheque }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="9">Total Avoir</td>
+                                <td>{{ totalAvoir }}</td>
                             </tr>
 
 

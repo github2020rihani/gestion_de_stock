@@ -100,9 +100,14 @@ class Payemet
     private $depense;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $customer;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Avoir::class, inversedBy="payemets")
+     */
+    private $avoir;
 
 
 
@@ -313,6 +318,18 @@ class Payemet
     public function setCustomer(string $customer): self
     {
         $this->customer = $customer;
+
+        return $this;
+    }
+
+    public function getAvoir(): ?Avoir
+    {
+        return $this->avoir;
+    }
+
+    public function setAvoir(?Avoir $avoir): self
+    {
+        $this->avoir = $avoir;
 
         return $this;
     }

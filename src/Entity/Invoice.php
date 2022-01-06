@@ -121,6 +121,21 @@ class Invoice
      */
     private $payemets;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Avoir::class, mappedBy="invoice")
+     */
+    private $avoirs;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $avoir;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $fileAvoir;
+
     public function __construct()
     {
         $this->status = 0;
@@ -130,6 +145,8 @@ class Invoice
         $this->histories = new ArrayCollection();
         $this->articlesVendues = new ArrayCollection();
         $this->payemets = new ArrayCollection();
+        $this->avoirs = new ArrayCollection();
+        $this->avoir = false;
     }
 
     public function getId(): ?int
@@ -445,6 +462,60 @@ class Invoice
                 $payemet->setInvoice(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Avoir[]
+     */
+    public function getAvoirs(): Collection
+    {
+        return $this->avoirs;
+    }
+
+    public function addAvoir(Avoir $avoir): self
+    {
+        if (!$this->avoirs->contains($avoir)) {
+            $this->avoirs[] = $avoir;
+            $avoir->setInvoice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAvoir(Avoir $avoir): self
+    {
+        if ($this->avoirs->removeElement($avoir)) {
+            // set the owning side to null (unless already changed)
+            if ($avoir->getInvoice() === $this) {
+                $avoir->setInvoice(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAvoir(): ?bool
+    {
+        return $this->avoir;
+    }
+
+    public function setAvoir(bool $avoir): self
+    {
+        $this->avoir = $avoir;
+
+        return $this;
+    }
+
+    public function getFileAvoir(): ?string
+    {
+        return $this->fileAvoir;
+    }
+
+    public function setFileAvoir(string $fileAvoir): self
+    {
+        $this->fileAvoir = $fileAvoir;
 
         return $this;
     }

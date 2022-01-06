@@ -393,7 +393,8 @@ class BondLivraisonController extends AbstractController
                 'customers' => $customers,
                 'bl' => $id,
                 'tva' => $tva,
-                'articles' => $articles));
+                'articles' => $articles
+            ));
 
     }
 

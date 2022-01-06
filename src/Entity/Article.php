@@ -134,6 +134,11 @@ class Article
      */
     private $qteReserved;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ArticleAvoir::class, mappedBy="article")
+     */
+    private $articleAvoirs;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
@@ -146,6 +151,7 @@ class Article
         $this->stocked = false;
         $this->invoiceArticles = new ArrayCollection();
         $this->remise = 0 ;
+        $this->articleAvoirs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -445,6 +451,36 @@ class Article
     public function setQteReserved(int $qteReserved): self
     {
         $this->qteReserved = $qteReserved;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ArticleAvoir[]
+     */
+    public function getArticleAvoirs(): Collection
+    {
+        return $this->articleAvoirs;
+    }
+
+    public function addArticleAvoir(ArticleAvoir $articleAvoir): self
+    {
+        if (!$this->articleAvoirs->contains($articleAvoir)) {
+            $this->articleAvoirs[] = $articleAvoir;
+            $articleAvoir->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticleAvoir(ArticleAvoir $articleAvoir): self
+    {
+        if ($this->articleAvoirs->removeElement($articleAvoir)) {
+            // set the owning side to null (unless already changed)
+            if ($articleAvoir->getArticle() === $this) {
+                $articleAvoir->setArticle(null);
+            }
+        }
 
         return $this;
     }

@@ -4,8 +4,10 @@
 namespace App\Controller\Commercial;
 
 
+use App\Entity\Invoice;
 use App\Repository\ArticleRepository;
 use App\Repository\DevisArticleRepository;
+use App\Repository\InvoiceRepository;
 use App\Repository\PrixRepository;
 use App\Repository\StockRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -92,6 +94,30 @@ class globalController extends AbstractController
         return $this->json($data);
 
     }
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Route("personelle/api/articles_fom_prix/all", name="api_get_articles_from_prix_all", options={"expose" = true})
+     */
+    public function getArticlesAndPrixStocked2() {
+//        $articles = $this->prixRepository->getArticleWithPrix();
+        $articles = $this->prixRepository->getArticleWithPrixAll();
+        if ($articles) {
+            $message = 'yes';
+            $success = true ;
+            $data = $articles ;
+        }else{
+            $data = '';
+            $message = 'no';
+            $success = false ;
+        }
+
+        return $this->json($data);
+
+    }
+
+
+
 
 
 

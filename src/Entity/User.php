@@ -169,6 +169,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $payemets;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Avoir::class, mappedBy="addedBy")
+     */
+    private $avoirs;
+
 
 
     public function __construct()
@@ -188,6 +193,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->depenses = new ArrayCollection();
         $this->articlesVendues = new ArrayCollection();
         $this->payemets = new ArrayCollection();
+        $this->avoirs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -741,6 +747,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($payemet->getAddedBy() === $this) {
                 $payemet->setAddedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Avoir[]
+     */
+    public function getAvoirs(): Collection
+    {
+        return $this->avoirs;
+    }
+
+    public function addAvoir(Avoir $avoir): self
+    {
+        if (!$this->avoirs->contains($avoir)) {
+            $this->avoirs[] = $avoir;
+            $avoir->setAddedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAvoir(Avoir $avoir): self
+    {
+        if ($this->avoirs->removeElement($avoir)) {
+            // set the owning side to null (unless already changed)
+            if ($avoir->getAddedBy() === $this) {
+                $avoir->setAddedBy(null);
             }
         }
 

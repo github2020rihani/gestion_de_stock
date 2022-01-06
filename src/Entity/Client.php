@@ -119,6 +119,11 @@ class  Client
      */
     private $invoices;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Avoir::class, mappedBy="customer")
+     */
+    private $avoirs;
+
 
 
     public function __construct()
@@ -127,6 +132,7 @@ class  Client
         $this->devis = new ArrayCollection();
         $this->bondLivraisons = new ArrayCollection();
         $this->invoices = new ArrayCollection();
+        $this->avoirs = new ArrayCollection();
     }
 
     /**
@@ -365,6 +371,36 @@ class  Client
             // set the owning side to null (unless already changed)
             if ($invoice->getCustomer() === $this) {
                 $invoice->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Avoir[]
+     */
+    public function getAvoirs(): Collection
+    {
+        return $this->avoirs;
+    }
+
+    public function addAvoir(Avoir $avoir): self
+    {
+        if (!$this->avoirs->contains($avoir)) {
+            $this->avoirs[] = $avoir;
+            $avoir->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAvoir(Avoir $avoir): self
+    {
+        if ($this->avoirs->removeElement($avoir)) {
+            // set the owning side to null (unless already changed)
+            if ($avoir->getCustomer() === $this) {
+                $avoir->setCustomer(null);
             }
         }
 

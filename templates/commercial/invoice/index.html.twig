@@ -51,6 +51,7 @@
                                 <th>Devi</th>
                                 <th>BL</th>
                                 <th>Facture</th>
+                                <th>Avoir</th>
                                 <th>Total TTC</th>
                                 <th>Action</th>
                             </tr>
@@ -65,6 +66,7 @@
                                 <th>Devi</th>
                                 <th>BL</th>
                                 <th>Facture</th>
+                                <th>Avoir</th>
                                 <th>Total TTC</th>
                                 <th>Action</th>
                             </tr>
@@ -141,6 +143,18 @@
                                                title="facture">
                                                 <i class="fa fa-file"></i>
                                             </a>
+                                            {% else %}
+                                                -
+                                                {% endif %}
+                                        </td>
+                                        <td>
+                                            {%  if invoice.avoir %}
+
+                                                <a href="{{invoice.fileAvoir}}" target="_blank" class="btn btn-sm btn-primary"
+                                                   title="facture">
+                                                    <i class="fa fa-file"></i>
+                                                </a>
+
                                             {% else %}
                                                 -
                                                 {% endif %}

@@ -135,4 +135,25 @@
         </div>
     </li>
 
+    <li class="{% if app.request.attributes.get('_route') in ['index_avoir', 'add_avoir', 'edit_avoir'] %} selected {% endif %} has-sub-menu">
+        <a href="#">
+            <div class="icon-w">
+                <div class="icon-list {% if app.request.attributes.get('_route') in ['index_avoir', 'add_avoir', 'edit_avoir'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
+
+            </div>
+            <span>Retour & avoirs</span></a>
+        <div class="sub-menu-w">
+
+            <div class="sub-menu-i">
+                <ul class="sub-menu">
+
+                    <li>
+                        <a href="{{ path('index_avoir') }}"
+                           style="{% if app.request.attributes.get('_route') in ['index_avoir', 'add_avoir', 'edit_avoir'] %} color: #0a7cf8 ; font-weight: bold{% endif %}">Liste des avoirs</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </li>
+
 </ul>
