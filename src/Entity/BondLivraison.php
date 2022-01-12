@@ -6,6 +6,7 @@ use App\Repository\BondLivraisonRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 
 /**
  * @ORM\Entity(repositoryClass=BondLivraisonRepository::class)
@@ -121,10 +122,16 @@ class BondLivraison
      */
     private $articlesVendues;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $remise;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
         $this->status = 0;
+        $this->remise = 0;
         $this->existDevi = false ;
         $this->bonlivraisonArticles = new ArrayCollection();
         $this->invoices = new ArrayCollection();
@@ -434,6 +441,18 @@ class BondLivraison
                 $articlesVendue->setBl(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRemise(): ?float
+    {
+        return $this->remise;
+    }
+
+    public function setRemise(float $remise): self
+    {
+        $this->remise = $remise;
 
         return $this;
     }

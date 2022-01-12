@@ -137,14 +137,7 @@ class BondLivraisonController extends AbstractController
         $tva = $_ENV['TVA_ARTICLE_PERCENT'];
         $tva_percent = $_ENV['TVA_ARTICLE'];
         $year = date('Y');
-        $lastBl = $this->bondLivraisonRepository->getLastBlWithCurrentYear($year);
-        if ($lastBl) {
-            $lastId = 000 + $lastBl->getId() + 1;
-            $numero_bl = '000' . $lastId;
-        } else {
-            $numero_bl = '0001';
-        }     //get last bl
-        $year = date('Y');
+
         $lastBl = $this->bondLivraisonRepository->getLastBlWithCurrentYear($year);
         if ($lastBl) {
             $lastId = 000 + $lastBl->getId() + 1;
@@ -155,14 +148,17 @@ class BondLivraisonController extends AbstractController
         $totalHt = 0;
         $totalRemise = 0;
         $totalttcGlobal = 0;
+        $totalRemise = 0;
 
         if ($request->isMethod('POST')) {
             //gt type payement and id articles and qte of articles
             $id_articles = $request->get('article');
             $qte_article = $request->get('qte');
+            $remise_article = $request->get('remise');
             $id_customer = $request->get('customers');
             $type_payement = $request->get('typePayement');
             $customer = $this->clientRepository->find($id_customer);
+           // dd(($remise_article));
             //save new Bl
             $bl = new BondLivraison();
             $bl->setCustomer($customer);
@@ -194,6 +190,7 @@ class BondLivraisonController extends AbstractController
                 $article_bl->setPuhtnet($articleExiste[0]['puVenteHT']);
                 $article_bl->setRemise($articleExiste[0]['article']['remise']);
                 $article_bl->setTaxe($articleExiste[0]['tva']);
+                $article_bl->setRemise($remise_article[$key]);
                 $article_bl->setTotalht((float)(($totalHtaricle)));
                 $article_bl->setPuttc((float)(($puttcArticle)));
                 $article_bl->setTotalttc((float)(($totalttcArticle)));
@@ -217,11 +214,19 @@ class BondLivraisonController extends AbstractController
             }
             $totalttcGlobal = $totalttcGlobal + (float)$totalHt;
 
+            if ($remise_article) {
+                $bl->setRemise((float)array_sum($remise_article));
+                    $tht= (float)((float) $totalHt - (((float)$totalHt * (int) array_sum($remise_article)) / 100)) ;
+                $bl->setTotalHT($tht);
 
-            $bl->setTotalHT((float)(($totalHt)));
+            }else{
+                $tht =(float)(($totalHt));
+                $bl->setTotalHT($tht);
+
+            }
             $bl->setTotalRemise((float)(($totalRemise)));
             $bl->setTotalTVA($_ENV['TVA_ARTICLE_PERCENT'] / 100);
-            $bl->setTotalTTC((float)(($totalHt + 0.19)));
+            $bl->setTotalTTC((float)(($tht + 0.19)));
             $this->em->persist($bl);
             $this->em->flush();
             //updatestock after save new article
@@ -269,6 +274,8 @@ class BondLivraisonController extends AbstractController
                 $typepayement = $request->get('typePayement');
                 $articles_selected = $request->get('article');
                 $qte_articles = $request->get('qte');
+                $remise_article = $request->get('remise');
+
                 $customer_id = $request->get('customers');
                 $customer = $this->clientRepository->find($customer_id);
                 //chek if exist invoice
@@ -330,6 +337,7 @@ class BondLivraisonController extends AbstractController
                         $articleBL->setArticle($this->articleRepository->find($value));
 
                         $articleBL->setQte($qte_articles[$key]);
+                        $articleBL->setRemise($remise_article[$key]);
                         $articleBL->setPuht($prixArticle[0]['puVenteHT']);
                         $articleBL->setPuhtnet($prixArticle[0]['puVenteHT']);
                         $articleBL->setRemise($prixArticle[0]['article']['remise']);
@@ -364,11 +372,19 @@ class BondLivraisonController extends AbstractController
 
                 }
                 $totalttcGlobal = $totalttcGlobal + (float)$totalHt;
+                if ($remise_article) {
+                    $id->setRemise((float)array_sum($remise_article));
+                    $tht= (float)((float) $totalHt - (((float)$totalHt * (int) array_sum($remise_article)) / 100)) ;
+                    $id->setTotalHT($tht);
 
-                $id->setTotalHT((float)(($totalHt)));
+                }else{
+                    $tht =(float)(($totalHt));
+                    $id->setTotalHT($tht);
+
+                }
                 $id->setTotalRemise((float)(($totalRemise)));
                 $id->setTotalTVA($_ENV['TVA_ARTICLE_PERCENT'] / 100);
-                $id->setTotalTTC((float)(($totalHt + 0.19)));
+                $id->setTotalTTC((float)(($tht + 0.19)));
                 $id->setStatus(0);
                 $this->em->persist($id);
                 $this->em->flush();
@@ -587,7 +603,7 @@ class BondLivraisonController extends AbstractController
         $date = new \DateTime();
 
         $mypath = $uploadDir . 'bl/customer_' . $codeClient;
-        $newFilename = 'BL_Num_' . $numBl . '_' . $yearBl.'_'.$date->getTimestamp().'.pdf';
+        $newFilename = 'BL_Num_' . $numBl . '_' . $yearBl . '_' . $date->getTimestamp() . '.pdf';
         $pdfFilepath = $uploadDir . 'bl/customer_' . $codeClient . '/' . $newFilename;
         if (!is_dir($mypath)) {
             mkdir($mypath, 0777, TRUE);
@@ -688,6 +704,7 @@ class BondLivraisonController extends AbstractController
             $invoice = new Invoice();
             $invoice->setBonLivraison($bl);
             $invoice->setYear($year);
+            $invoice->setRemise($bl->getRemise());
             $invoice->setStatus(1);
             $invoice->setNumero($numero_invoice);
             $invoice->setTotalTTC((float)(($totalInvoice)));
@@ -765,7 +782,6 @@ class BondLivraisonController extends AbstractController
         $bl = $this->bondLivraisonRepository->find($id);
 
         if ($bl) {
-
 
 
             foreach ($bl->getBonlivraisonArticles() as $key => $value) {

@@ -6819,7 +6819,9 @@
                                             <tr>
                                                 <th class="per25 text-center">Désignation</th>
                                                 <th class="per25 text-center">Quantité</th>
+                                                {%  if a['remise'] != 0 %}
                                                 <th class="per25 text-center">Remise</th>
+                                                {% endif %}
                                                 <th class="per25 text-center">Prix Unitaire</th>
                                                 <th class="per25 text-center">Total HT</th>
 
@@ -6830,7 +6832,9 @@
                                                 <tr>
                                                     <td>{{ a['article']['description'] }}</td>
                                                     <td class="text-center">{{ a['qte'] }}</td>
+                                                    {%  if a['remise'] != 0 %}
                                                     <td class="qty">{{ a['remise'] }}</td>
+                                                    {% endif %}
                                                     <td class="text-center">{{ a['puttc']|number_format(3) }}</td>
                                                     <td class="text-center">{{ a['totalht']|number_format(3) }}</td>
                                                 </tr>
@@ -6846,10 +6850,12 @@
                                                 <th colspan="4" class="text-right">TVA:</th>
                                                 <th class="text-center"> {{ bl['totalTVA']|number_format(2) }}</th>
                                             </tr>
+                                            {%  if  bl['remise'] != 0 %}
                                             <tr>
                                                 <th colspan="4" class="text-right">Remise:</th>
-                                                <th class="text-center">   {{ bl['totalRemise']|number_format(3) }}</th>
+                                                <th class="text-center">   {{ bl['remise'] }}</th>
                                             </tr>
+                                            {% endif %}
                                             <tr>
                                                 <th colspan="4" class="text-right">Type paiement:</th>
                                                 <th class="text-center">          {% if bl['typePayement'] == 1 %}

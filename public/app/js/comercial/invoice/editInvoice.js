@@ -65,7 +65,7 @@ function addLingeArticleBlEdit() {
                                                 <input  disabled class="form-control stock stock_${index}">
                                                 </td>
                                                 <td>
-                                                    <input type="text" value="" name="remise" data-index = "${index}"  class="form-control remise remise_${index}" readonly>
+                                                    <input type="text" value="" name="remise[]" data-index = "${index}"  class="form-control remise remise_${index}" >
 
                                                 </td>
                                                 <td>
@@ -108,8 +108,16 @@ function addLingeArticleBlEdit() {
                             $('.total_ht_global').text((totalHtGlobal).toFixed(3))
                         })
 
+                        sommeTotalRem();
+                        var remises = parseInt($('.remise_tot').text());
+                        if (remises !=  0) {
+                            NewTotaolHt = parseFloat(totalHtGlobal) - ((parseFloat(totalHtGlobal * remises) / 100)) ;
+                            $('.total_ht_global').text(NewTotaolHt);
+                        }
+
                         //totalttcglobal
-                        totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19 +0.600;
+
+                        totalTTCGlobal = parseFloat(NewTotaolHt) + 0.19+0.600;
                         $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
 
 
@@ -118,6 +126,8 @@ function addLingeArticleBlEdit() {
                     selectArticleBl2(index);
 
                     changeQteArtBl2();
+                    changeRemArtBl();
+
 
 
                 }
@@ -131,6 +141,43 @@ function addLingeArticleBlEdit() {
     })
 
 }
+function changeRemArtBl() {
+    $('.remise').blur("input", function (e) {
+        var index = $(this).data('index');
+
+
+
+        var totalHtGlobal = 0;
+        var totalTTCGlobal = 0;
+
+        //total ht global
+        $('.totalht').each(function () {
+            totalHtGlobal = totalHtGlobal + parseFloat($('.totalht').val());
+            $('.total_ht_global').text((totalHtGlobal).toFixed(3))
+        })
+        sommeTotalRem();
+
+        var remises = parseInt($('.remise_tot').text());
+        if (remises !=  0) {
+            NewTotaolHt = parseFloat(totalHtGlobal) - ((parseFloat(totalHtGlobal * remises) / 100)) ;
+            $('.total_ht_global').text(NewTotaolHt);
+        }
+
+        //totalttcglobal
+        totalTTCGlobal = parseFloat(NewTotaolHt) + 0.19+0.600;
+        $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
+
+    })
+}
+function sommeTotalRem() {
+    var totRem = 0 ;
+
+    $('.remise').each(function () {
+        totRem = totRem + (parseFloat($(this).val()));
+    })
+    $('.remise_tot').text(totRem);
+
+}
 
 function changeQteArtBlInitial() {
     $('.qte').blur("input", function (e) {
@@ -140,6 +187,8 @@ function changeQteArtBlInitial() {
         var totalHt = 0;
         var totalHtGlobal = 0;
         var totalTTCGlobal = 0;
+        $('.remise_'+index).val(0);
+
 
         if ($(this).val() == '' ) {
             $('.stock_'+index).val(parseInt($('.stock_'+index).val()) + (parseInt($('.oldQteArt_'+index).val())))
@@ -172,7 +221,8 @@ function changeQteArtBlInitial() {
 
     })
 }
-
+var TOTREM= 0 ;
+var NewTotaolHt= 0 ;
 function selectArticleBlEditInitial() {
     $('.selectArticle').change(function () {
         error = false;
@@ -200,8 +250,16 @@ function selectArticleBlEditInitial() {
                 $('.total_ht_global').text((totalHtGlobal).toFixed(3))
             })
 
+            sommeTotalRem();
+
+            var remises = parseInt($('.remise_tot').text());
+            if (remises !=  0) {
+                NewTotaolHt = parseFloat(totalHtGlobal) - ((parseFloat(totalHtGlobal * remises) / 100)) ;
+                $('.total_ht_global').text(NewTotaolHt);
+            }
+
             //totalttcglobal
-            totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19 +0.600;
+            totalTTCGlobal = parseFloat(NewTotaolHt) + 0.19+0.600;
             $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
             return false;
         }
@@ -305,8 +363,16 @@ function removeArticleInitial() {
                 $('.total_ht_global').text((totalHtGlobal).toFixed(3))
             })
 
+            sommeTotalRem();
+
+            var remises = parseInt($('.remise_tot').text());
+            if (remises !=  0) {
+                NewTotaolHt = parseFloat(totalHtGlobal) - ((parseFloat(totalHtGlobal * remises) / 100)) ;
+                $('.total_ht_global').text(NewTotaolHt);
+            }
+
             //totalttcglobal
-            totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19 +0.600;
+            totalTTCGlobal = parseFloat(NewTotaolHt) + 0.19+0.600;
             $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
 
             articleToDelete.push(parseInt($(this).data('old_article')));
@@ -414,6 +480,8 @@ function changeQteArtBl2() {
         var totalHt = 0;
         var totalHtGlobal = 0;
         var totalTTCGlobal = 0;
+        $('.remise_'+index).val(0);
+
 
         if (($(this).val() > ($('.stock_' + index).val()))) {
             toastr.error('La quatité est depassé le stock');
@@ -468,8 +536,16 @@ function selectArticleBl2(index) {
                 $('.total_ht_global').text((totalHtGlobal).toFixed(3))
             })
 
+            sommeTotalRem();
+            var remises = parseInt($('.remise_tot').text());
+            if (remises !=  0) {
+                NewTotaolHt = parseFloat(totalHtGlobal) - ((parseFloat(totalHtGlobal * remises) / 100)) ;
+                $('.total_ht_global').text(NewTotaolHt);
+            }
+
             //totalttcglobal
-            totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19 +0.600;
+
+            totalTTCGlobal = parseFloat(NewTotaolHt) + 0.19+0.600;
             $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
             return false;
         }

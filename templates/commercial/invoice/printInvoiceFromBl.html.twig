@@ -6819,7 +6819,10 @@
                                             <tr>
                                                 <th class="per25 text-center">Désignation</th>
                                                 <th class="per25 text-center">Quantité</th>
+                                                {%  if invoice['bonLivraison']['remise'] != 0 %}
+
                                                 <th class="per25 text-center">Remise</th>
+                                                {% endif %}
                                                 <th class="per25 text-center">Prix Unitaire</th>
                                                 <th class="per25 text-center">Total HT</th>
                                                 <th class="per25 text-center">TVA</th>
@@ -6831,7 +6834,11 @@
                                                 <tr>
                                                     <td>{{ a['article']['description'] }}</td>
                                                     <td class="text-center">{{ a['qte'] }}</td>
+                                                    {%  if a['remise'] != 0 %}
                                                     <td class="qty">{{ a['remise'] }}</td>
+
+                                                    {% endif %}
+
                                                     <td class="text-center">{{ a['puttc']|number_format(3) }}</td>
                                                     <td class="text-center">{{ a['totalht']|number_format(3) }}</td>
                                                     <td class="text-center">  19 %  </td>
@@ -6850,10 +6857,12 @@
                                                 <th colspan="4" class="text-right">TVA:</th>
                                                 <th class="text-center"> {{ invoice['bonLivraison']['totalTVA']|number_format(2) }}</th>
                                             </tr>
+                                            {%  if invoice['bonLivraison']['remise'] != 0 %}
                                             <tr>
                                                 <th colspan="4" class="text-right">Remise:</th>
-                                                <th class="text-center">   {{ invoice['bonLivraison']['totalRemise']|number_format(3) }}</th>
+                                                <th class="text-center">   {{ invoice['bonLivraison']['remise'] }}</th>
                                             </tr>
+                                            {% endif %}
                                             <tr>
                                                 <th colspan="4" class="text-right">Timbre:</th>
                                                 <th class="text-center">   {{ invoice['timbre']|number_format(3) }}</th>

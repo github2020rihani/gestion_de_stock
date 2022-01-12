@@ -116,7 +116,7 @@
 
                                                 </td>
                                                 <td>
-                                                    <input type="text" value="{{ art.remise }}" name="remise" data-index = "{{loop.index}}"  class="form-control remise remise_{{loop.index}}" readonly>
+                                                    <input type="text" value="{{ art.remise }}" name="remise[]" data-index = "{{loop.index}}"  class="form-control remise remise_{{loop.index}}" >
 
                                                 </td>
                                                 <td>
@@ -164,7 +164,7 @@
                                 <h4 class="card-title">Total HT</h4>
                                 <p class="card-text total_ht_global">{{ invoice.totalHt|number_format(3)}}</p>
                                 <h4 class="card-title">Remise</h4>
-                                <p class="card-text remise">{{ invoice.totalRemise|number_format(3)}}</p>
+                                <p class="card-text remise_tot">{{ invoice.remise}}</p>
                                 <h4 class="card-title">TVA (%)</h4>
                                 <p class="card-text total_tva">{{ tva }}</p>
                                   <h4 class="card-title">Timbre</h4>

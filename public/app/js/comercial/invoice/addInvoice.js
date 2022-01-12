@@ -54,7 +54,7 @@ function addLingeArticleBl() {
                                                 <input  disabled class="form-control stock stock_${index}">
                                                 </td>
                                                 <td>
-                                                    <input type="text" value="" name="remise" data-index = "${index}"  class="form-control remise remise_${index}" readonly>
+                                                    <input type="text" value="" name="remise[]" data-index = "${index}"  class="form-control remise remise_${index}" >
                                                     <input type="hidden" name="totalht[]" value="0.000" data-index = "${index}" class="form-control totalht totalht_${index}"  readonly>
 
                                                 </td>
@@ -83,21 +83,31 @@ function addLingeArticleBl() {
                         countArticle--;
                         var totalHtGlobal = 0;
                         var totalTTCGlobal = 0;
-
+                        $('.total_ht_global').text(0.000);
 
                         const indexArticle = selectAricle.indexOf(parseInt($(this).data('index')));
                         if (indexArticle > -1) {
                             selectAricle.splice(indexArticle, 1);
                         }
                         $(this).parent().parent().remove();
+
+
                         //total ht global
                         $('.totalht').each(function () {
                             totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
                             $('.total_ht_global').text((totalHtGlobal).toFixed(3))
                         })
 
+                        sommeTotalRem();
+                        var remises = parseInt($('.remise_tot').text());
+                        if (remises !=  0) {
+                            NewTotaolHt = parseFloat(totalHtGlobal) - ((parseFloat(totalHtGlobal * remises) / 100)) ;
+                            $('.total_ht_global').text(NewTotaolHt);
+                        }
+
                         //totalttcglobal
-                        totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19+0.600;
+
+                        totalTTCGlobal = parseFloat(NewTotaolHt) + 0.19+0.600;
                         $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
 
 
@@ -106,6 +116,8 @@ function addLingeArticleBl() {
                     selectArticleBl(index);
 
                     changeQteArtBl();
+                    changeRemArtBl();
+
 
 
                 }
@@ -128,6 +140,8 @@ function changeQteArtBl() {
         var totalHt = 0;
         var totalHtGlobal = 0;
         var totalTTCGlobal = 0;
+        $('.remise_'+index).val(0);
+
 
         if (parseInt(($(this).val())) > parseInt(($('.stock_' + index).val()))) {
             toastr.error('La quatité est depassé le stock');
@@ -155,7 +169,8 @@ function changeQteArtBl() {
 
     })
 }
-
+var TOTREM= 0 ;
+var NewTotaolHt= 0 ;
 function selectArticleBl(index) {
     $('.selectArticle_' + index).change(function () {
 
@@ -173,6 +188,7 @@ function selectArticleBl(index) {
         if (parseInt(articleExiste) >= 2){
             toastr.error('cet article a été choisir , veuillez choisir un autre');
             $(this).parent().parent().remove();
+
             var totalHtGlobal = 0;
             var totalTTCGlobal = 0;
 
@@ -181,10 +197,18 @@ function selectArticleBl(index) {
                 totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
                 $('.total_ht_global').text((totalHtGlobal).toFixed(3))
             })
+            sommeTotalRem();
+
+            var remises = parseInt($('.remise_tot').text());
+            if (remises !=  0) {
+                NewTotaolHt = parseFloat(totalHtGlobal) - ((parseFloat(totalHtGlobal * remises) / 100)) ;
+                $('.total_ht_global').text(NewTotaolHt);
+            }
 
             //totalttcglobal
-            totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19+0.600;
+            totalTTCGlobal = parseFloat(NewTotaolHt) + 0.19+0.600;
             $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
+
             return false;
         }
 
@@ -215,10 +239,18 @@ function selectArticleBl(index) {
                         totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
                         $('.total_ht_global').text((totalHtGlobal).toFixed(3))
                     })
-
+                    var remises = parseInt($('.remise_tot').text());
+                    if (remises !=  0) {
+                        NewTotaolHt = parseFloat(totalHtGlobal) - ((parseFloat(totalHtGlobal * remises) / 100)) ;
+                        $('.total_ht_global').text(NewTotaolHt);
+                    }
                     //totalttcglobal
-                    totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19+0.600;
+                    // totalTTCGlobal = parseFloat(totalHtGlobal) + 0.19+0.600;
+                    // $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
+
+                    totalTTCGlobal = parseFloat(NewTotaolHt) + 0.19+0.600;
                     $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
+
                 }
 
             },
@@ -231,7 +263,44 @@ function selectArticleBl(index) {
 
 
 }
+function changeRemArtBl() {
+    $('.remise').blur("input", function (e) {
+        var index = $(this).data('index');
 
+
+
+        var totalHtGlobal = 0;
+        var totalTTCGlobal = 0;
+
+        //total ht global
+        $('.totalht').each(function () {
+            totalHtGlobal = totalHtGlobal + parseFloat($('.totalht').val());
+            $('.total_ht_global').text((totalHtGlobal).toFixed(3))
+        })
+        sommeTotalRem();
+
+        var remises = parseInt($('.remise_tot').text());
+        if (remises !=  0) {
+            NewTotaolHt = parseFloat(totalHtGlobal) - ((parseFloat(totalHtGlobal * remises) / 100)) ;
+            $('.total_ht_global').text(NewTotaolHt);
+        }
+
+        //totalttcglobal
+        totalTTCGlobal = parseFloat(NewTotaolHt) + 0.19+0.600;
+        $('.total_ttc_global').text(parseFloat(totalTTCGlobal).toFixed(3));
+
+    })
+}
+
+function sommeTotalRem() {
+    var totRem = 0 ;
+
+    $('.remise').each(function () {
+        totRem = totRem + (parseFloat($(this).val()));
+    })
+    $('.remise_tot').text(totRem);
+
+}
 function saveInvoice() {
     $('.addBL').click(function () {
 

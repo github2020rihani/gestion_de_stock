@@ -132,9 +132,14 @@ class Invoice
     private $avoir;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $fileAvoir;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $remise;
 
     public function __construct()
     {
@@ -516,6 +521,18 @@ class Invoice
     public function setFileAvoir(string $fileAvoir): self
     {
         $this->fileAvoir = $fileAvoir;
+
+        return $this;
+    }
+
+    public function getRemise(): ?float
+    {
+        return $this->remise;
+    }
+
+    public function setRemise(?float $remise): self
+    {
+        $this->remise = $remise;
 
         return $this;
     }

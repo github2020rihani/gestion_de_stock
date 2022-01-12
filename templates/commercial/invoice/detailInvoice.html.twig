@@ -44,7 +44,9 @@
                                                 <th scope="col">Réference</th>
                                                 <th scope="col">PU HT</th>
                                                 <th scope="col">Qte</th>
+                                                {%  if invoice.remise != 0 %}
                                                 <th scope="col">REMISE (%)</th>
+                                                {% endif %}
                                                 <th scope="col">PU HT Net</th>
                                                 <th scope="col">TAXE (%)</th>
                                                 <th scope="col">PU TTC</th>
@@ -58,7 +60,9 @@
                                                     <td>{{ a.article.ref }}</td>
                                                     <td>{{ a.puht|number_format(3) }}</td>
                                                     <td>{{ a.qte }}</td>
+                                                    {%  if a.remise != 0 %}
                                                     <td>{{ a.remise }}</td>
+                                                    {% endif %}
                                                     <td>{{ a.puhtnet|number_format(3) }}</td>
                                                     <td>{{ a.taxe }}</td>
                                                     <td>{{ a.puttc|number_format(3) }}</td>
@@ -102,14 +106,16 @@
                                                     {{ invoice.totalTva|number_format(2) }}
                                                 </div>
                                             </div>
+                                            {%  if invoice.remise != 0 %}
                                             <div class="order-summary-row">
                                                 <div class="order-summary-label">
                                                     <span>Remise</span>
                                                 </div>
                                                 <div class="order-summary-value">
-                                                    {{ invoice.totalRemise|number_format(3) }}
+                                                    {{ invoice.remise }}
                                                 </div>
                                             </div>
+                                            {% endif %}
                                             <div class="order-summary-row">
                                                 <div class="order-summary-label">
                                                     <span>Timbre</span>

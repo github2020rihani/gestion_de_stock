@@ -68,6 +68,11 @@ class BonlivraisonArticle
      */
     private $totalttc;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $rem;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -189,6 +194,18 @@ class BonlivraisonArticle
     public function setTotalttc(?float $totalttc): self
     {
         $this->totalttc = $totalttc;
+
+        return $this;
+    }
+
+    public function getRem(): ?bool
+    {
+        return $this->rem;
+    }
+
+    public function setRem(bool $rem): self
+    {
+        $this->rem = $rem;
 
         return $this;
     }

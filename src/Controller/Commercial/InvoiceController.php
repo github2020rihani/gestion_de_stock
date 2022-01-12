@@ -153,6 +153,8 @@ class InvoiceController extends AbstractController
                 //gt type payement and id articles and qte of articles
                 $id_articles = $request->get('article');
                 $qte_article = $request->get('qte');
+                $remise_article = $request->get('remise');
+
                 $id_customer = $request->get('customers');
                 $type_payement = $request->get('typePayement');
                 $customer = $this->clientRepository->find($id_customer);
@@ -189,6 +191,7 @@ class InvoiceController extends AbstractController
                     $articleInvoice->setTaxe($articleExiste[0]['tva']);
                     $articleInvoice->setTotalht((float)(($totalHtaricle)));
                     $articleInvoice->setPuttc((float)(($puttcArticle)));
+                    $articleInvoice->setRemise($remise_article[$key]);
                     $articleInvoice->setTotalttc((float)(($totalttcArticle)));
                     $this->em->persist($articleInvoice);
                     $this->em->flush();
@@ -210,11 +213,19 @@ class InvoiceController extends AbstractController
 
                 }
                 $totalttcGlobal = $totalttcGlobal + (float)$totalHt;
+                if ($remise_article) {
+                    $invoice->setRemise((float)array_sum($remise_article));
+                    $tht = (float)((float) $totalHt - (((float)$totalHt * (int) array_sum($remise_article)) / 100));
+                    $invoice->setTotalHT($tht);
+                }else{
+                    $tht = (float)(($totalHt));
+                    $invoice->setTotalHT($tht);
 
-                $invoice->setTotalHT((float)(($totalHt)));
+                }
+
                 $invoice->setTotalRemise((float)(($totalRemise)));
                 $invoice->setTotalTva($_ENV['TVA_ARTICLE_PERCENT'] / 100);
-                $invoice->setTotalTTC((float)(($totalHt + 0.19 + 0.600)));
+                $invoice->setTotalTTC((float)(($tht + 0.19 + 0.600)));
                 $this->em->persist($invoice);
                 $this->em->flush();
 
@@ -259,6 +270,7 @@ class InvoiceController extends AbstractController
                     $typepayement = $request->get('typePayement');
                     $articles_selected = $request->get('article');
                     $qte_articles = $request->get('qte');
+                    $remise_article = $request->get('remise');
                     $customer_id = $request->get('customers');
                     $customer = $this->clientRepository->find($customer_id);
 
@@ -315,6 +327,7 @@ class InvoiceController extends AbstractController
                             $article_invoice->setPuhtnet($prixArticle[0]['puVenteHT']);
                             $article_invoice->setRemise($prixArticle[0]['article']['remise']);
                             $article_invoice->setTaxe($prixArticle[0]['tva']);
+                            $article_invoice->setRemise($remise_article[$key]);
                             $article_invoice->setTotalht((float)(($totalHtaricle)));
                             $article_invoice->setPuttc((float)(($puttcArticle)));
                             $article_invoice->setTotalttc((float)(($totalttcArticle)));
@@ -346,11 +359,19 @@ class InvoiceController extends AbstractController
 
                     }
                     $totalttcGlobal = $totalttcGlobal + (float)$totalHt;
+                    if ($remise_article) {
+                        $invoice->setRemise((float)array_sum($remise_article));
+                        $tht= (float)((float) $totalHt - (((float)$totalHt * (int) array_sum($remise_article)) / 100)) ;
+                        $invoice->setTotalHT($tht);
 
-                    $invoice->setTotalHT((float)(($totalHt)));
+                    }else{
+                        $tht =(float)(($totalHt));
+                        $invoice->setTotalHT($tht);
+
+                    }
                     $invoice->setTotalRemise((float)(($totalRemise)));
                     $invoice->setTotalTva($_ENV['TVA_ARTICLE_PERCENT'] / 100);
-                    $invoice->setTotalTTC((float)(($totalHt + 0.19 + 0.600)));
+                    $invoice->setTotalTTC((float)(($tht + 0.19 + 0.600)));
                     $invoice->setStatus(0);
                     $this->em->persist($invoice);
                     $this->em->flush();
