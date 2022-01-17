@@ -58,7 +58,7 @@ class ArticleVendue extends AbstractController
                 $data[$key]['sometotalttc'] = (float)$someTotalttc;
             }else{
                 $data[$key]['client'] = $art->getInvoice()->getCustomer()->getNom().' '.$art->getInvoice()->getCustomer()->getPrenom();
-                foreach ( $art->getBl()->getInvoiceArticles() as $index=> $a) {
+                foreach ( $art->getInvoice()->getInvoiceArticles() as $index=> $a) {
                     $data[$key]['articles'][$index]['name'] = $a->getArticle()->getRef();
                     $data[$key]['articles'][$index]['puht'] = $a->getPuht();
                     $data[$key]['articles'][$index]['puhtnet'] = $a->getPuhtnet();

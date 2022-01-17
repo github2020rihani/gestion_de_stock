@@ -22,7 +22,7 @@
     <li class="{% if app.request.attributes.get('_route') in ['perso_index_devis' , 'perso_index_invoice', 'perso_detail_devis',
         'perso_add_devis', 'perso_edit_devis', 'perso_index_bl', 'perso_transfert_devi', 'perso_detail_invoice',
         'perso_add_bl',  'perso_detail_bl', 'perso_edit_bl'] %} selected {% endif %} has-sub-menu">
-        <a href="{{ path('achat_index_achat') }}">
+        <a href="{{ path('perso_index_devis') }}">
             <div class="icon-w">
                 <div class="icon-basket"></div>
             </div>
@@ -136,7 +136,7 @@
     </li>
 
     <li class="{% if app.request.attributes.get('_route') in ['index_avoir', 'add_avoir', 'edit_avoir'] %} selected {% endif %} has-sub-menu">
-        <a href="#">
+        <a href="{{ path('index_avoir') }}">
             <div class="icon-w">
                 <div class="icon-list {% if app.request.attributes.get('_route') in ['index_avoir', 'add_avoir', 'edit_avoir'] %}  color_fa_menu onglet_active color_fa_menu {% endif %}"></div>
 

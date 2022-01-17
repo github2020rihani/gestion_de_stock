@@ -72,7 +72,7 @@ class PayementController extends AbstractController
             //save payement
             self::savePayement($dataInvoice[0], $request, $date);
             //generate recus payement
-            self::generateRecupayement();
+          //  self::generateRecupayement();
 
 
         }
@@ -97,7 +97,7 @@ class PayementController extends AbstractController
             self::savePayement2($payementObject[0], $invoiceObject[0], $request);
 
             //generate recus payement
-            self::generateRecupayement();
+          //  self::generateRecupayement();
 
 
         }

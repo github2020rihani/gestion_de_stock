@@ -26,7 +26,7 @@ class ClientRepository extends ServiceEntityRepository
             ->orderBy('c.id', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleResult()
+            ->getOneOrNullResult()
             ;
     }
     // /**

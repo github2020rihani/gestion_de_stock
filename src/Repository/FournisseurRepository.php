@@ -34,7 +34,7 @@ class FournisseurRepository extends ServiceEntityRepository
             ->orderBy('f.id', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleResult()
+            ->getOneOrNullResult()
             ;
 
     }
