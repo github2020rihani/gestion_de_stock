@@ -91,14 +91,14 @@ function addLingeArticleBl() {
                             selectAricle.splice(indexArticle, 1);
                         }
                         $(this).parent().parent().remove();
-
-
+                        NewTotaolHt = 0;
                         var totalHtGlobal = 0;
                         var totalTTCGlobal = 0;
+
                         //total ht global
                         $('.totalht').each(function () {
                             totalHtGlobal = totalHtGlobal + parseFloat($(this).val());
-                            console.log(totalHtGlobal);
+                            $('.total_ht_global').text((totalHtGlobal).toFixed(3))
                         })
                         sommeTotalRem();
                         var remises = parseInt($('.remise_tot').text());
