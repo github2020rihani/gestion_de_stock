@@ -29,7 +29,7 @@ class ClientController extends AbstractController
         $form->handleRequest($request);
         $lastCustomer = $clientRepository->getLastCustomer();
         if ($lastCustomer) {
-            $numCustomer = $_ENV['PREFIX_CUSTOMER'] . $lastCustomer->getId() + 1;
+            $numCustomer = $_ENV['PREFIX_CUSTOMER'] . ((int)$lastCustomer->getId()) + 1;
 
         } else {
             $numCustomer = $_ENV['PREFIX_CUSTOMER'] . '1';

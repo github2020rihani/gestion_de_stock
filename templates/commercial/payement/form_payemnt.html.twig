@@ -148,17 +148,17 @@
             <div class="element-box">
                     <div class="steps-w">
                         <div class="step-triggers">
-                            <a class="step-trigger active" href="#stepContent1">Importer les Fichiers</a>
-                            <a class="step-trigger"   href="#stepContent2">Information</a>
-                            <a class="step-trigger" href="#stepContent3">Paiement</a>
-                            <a class="step-trigger" href="#stepContent4">Terminer</a>
+{#                            <a class="step-trigger active" href="#stepContent1">Importer les Fichiers</a>#}
+{#                            <a class="step-trigger"   href="#stepContent2">Information</a>#}
+                            <a class="step-trigger active" href="#stepContent3">Paiement</a>
+{#                            <a class="step-trigger" href="#stepContent4">Terminer</a>#}
                         </div>
                         <div class="step-contents">
                             <form action="{{ path('perso_paiement_invoice' , {id: invoice.id}) }}" method="post"  id="formPayement" enctype="multipart/form-data" >
-                                {{ include('commercial/payement/include/_etape1.html.twig') }}
-                                {{ include('commercial/payement/include/_etape2.html.twig') }}
+{#                                {{ include('commercial/payement/include/_etape1.html.twig') }}#}
+{#                                {{ include('commercial/payement/include/_etape2.html.twig') }}#}
                                 {{ include('commercial/payement/include/_etape3.html.twig') }}
-                                {{ include('commercial/payement/include/_etape4.html.twig') }}
+{#                                {{ include('commercial/payement/include/_etape4.html.twig') }}#}
                             </form>
 
                         </div>

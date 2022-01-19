@@ -248,7 +248,7 @@ class BondLivraisonController extends AbstractController
             self::generateBl($bl->getId(), $request, $bl);
 
             $this->addFlash('success', 'Ajout effectué avec succés');
-            return $this->redirectToRoute('perso_index_bl');
+            return $this->redirectToRoute('perso_detail_bl', array('id' =>$bl->getId() ));
 
 
         }

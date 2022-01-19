@@ -34,8 +34,9 @@ class AchatRepository extends ServiceEntityRepository
             ->where('a.year = :year')
             ->setParameter('year', $year)
             ->setMaxResults(1)
+            ->orderBy('a.id', 'desc')
             ->getQuery()
-            ->getResult()
+            ->getOneOrNullResult()
             ;
     }
     public function getDetailAchat($id)

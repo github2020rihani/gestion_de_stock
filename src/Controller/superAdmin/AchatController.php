@@ -62,7 +62,6 @@ class AchatController extends AbstractController
         $articles = $this->articleRepository->findAll();
 
         $lastAchat = $this->achatRepository->getLastAchatWithCurrentYear($year);
-
         if ($lastAchat) {
             $lastId = 000 + $lastAchat->getId() + 1;
             $numAchat = '000' . $lastId;

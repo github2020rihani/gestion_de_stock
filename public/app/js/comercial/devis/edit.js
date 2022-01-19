@@ -309,12 +309,18 @@ function removeArticle() {
 
 
         //update total ttc
-        $('.total').each(function () {
-            totalTTC = parseFloat($('.tottalTTC').val()) - parseFloat($('.totalArt_' + id_art).val());
-        })
-        $('.tottalTTC').val((totalTTC).toFixed(3))
+        // $('.total').each(function () {
+        //     totalTTC = parseFloat($('.tottalTTC').val()) - parseFloat($('.totalArt_' + id_art).val());
+        // })
+        // $('.tottalTTC').val((totalTTC).toFixed(3))
 
         $(this).parent().parent().remove();
+
+        $('.total').each(function () {
+            totalTTC =  totalTTC +parseFloat($(this).val());
+            $('.tottalTTC').val(totalTTC.toFixed(3));
+
+        })
 
     });
 }

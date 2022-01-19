@@ -21,6 +21,23 @@
         {% block content %}
             <div class="content-box">
                 <div class="row">
+                    <div class="col-md-12">
+                        <button class="  btn btn-md btn-icon btn-danger printInvoice pull-right right"
+                                data-toggle="tooltip"
+                                type="button"
+                                data-id_invoice = "{{ invoice.id }}"
+                                data-placement="top" title="" data-original-title="Imprimer"
+                                style="color: white"
+                                href=""
+                        >
+                            <i class="fa fa-print"> Imprimer</i>
+                        </button>
+
+                        <a href="{{ path('perso_index_invoice') }}" class="btn btn-primary btn-ms"><i class="fa fa-list"></i> Liste des factures</a>
+                    </div>
+                </div>
+
+                <div class="row">
                     <div class="col-sm-9 col-xxxl-9">
                         <div class="element-wrapper">
                             <h6 class="element-header">
@@ -211,5 +228,6 @@
         {% endblock %}
 
 {% block javascripts %}
+    <script src="{{ asset('app/js/comercial/invoice/index.js') }}"></script>
 
 {% endblock %}

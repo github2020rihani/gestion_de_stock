@@ -235,7 +235,7 @@ class InvoiceController extends AbstractController
 
 
                 $this->addFlash('success', 'Ajout effectué avec succés');
-                return $this->redirectToRoute('perso_index_invoice');
+                return $this->redirectToRoute('perso_detail_invoice', array('id' => $invoice->getId()));
 
 
             }

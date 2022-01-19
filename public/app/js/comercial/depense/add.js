@@ -63,7 +63,7 @@ function addLingeArticle() {
                                                                 class="fa fa-trash"></i></button>
                                                                 </th>
                                                                 
-                                                                <td width="15%"><input type="datetime-local" class="form-control date_dep" id="" name="date_dep[]"></td>
+                                                                <td width="15%"><input type="datetime-local" class="form-control date_dep"  readonly id="" name="date_dep[]"  ></td>
                                                                 <td width="10%"><input type="text" class="form-control total_ttc_dep" id="" name="total_ttc_dep[]"></td>
                                                                 <td width="30%">
                                                                   <select class="js-example-basic-single type_dep article" name="type_dep[]">
@@ -81,6 +81,8 @@ function addLingeArticle() {
 
 
         $('.js-example-basic-single').select2();
+        $(".date_dep").val(new Date().toJSON().slice(0,19));
+
         //remove ligne achat
         $(".delete_ligneArticle_" + index).click(function (event) {
             $(this).parent().parent().remove();

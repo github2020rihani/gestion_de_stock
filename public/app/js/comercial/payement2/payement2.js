@@ -8,8 +8,13 @@ $(document).ready(function () {
 
 function savePayement22() {
     $('.check-payer2').click(function () {
+        if ($('.num_cheque').length <=20){
+            toastr.error('numero cheque incorrect ');
+            return false;
+        }
         $('#formPayement2').submit();
-
+        $('.payer').empty();
+        $('.payer').append('    <h1 class="text-center" style="color: green">Paiement  a été effectué avec succès </h1>\n');
     })
 }
 

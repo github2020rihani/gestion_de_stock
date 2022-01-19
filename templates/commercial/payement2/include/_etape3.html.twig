@@ -1,74 +1,77 @@
-<div class="step-content" id="stepContent3">
-    <div class="form-group">
-{#        <h2 class="text-center">Type de paiement</h2>#}
-{#        <h6 class="text-center" style="font-size: 30px; color: green; text-align: center; font-weight: bold">#}
-{#            {% if payement['invoice']['existBl'] %}#}
-{#                {% if payement['invoice']['bonLivraison']['typePayement'] == 1 %}#}
-{#                    Escpece#}
-{#                {% elseif payement['invoice']['bonLivraison']['typePayement'] == 2 %}#}
-{#                    Carte#}
-{#                {% elseif payement['invoice']['bonLivraison']['typePayement'] == 3 %}#}
-{#                    Cheque#}
-{#                {% endif %}#}
-{#            {% else %}#}
-{#                {% if payement['invoice']['typePayement'] == 1 %}#}
-{#                    Escpece#}
-{#                {% elseif payement['invoice']['typePayement'] == 2 %}#}
-{#                    Carte#}
-{#                {% elseif payement['invoice']['typePayement'] == 3 %}#}
-{#                    Cheque#}
-{#                {% endif %}#}
+<div class="step-content active" id="stepContent3">
+    <div class="payer">
+        <div class="form-group">
+            {#        <h2 class="text-center">Type de paiement</h2>#}
+            {#        <h6 class="text-center" style="font-size: 30px; color: green; text-align: center; font-weight: bold">#}
+            {#            {% if payement['invoice']['existBl'] %}#}
+            {#                {% if payement['invoice']['bonLivraison']['typePayement'] == 1 %}#}
+            {#                    Escpece#}
+            {#                {% elseif payement['invoice']['bonLivraison']['typePayement'] == 2 %}#}
+            {#                    Carte#}
+            {#                {% elseif payement['invoice']['bonLivraison']['typePayement'] == 3 %}#}
+            {#                    Cheque#}
+            {#                {% endif %}#}
+            {#            {% else %}#}
+            {#                {% if payement['invoice']['typePayement'] == 1 %}#}
+            {#                    Escpece#}
+            {#                {% elseif payement['invoice']['typePayement'] == 2 %}#}
+            {#                    Carte#}
+            {#                {% elseif payement['invoice']['typePayement'] == 3 %}#}
+            {#                    Cheque#}
+            {#                {% endif %}#}
 
-{#            {% endif %}#}
-{#        </h6>#}
+            {#            {% endif %}#}
+            {#        </h6>#}
 
-{#        <hr>#}
+            {#        <hr>#}
 
-        <div class="row">
-            <div class="col-md-4">
-                <h6 class="text-center">
-                    <span class="text-center">Total TTC</span>
-                    <input width="50%" style="font-size: 30px; color: red; text-align: center; font-weight: bold; opacity: 0.6"
-                           class="form-control totalTTC" disabled  data-value={{ payement['invoice']['totalTTC'] }} value=" {{ payement['invoice']['totalTTC']|number_format(3) }}">
+            <div class="row">
+                <div class="col-md-4">
+                    <h6 class="text-center">
+                        <span class="text-center">Total TTC</span>
+                        <input width="50%" style="font-size: 30px; color: red; text-align: center; font-weight: bold; opacity: 0.6"
+                               class="form-control totalTTC" disabled  data-value={{ payement['invoice']['totalTTC'] }} value=" {{ payement['invoice']['totalTTC']|number_format(3) }}">
 
-                </h6>
+                    </h6>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="text-center">
+                        <span class="text-center">Montant payer</span>
+                        <input width="50%" style="font-size: 30px; color: red; text-align: center; font-weight: bold; opacity: 0.6"
+                               class="form-control montant_payer" disabled  data-value={{ payement['montant'] }} value=" {{ payement['montant']|number_format(3) }}">
+
+                    </h6>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="text-center">
+                        <span class="text-center">Montant reste</span>
+                        <input width="50%" style="font-size: 30px; color: red; text-align: center; font-weight: bold"
+                               class="form-control montant_reste_payer" disabled  data-value={{ payement['reste'] }} value=" {{ payement['reste']|number_format(3) }}">
+
+                    </h6>
+                </div>
+                <div class="col-md-4"></div>
             </div>
-            <div class="col-md-4">
-                <h6 class="text-center">
-                    <span class="text-center">Montant payer</span>
-                    <input width="50%" style="font-size: 30px; color: red; text-align: center; font-weight: bold; opacity: 0.6"
-                           class="form-control montant_payer" disabled  data-value={{ payement['montant'] }} value=" {{ payement['montant']|number_format(3) }}">
-
-                </h6>
-            </div>
-            <div class="col-md-4">
-                <h6 class="text-center">
-                    <span class="text-center">Montant reste</span>
-                    <input width="50%" style="font-size: 30px; color: red; text-align: center; font-weight: bold"
-                           class="form-control montant_reste_payer" disabled  data-value={{ payement['reste'] }} value=" {{ payement['reste']|number_format(3) }}">
-
-                </h6>
-            </div>
-            <div class="col-md-4"></div>
+            <fieldset>
+                <legend>Payer</legend>
+                {% if payement['invoice']['existBl'] %}
+                    {% if payement['invoice']['bonLivraison']['typePayement'] == 1 %}
+                        {{ include('commercial/payement2/include/_form_payer_espece.html.twig') }}
+                    {% elseif payement['invoice']['bonLivraison']['typePayement'] == 2 %}
+                        {{ include('commercial/payement2/include/_form_cheque.html.twig') }}
+                    {% endif %}
+                {% else %}
+                    {% if payement['invoice']['typePayement'] == 1 %}
+                        {{ include('commercial/payement2/include/_form_payer_espece.html.twig') }}
+                    {% elseif payement['invoice']['typePayement'] == 2 %}
+                        {{ include('commercial/payement2/include/_form_cheque.html.twig') }}
+                    {% endif %}
+                {% endif %}
+            </fieldset>
         </div>
-        <fieldset>
-            <legend>Payer</legend>
-            {% if payement['invoice']['existBl'] %}
-            {% if payement['invoice']['bonLivraison']['typePayement'] == 1 %}
-                {{ include('commercial/payement2/include/_form_payer_espece.html.twig') }}
-            {% elseif payement['invoice']['bonLivraison']['typePayement'] == 2 %}
-                {{ include('commercial/payement2/include/_form_cheque.html.twig') }}
-            {% endif %}
-            {% else %}
-            {% if payement['invoice']['typePayement'] == 1 %}
-                {{ include('commercial/payement2/include/_form_payer_espece.html.twig') }}
-            {% elseif payement['invoice']['typePayement'] == 2 %}
-                {{ include('commercial/payement2/include/_form_cheque.html.twig') }}
-            {% endif %}
-            {% endif %}
-        </fieldset>
+        <div class="form-buttons-w text-right">
+            <a class="btn btn-primary step-trigger-btn check-payer2" > Payer</a>
+        </div>
     </div>
-    <div class="form-buttons-w text-right">
-        <a class="btn btn-primary step-trigger-btn check-payer2" href="#stepContent4"> Suivant</a>
-    </div>
+
 </div>
