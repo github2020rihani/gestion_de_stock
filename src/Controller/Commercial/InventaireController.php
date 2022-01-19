@@ -66,7 +66,7 @@ class InventaireController extends AbstractController
 
     /**
      * @param Request $request
-     * @Route("/select/inventaire", name="get_inventaire", options={"expose" =true})
+     * @Route("/select/inventaire", name="perso_get_inventaire", options={"expose" =true})
      */
     public function getInventaire(Request $request, InventaireArticleRepository $inventaireArticleRepository,
                                   PaginatorInterface $paginator)
@@ -140,7 +140,7 @@ class InventaireController extends AbstractController
     }
 
     /**
-     * @Route("/excel/inventaire", name="ownload_excel_inventaire", options={"expose" =true})
+     * @Route("/excel/inventaire", name="perso_download_excel_inventaire", options={"expose" =true})
      */
     public function downloadFileExcel() {
         $uploadDir = $this->getParameter('uploads_directory');
