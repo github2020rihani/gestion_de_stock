@@ -12,6 +12,9 @@ $(document).ready(function () {
                 toastr.error('Veuillez choisir un client');
 
                 return true;
+            }else{
+                error = false;
+
             }
         })
 
@@ -160,7 +163,7 @@ var selectAricle = [];
 var countArticle = 0;
 var error = false;
 
-function selectArticle(index) {
+    function selectArticle(index) {
     $('.selectArticle_' + index).change(function () {
         error = false;
         var articleExiste = 0;

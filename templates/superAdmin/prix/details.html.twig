@@ -63,17 +63,17 @@
                                     <td>{{ p.article.ref }}</td>
                                     <td>{{ p.article.description }}</td>
                                     <td width="10%"><input type="text" class="form-control pachatnet pachatnet_{{ loop.index }}" id="puAchaHT_{{ p.id }}" data-index="{{ loop.index }}" disabled
-                                                           value="{{ p.puAchaHT|number_format(3) }}"></td>
+                                                           value="{{ p.puAchaHT|format_currency('TND') }}"></td>
                                     <td width="10%"><input type="text" class="form-control pachatttc_{{ loop.index }}" id="phAchatTTC_{{ p.id }}" disabled
-                                                           value="{{ p.phAchatTTC|number_format(3) }}"></td>
+                                                           value="{{ p.phAchatTTC|format_currency('TND') }}"></td>
                                     <td width="10%"><input type="text" class="form-control pventeht_{{ loop.index }}" id="puVenteHT_{{ p.id }}" disabled
-                                                           value="{{ p.puVenteHT|number_format(3) }}"></td>
+                                                           value="{{ p.puVenteHT|format_currency('TND') }}"></td>
                                     <td width="10%"><input type="text" class="form-control pventettc pventettc_{{ loop.index }}" id="puVenteTTC_{{ p.id }}" data-index="{{ loop.index }}" disabled
-                                                           value="{{ p.puVenteTTC|number_format(3) }}"></td>
+                                                           value="{{ p.puVenteTTC|format_currency('TND') }}"></td>
                                     <td width="10%"><input type="text" class="form-control" id="tva_{{ p.id }}" disabled
                                                            value="{{ p.tva|number_format(1) }}" readonly></td>
                                     <td width="10%"><input type="text" class="form-control taux_{{ loop.index }}" id="taux_{{ p.id }}" disabled
-                                                           value="{{ p.taux|number_format(3) }}"></td>
+                                                           value="{{ p.taux|format_currency('TND') }}"></td>
 
 
                                 </tr>

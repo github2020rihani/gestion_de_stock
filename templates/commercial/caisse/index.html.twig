@@ -77,14 +77,14 @@
                                 <td>{{ c['date']|date('d/m/Y - g:ia') }}</td>
                                 <td>{{  c['num']  }}</td>
                                 <td>{%  if c['nomCustomer'] %}  {{ c['nomCustomer']}}  {% endif %}</td>
-                                <td>{{ c['montant'] }}</td>
+                                <td>{{ c['montant']|format_currency('TND') }} </td>
                                 <td>{%  if c['ncheque'] is not null %} {{ c['ncheque']}} {% endif %}</td>
                                 <td>
                                     {%  if  c['typeD'] !='Facture' %} - {% endif %}
-                                    {%  if c['espece'] is not null %} {{ c['espece'] }} {% else %} 0.000 {% endif %}
+                                    {%  if c['espece'] is not null %} {{ c['espece']|format_currency('TND') }} {% else %} 0.000 {% endif %}
                                 </td>
-                                <td>{%  if c['reste'] is not null %} {{ c['reste'] }} {% else %} 0.000 {% endif %}</td>
-                                <td>{%  if c['retenu'] is not null %} {{ c['retenu'] }} {% else %} 0.000 {% endif %}</td>
+                                <td>{%  if c['reste'] is not null %} {{ c['reste']|format_currency('TND') }} {% else %} 0.000 {% endif %}</td>
+                                <td>{%  if c['retenu'] is not null %} {{ c['retenu']|format_currency('TND') }} {% else %} 0.000 {% endif %}</td>
                                 <td>{{ c['tp']}}</td>
 {#                                <td>#}
 {#                                    <a href="" class="btn btn-info btn-sm" title="détail"><i class="fa fa-eye"></i> </a>#}
@@ -92,25 +92,29 @@
                             </tr>
 
                             {% endfor %}
-                            <tr>
-                                <td colspan="9">Montant Caisse</td>
-                                <td>{{ total_caisse }}</td>
+                            <tr >
+                                <td colspan="4"></td>
+                                <td>Total</td>
                             </tr>
                             <tr>
-                                <td colspan="9">Total dépense</td>
-                                <td>{{ total_depense }}</td>
+                                <td colspan="4">Montant Caisse</td>
+                                <td>{{ total_caisse|format_currency('TND') }}</td>
                             </tr>
                             <tr>
-                                <td colspan="9">Total Espece</td>
-                                <td>{{ totalEspese }}</td>
+                                <td colspan="4">Total dépense</td>
+                                <td>{{ total_depense|format_currency('TND') }}</td>
                             </tr>
                             <tr>
-                                <td colspan="9">Total Cheque</td>
-                                <td>{{ totalCheque }}</td>
+                                <td colspan="4">Total Espece</td>
+                                <td>{{ totalEspese|format_currency('TND') }}</td>
                             </tr>
                             <tr>
-                                <td colspan="9">Total Avoir</td>
-                                <td>{{ totalAvoir }}</td>
+                                <td colspan="4">Total Cheque</td>
+                                <td>{{ totalCheque|format_currency('TND') }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">Total Avoir</td>
+                                <td>{{ totalAvoir|format_currency('TND') }}</td>
                             </tr>
 
 

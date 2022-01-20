@@ -223,9 +223,9 @@ class PayementController extends AbstractController
                     $res = 0.000;
                     $re = 0.000;
                 }
-                $payement->setReste((float)(number_format((float)$res, 3)));
-                $payement->setRetenu((float)(number_format($re, 3)));
-                $payement->setMontant((float)(number_format($montant, 3)));
+                $payement->setReste((float)$res);
+                $payement->setRetenu((float)$re);
+                $payement->setMontant((float)$montant);
                 if ($res != 0.000) {
                     $invoiceObj->setStatus(3);
 
@@ -265,9 +265,9 @@ class PayementController extends AbstractController
                     $res = 0.000;
                     $re = 0.000;
                 }
-                $payement->setReste((float)(number_format((float)$res, 3)));
-                $payement->setRetenu((float)(number_format($re, 3)));
-                $payement->setMontant((float)(number_format($montant, 3)));
+                $payement->setReste((float)$res);
+                $payement->setRetenu((float)$re);
+                $payement->setMontant((float)$montant);
                 if ($res != 0.000) {
                     $invoiceObj->setStatus(3);
 
@@ -298,9 +298,9 @@ class PayementController extends AbstractController
                     $res = 0.000;
                     $re = 0.000;
                 }
-                $payement->setReste((float)(number_format((float)$res, 3)));
-                $payement->setRetenu((float)(number_format($re, 3)));
-                $payement->setMontant((float)(number_format($montant, 3)));
+                $payement->setReste((float)$res);
+                $payement->setRetenu((float)$re);
+                $payement->setMontant((float)$montant);
 
                 if ($res != 0.000) {
                     $invoiceObj->setStatus(3);
@@ -342,9 +342,9 @@ class PayementController extends AbstractController
                     $res = 0.000;
                     $re = 0.000;
                 }
-                $payement->setReste((float)(number_format((float)$res, 3)));
-                $payement->setRetenu((float)(number_format($re, 3)));
-                $payement->setMontant((float)(number_format($montant, 3)));
+                $payement->setReste((float)$res);
+                $payement->setRetenu((float)$re);
+                $payement->setMontant((float)$montant);
                 if ($res != 0.000) {
                     $invoiceObj->setStatus(3);
 

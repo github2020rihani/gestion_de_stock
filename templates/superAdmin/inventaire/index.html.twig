@@ -47,12 +47,12 @@
                                         style="font-size: 25px; font-weight: bold"> {{ inv.numero }}</span>
                                 <br>
                                 <br>
-                                Achat : <span class=""
-                                                   style="font-size: 25px; font-weight: bold"> {{ inv.addedBy.firstName}} {{ inv.addedBy.lastName}} </span>
+{#                                Achat : <span class=""#}
+{#                                                   style="font-size: 25px; font-weight: bold"> {{ inv.addedBy.firstName}} {{ inv.addedBy.lastName}} </span>#}
                                 <br>
                                 <br>
                                 TOTAL TTC : <span class="totalTTCInv"
-                                        style="font-size: 25px; font-weight: bold"> {{ inv.totalTTC | number_format(3) }} </span>
+                                        style="font-size: 25px; font-weight: bold"> {{ inv.totalTTC  |format_currency('TND') }} </span>
                             </div>
                             <div class="col-md-4"></div>
                             <div class="col-md-4"><span class="float-right">Date de création : <span
@@ -101,17 +101,17 @@
                                 <tr>
                                     <td>{{ ar['article']['ref'] }}</td>
                                     <td>{{ ar['article']['description'] }}</td>
-                                    <td>{{ ar['prAchatHT']|number_format(3) }}</td>
-                                    <td>{{ ar['prAchatTTC']|number_format(3) }}</td>
+                                    <td>{{ ar['prAchatHT']|format_currency('TND') }}</td>
+                                    <td>{{ ar['prAchatTTC']|format_currency('TND') }}</td>
                                     <td>{{ ar['qte'] }}</td>
-                                    <td>{{ ar['totalTTC']|number_format(3) }}</td>
+                                    <td>{{ ar['totalTTC']|format_currency('TND')}}</td>
 
                                 </tr>
 
                             {% endfor %}
                             <tr>
                                 <td colspan="5">    <span style="font-size: 25px; font-weight: bold" class="float-right">  TOTAL TTC :</span></td>
-                                <td> <span style="font-size: 25px; font-weight: bold"> {{ inv.totalTTC | number_format(3) }}</span></td>
+                                <td> <span style="font-size: 25px; font-weight: bold"> {{ inv.totalTTC |format_currency('TND') }}</span></td>
                             </tr>
 
 
