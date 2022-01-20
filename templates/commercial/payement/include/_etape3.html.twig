@@ -2,22 +2,22 @@
     <div class="payer">
         <div class="form-group">
             <h2 class="text-center">Type de paiement</h2>
-            <h6 class="text-center" style="font-size: 30px; color: green; text-align: center; font-weight: bold">
+            <h6 class="text-center type_pay" style="font-size: 30px; color: green; text-align: center; font-weight: bold">
                 {% if invoice['existBl'] %}
                     {% if invoice['bonLivraison']['typePayement'] == 1 %}
                         Escpece
                     {% elseif invoice['bonLivraison']['typePayement'] == 2 %}
-                        Carte
-                    {% elseif invoice['bonLivraison']['typePayement'] == 3 %}
                         Cheque
+                    {% elseif invoice['bonLivraison']['typePayement'] == 3 %}
+                        Carte
                     {% endif %}
                 {% else %}
                     {% if invoice['typePayement'] == 1 %}
                         Escpece
                     {% elseif invoice['typePayement'] == 2 %}
-                        Carte
-                    {% elseif invoice['typePayement'] == 3 %}
                         Cheque
+                    {% elseif invoice['typePayement'] == 3 %}
+                        Carte
                     {% endif %}
 
                 {% endif %}

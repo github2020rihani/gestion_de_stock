@@ -562,6 +562,7 @@ class BondLivraisonController extends AbstractController
 
             $message = 'Bon de livraison et une facture a été enregistrer';
             $status = true;
+            $bl = $bl->getId();
 
 
         } else {
@@ -569,7 +570,7 @@ class BondLivraisonController extends AbstractController
             $status = false;
         }
 
-        return $this->json(array('status' => $status, 'message' => $message));
+        return $this->json(array('status' => $status, 'message' => $message, 'idBl' => $bl));
     }
 
     public function generateBl($bl, $request, $b)

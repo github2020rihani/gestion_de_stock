@@ -77,7 +77,8 @@ class PayementController extends AbstractController
 
         }
         //form_payemnt_terminer.html.twig
-        return $this->render('commercial/payement/form_payemnt.html.twig', array('invoice' => $dataInvoice[0],
+        return $this->render('commercial/payement/form_payemnt.html.twig', array(
+            'invoice' => $dataInvoice[0],
                 'PREFIX_FACT' => $_ENV['PREFIX_FACT'],
                 'PREFIX_CUSTOMER' => $_ENV['PREFIX_CUSTOMER'])
         );

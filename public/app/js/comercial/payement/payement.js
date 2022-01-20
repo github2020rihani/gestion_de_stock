@@ -12,11 +12,14 @@ $(document).ready(function () {
 function savePayement() {
     $('.check-payer').click(function () {
 
-
-        if ($('.num_cheque').length <=20){
-            toastr.error('numero cheque incorrect ');
-            return false;
+        if ($('.type_pay').text() =='Cheque') {
+            if ($('.num_cheque').length <=20){
+                toastr.error('numero cheque incorrect ');
+                return false;
+            }
         }
+
+
         $('#formPayement').submit();
         $('.payer').empty();
         $('.payer').append('    <h1 class="text-center" style="color: green">Paiement  a été effectué avec succès </h1>\n');

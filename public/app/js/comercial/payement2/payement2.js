@@ -8,9 +8,11 @@ $(document).ready(function () {
 
 function savePayement22() {
     $('.check-payer2').click(function () {
-        if ($('.num_cheque').length <=20){
-            toastr.error('numero cheque incorrect ');
-            return false;
+        if ($('.type_pay').text() =='Cheque') {
+            if ($('.num_cheque').length <=20){
+                toastr.error('numero cheque incorrect ');
+                return false;
+            }
         }
         $('#formPayement2').submit();
         $('.payer').empty();

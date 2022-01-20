@@ -45,7 +45,7 @@
 {#                            </div>#}
                             <div class="form-group col-md-6">
                                 <label for="pno">Code TVA/ CIN :</label>
-                                {{ form_widget(form.codeTVA , {'attr': {'class' : 'form-control' , 'placeholder': 'Enter Code'}}) }}
+                                {{ form_widget(form.codeTVA , {'attr': {'class' : 'form-control' , 'placeholder': 'xxxxxxxx', 'pattern' : '[0-9]{8}'}}) }}
                                 <div class="help-block form-text with-errors form-control-feedback"></div>
 
                             </div>
@@ -69,7 +69,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="add2">Téléphone:</label>
-                                {{ form_widget(form.telephone ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter telephone'}}) }}
+                                {{ form_widget(form.telephone ,{'attr': {'class' : 'form-control' , 'placeholder': 'Enter telephone', 'pattern' : '[0-9]{8}', 'placeholder': '58666999'}}) }}
                                 <div class="help-block form-text with-errors form-control-feedback"></div>
 
                             </div>

@@ -26,6 +26,8 @@ function saveBlWithDevis() {
                 toastr.success(data.message);
                 //generate facture et bl and message toastr
 
+                window.location.href = '../detail/'+data.idBl;
+
 
             },
             error: function () {
