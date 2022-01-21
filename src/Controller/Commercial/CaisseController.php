@@ -59,12 +59,12 @@ class CaisseController extends AbstractController
             $data[$key]['retenu'] = $c->getRetenu();
             $data[$key] ['nomCustomer'] = $c->getCustomer();
             if ($c->getTypePayement() == '1') {
-                $data[$key]['tp'] ='Espese';
+                $data[$key]['tp'] ='Espèce';
                 $totalEspese = $totalEspese + $c->getMontant();
 
             }else if ($c->getTypePayement() == '2') {
                 $totalCheque = $totalCheque + $c->getMontant();
-                $data[$key]['tp'] ='Cheque';
+                $data[$key]['tp'] ='Chéque';
             }else{
                 $data[$key]['tp'] ='Carte';
             }

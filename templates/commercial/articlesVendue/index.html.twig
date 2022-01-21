@@ -45,7 +45,7 @@
                                 <th>Heure</th>
                                 <th>Client</th>
                                 <th>Elaboré par</th>
-                                <th>Article</th>
+{#                                <th>Article</th>#}
                                 <th>Total TTC</th>
                             </tr>
                             </thead>
@@ -55,7 +55,7 @@
                                 <th>Heure</th>
                                 <th>Client</th>
                                 <th>Elaboré par</th>
-                                <th>Article</th>
+{#                                <th>Article</th>#}
                                 <th>Total TTC</th>
                             </tr>
                             </tfoot>
@@ -66,25 +66,25 @@
                                     <td width="15%">{{ ar['date']|date('d/m/Y - g:ia') }}</td>
                                     <td width="10%">{{ ar['client'] }}</td>
                                     <td width="10%">{{ ar['addedBy'] }}</td>
-                                    <td>
-                                        {% for a in ar['articles'] %}
+{#                                    <td>#}
+{#                                        {% for a in ar['articles'] %}#}
 
-                                            {{ a['name'] }} ===>   {{ a['name'] }} ===>  {{ a['puht'] }} ==>  {{ a['puhtnet'] }} ===>  {{ a['totalht'] }} ==>  {{ a['totalttc'] }}
+{#                                            {{ a['name'] }} ===>   {{ a['name'] }} ===>  {{ a['puht'] }} ==>  {{ a['puhtnet'] }} ===>  {{ a['totalht'] }} ==>  {{ a['totalttc'] }}#}
 
-                                        {% endfor %}
+{#                                        {% endfor %}#}
 
-                                    </td>
+{#                                    </td>#}
                                     <td width="5%">
-                                            {{ ar['sometotalttc'] }}
+                                            {{ ar['sometotalttc']|format_currency('TND') }}
 
                                     </td>
                                 </tr>
                             {% endfor %}
                             <tr style="background-color: grey; font-size: 25px; color: white; font-weight: bold">
-                                <td colspan="5">
+                                <td colspan="4">
                                     TOTAL TTC(30) - Somme
                                 </td>
-                                <td>{{totalGlobalTTC }}</td>
+                                <td>{{totalGlobalTTC|format_currency('TND') }}</td>
 
                             </tr>
 

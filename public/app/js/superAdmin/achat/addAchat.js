@@ -12,10 +12,11 @@ $(document).ready(function () {
         $('.fournisseur').each(function () {
             if ($(this).val() == "0" || $(this).val() == null) {
                 error = true;
-
                 toastr.error('Veuillez choisir un fournisseur');
-
                 return true;
+            }else{
+                error = false;
+
             }
         })
         $('.numero_achat').each(function () {
@@ -25,6 +26,8 @@ $(document).ready(function () {
                 toastr.error('Veuillez Entrer numéro d\'achat');
 
                 return true;
+            }else{
+                error = false;
             }
         })
 

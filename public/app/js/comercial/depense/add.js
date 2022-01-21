@@ -1,7 +1,9 @@
 $(document).ready(function () {
+    $('.addDepense').hide();
     addLingeArticle();
     //
     $('.addDepense ').click(function () {
+        console.log(($('.tbodyLingeArticle').length));
         if ($('.tbodyLingeArticle').length == 0) {
             error = true;
             toastr.error('Aucun dépense a été ajouté');
@@ -49,6 +51,7 @@ var index;
 
 function addLingeArticle() {
     $('.addLingneArticle').click(function () {
+        $('.addDepense').show();
         error = false;
 
         countArticle++

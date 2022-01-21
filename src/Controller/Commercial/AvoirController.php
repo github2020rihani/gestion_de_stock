@@ -335,7 +335,7 @@ class AvoirController extends AbstractController
         $payment->setTypePayement($av->getTypePayement());
         $payment->setCreatedAt(new \DateTime());
         $payment->setAvoir($av);
-        $payment->setCustomer($av->getCustomer()->getId());
+        $payment->setCustomer($av->getCustomer()->getNom());
         $this->em->persist($payment);
         $this->em->flush();
 

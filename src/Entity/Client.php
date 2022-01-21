@@ -47,7 +47,7 @@ class  Client
     private $adresse;
 
     /**
-     * @ORM\Column(name="telephone", type="string", length=20, nullable=true)
+     * @ORM\Column(name="telephone", type="string", length=20, nullable=true, unique=true)
      *
      * @Assert\Length(
      *     min=8,
@@ -66,7 +66,7 @@ class  Client
 
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $codeTVA;
 

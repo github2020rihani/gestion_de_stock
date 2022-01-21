@@ -73,6 +73,7 @@ class PayementController extends AbstractController
             self::savePayement($dataInvoice[0], $request, $date);
             //generate recus payement
           //  self::generateRecupayement();
+            return $this->redirectToRoute('perso_index_invoice');
 
 
         }
@@ -100,6 +101,7 @@ class PayementController extends AbstractController
 
             //generate recus payement
           //  self::generateRecupayement();
+            return $this->redirectToRoute('perso_index_invoice');
 
 
         }
@@ -159,56 +161,71 @@ class PayementController extends AbstractController
         $payement->setTotalttc($totalTTc);
         $payement->setInvoice($invoiceObj);
         $filesCheque = [];
-        if ($file_invoice) {
-            $newFilenameInvoice = 'Facture_signer' . $dataInvoice['numero'] . '_' . $dataInvoice['year'] . $file_invoice->guessExtension();
-            if (!is_dir($mypath)) {
-                mkdir($mypath, 0777, TRUE);
-            }
-            $baseurlInvoice = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . '/uploads/caisse/' . $nameFloder . '/' . $newFilenameInvoice;
-            $payement->setFileInvoice($baseurlInvoice);
-            $file_invoice->move(
-                $mypath,
-                $newFilenameInvoice
-            );
-        }
+//        if ($file_invoice) {
+//            $newFilenameInvoice = 'Facture_signer' . $dataInvoice['numero'] . '_' . $dataInvoice['year'] . $file_invoice->guessExtension();
+//            if (!is_dir($mypath)) {
+//                mkdir($mypath, 0777, TRUE);
+//            }
+//            $baseurlInvoice = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . '/uploads/caisse/' . $nameFloder . '/' . $newFilenameInvoice;
+//            $payement->setFileInvoice($baseurlInvoice);
+//            $file_invoice->move(
+//                $mypath,
+//                $newFilenameInvoice
+//            );
+//        }
 
         if ($dataInvoice['existBl']) {
+            $blObject = $this->bondLivraisonRepository->find($dataInvoice['bonLivraison']['id']);
+
             //change status devis et bl and upload file
-            if ($file_bl) {
-                $blObject = $this->bondLivraisonRepository->find($dataInvoice['bonLivraison']['id']);
-                $nameCustomer = $blObject->getCustomer()->getNom() . ' ' . $blObject->getCustomer()->getPrenom();
-                $payement->setCustomer($nameCustomer);
-                $blObject->setStatus(2);
-                $this->em->persist($blObject);
-                $this->em->flush();
-                $newFilenameBl = 'bl_signer' . $dataInvoice['bonLivraison']['numero'] . '_' . $dataInvoice['bonLivraison']['year'] . $file_bl->guessExtension();
-                if (!is_dir($mypath)) {
-                    mkdir($mypath, 0777, TRUE);
-                }
-                $baseurlBl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . '/uploads/caisse/' . $nameFloder . '/' . $newFilenameBl;
-                $payement->setFileBl($baseurlBl);
-                $file_bl->move(
-                    $mypath,
-                    $newFilenameBl
-                );
-            }
-            //file devis
-            if ($file_devi) {
-                $deviObject = $this->devisRepository->find($dataInvoice['bonLivraison']['devi']['id']);
+            $nameCustomer = $blObject->getCustomer()->getNom() . ' ' . $blObject->getCustomer()->getPrenom();
+            $payement->setCustomer($nameCustomer);
+            $blObject->setStatus(2);
+            $this->em->persist($blObject);
+            $this->em->flush();
+
+            $deviObject = $this->devisRepository->find($dataInvoice['bonLivraison']['devi']['id']);
+            if ($deviObject) {
                 $deviObject->setStatus(2);
                 $this->em->persist($deviObject);
                 $this->em->flush();
-                $newFilenameDevis = 'devi_signer' . $dataInvoice['bonLivraison']['devi']['numero'] . '_' . $dataInvoice['bonLivraison']['year'] . $file_devi->guessExtension();
-                if (!is_dir($mypath)) {
-                    mkdir($mypath, 0777, TRUE);
-                }
-                $baseurlDevis = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . '/uploads/caisse/' . $nameFloder . '/' . $newFilenameDevis;
-                $payement->setFileBl($baseurlDevis);
-                $file_devi->move(
-                    $mypath,
-                    $newFilenameDevis
-                );
             }
+
+//            if ($file_bl) {
+//                $blObject = $this->bondLivraisonRepository->find($dataInvoice['bonLivraison']['id']);
+//                $nameCustomer = $blObject->getCustomer()->getNom() . ' ' . $blObject->getCustomer()->getPrenom();
+//                $payement->setCustomer($nameCustomer);
+//                $blObject->setStatus(2);
+//                $this->em->persist($blObject);
+//                $this->em->flush();
+//                $newFilenameBl = 'bl_signer' . $dataInvoice['bonLivraison']['numero'] . '_' . $dataInvoice['bonLivraison']['year'] . $file_bl->guessExtension();
+//                if (!is_dir($mypath)) {
+//                    mkdir($mypath, 0777, TRUE);
+//                }
+//                $baseurlBl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . '/uploads/caisse/' . $nameFloder . '/' . $newFilenameBl;
+//                $payement->setFileBl($baseurlBl);
+//                $file_bl->move(
+//                    $mypath,
+//                    $newFilenameBl
+//                );
+//            }
+            //file devis
+//            if ($file_devi) {
+//                $deviObject = $this->devisRepository->find($dataInvoice['bonLivraison']['devi']['id']);
+//                $deviObject->setStatus(2);
+//                $this->em->persist($deviObject);
+//                $this->em->flush();
+//                $newFilenameDevis = 'devi_signer' . $dataInvoice['bonLivraison']['devi']['numero'] . '_' . $dataInvoice['bonLivraison']['year'] . $file_devi->guessExtension();
+//                if (!is_dir($mypath)) {
+//                    mkdir($mypath, 0777, TRUE);
+//                }
+//                $baseurlDevis = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . '/uploads/caisse/' . $nameFloder . '/' . $newFilenameDevis;
+//                $payement->setFileBl($baseurlDevis);
+//                $file_devi->move(
+//                    $mypath,
+//                    $newFilenameDevis
+//                );
+//            }
 
             if ($dataInvoice['bonLivraison']['typePayement'] == 1) //espece
             {
