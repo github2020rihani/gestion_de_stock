@@ -96,7 +96,7 @@ class PayementController extends AbstractController
         if ($request->isMethod('post')) {
 
             //update payement
-            self::savePayement2($payementObject[0], $invoiceObject[0], $request);
+            self::savePayement2($payementObject, $invoiceObject, $request);
 
             //generate recus payement
           //  self::generateRecupayement();

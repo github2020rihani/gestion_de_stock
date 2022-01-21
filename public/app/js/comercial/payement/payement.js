@@ -10,7 +10,7 @@ function savePayement() {
     $('.check-payer').click(function () {
 
         if ($('.type_pay').text() == 'Cheque') {
-            if ($('.num_cheque').length <= 20) {
+            if ($('.num_cheque').length !== 20) {
                 toastr.error('numero cheque incorrect ');
                 return false;
             }
