@@ -6873,7 +6873,7 @@
                                                         Espece
                                                     {% elseif  invoice['bonLivraison']['typePayement'] == 2 %}
                                                         Cheque
-                                                    {% else %}
+                                                    {% elseif  invoice['bonLivraison']['typePayement'] == 3 %}
                                                         Carte
                                                     {% endif %}
                                                 </th>

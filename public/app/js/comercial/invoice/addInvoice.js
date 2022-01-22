@@ -340,12 +340,12 @@ function saveInvoice() {
                 return true;
             }
         })
-        if (type_payement == null) {
-            error = true;
-
-            toastr.error('Veuillez choisir le type de payement le quantité');
-            return true;
-        }
+        // if (type_payement == null) {
+        //     error = true;
+        //
+        //     toastr.error('Veuillez choisir le type de payement le quantité');
+        //     return true;
+        // }
 
         if (error) {
             return false;

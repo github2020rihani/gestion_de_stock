@@ -167,7 +167,7 @@ class BondLivraisonController extends AbstractController
             $bl->setCreatedBy($this->getUser());
             $bl->setExistDevi(false);
             $bl->setStatus(0);
-            $bl->setTypePayement($type_payement);
+//            $bl->setTypePayement($type_payement);
             $this->em->persist($bl);
             $this->em->flush();
 

@@ -166,7 +166,7 @@ class InvoiceController extends AbstractController
                 $invoice->setCreadetBy($this->getUser());
                 $invoice->setExistBl(false);
                 $invoice->setStatus(0);
-                $invoice->setTypePayement($type_payement);
+//                $invoice->setTypePayement($type_payement);
                 $this->em->persist($invoice);
                 $this->em->flush();
 

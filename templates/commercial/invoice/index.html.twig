@@ -100,7 +100,7 @@
                                                     <span class="mr-2 mb-2 badge badge-success typePaiement_{{ invoice.id }}"> Espace  </span>
                                                 {% elseif invoice.typePayement == 2 %}
                                                     <span class="mr-2 mb-2 badge badge-success typePaiement_{{ invoice.id }}"> Cheque  </span>
-                                                {% else %}
+                                                {% elseif invoice.typePayement == 3 %}
                                                     <span class="mr-2 mb-2 badge badge-success typePaiement_{{ invoice.id }}"> Carte  </span>
                                                 {% endif %}
 
@@ -113,7 +113,7 @@
                                                 <span class="mr-2 mb-2 badge badge-info"> En cours </span>
                                             {% elseif invoice.status == 2 %}
                                                 <span class="mr-2 mb-2 badge badge-success"> Terminée </span>
-                                                {% else %}
+                                            {% elseif invoice.status == 3 %}
                                                     <span class="mr-2 mb-2 badge badge-success"> paiement en cours </span>
 
                                             {% endif %}
