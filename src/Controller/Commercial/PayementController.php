@@ -183,13 +183,15 @@ class PayementController extends AbstractController
             $blObject->setStatus(2);
             $this->em->persist($blObject);
             $this->em->flush();
+if ($dataInvoice['bonLivraison']['devi']){
 
-            $deviObject = $this->devisRepository->find($dataInvoice['bonLivraison']['devi']['id']);
-            if ($deviObject) {
-                $deviObject->setStatus(2);
-                $this->em->persist($deviObject);
-                $this->em->flush();
-            }
+    $deviObject = $this->devisRepository->find($dataInvoice['bonLivraison']['devi']['id']);
+    if ($deviObject) {
+        $deviObject->setStatus(2);
+        $this->em->persist($deviObject);
+        $this->em->flush();
+    }
+}
 
 //            if ($file_bl) {
 //                $blObject = $this->bondLivraisonRepository->find($dataInvoice['bonLivraison']['id']);
@@ -384,17 +386,17 @@ class PayementController extends AbstractController
 
     }
 
-    public function savePayement2($payementObject, $invoiceObject, $request)
+    public function savePayement2( Payemet $payementObject, $invoiceObject, $request)
     {
         $file_cheque = $request->files->get('file_cheque');
         $num_cheque = $request->get('num_cheque');
-        $nameFloder = 'Facture_' . $invoiceObject['numero'] . '_' . $invoiceObject['year'];
+        $nameFloder = 'Facture_' . $invoiceObject->getNumero() . '_' . $invoiceObject->getYear();
         $uploadDir = $this->getParameter('uploads_directory');
         $mypath = $uploadDir . 'caisse/' . $nameFloder;
         $montant = $request->get('montant');
         $rest = $request->get('reste');
         $retenue = $request->get('retenue');
-        $totalTTc = $payementObject['totalTTC'];
+        $totalTTc = $payementObject->getTotalttc();
         $res = 0.000;
         $re = 0.000;
         $filesCheque = [];
