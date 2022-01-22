@@ -157,6 +157,7 @@ class PayementController extends AbstractController
         $payement = new Payemet();
         $payement->setAddedBy($this->getUser());
         $payement->setCreatedAt(new \DateTime());
+        $payement->setDate(new \DateTime());
         $payement->setType('Facture');
         $payement->setTotalttc($totalTTc);
         $payement->setInvoice($invoiceObj);

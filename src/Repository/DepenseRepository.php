@@ -32,6 +32,8 @@ class DepenseRepository extends ServiceEntityRepository
             ;
     }
 
+
+
     // /**
     //  * @return Depense[] Returns an array of Depense objects
     //  */

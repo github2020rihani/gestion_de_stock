@@ -38,6 +38,17 @@ class PayemetRepository extends ServiceEntityRepository
             ->getArrayResult()[0]
             ;
     }
+
+
+    public function getAllByDate($date) {
+        return $this->createQueryBuilder('p')
+            ->where('p.date = :date')
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return Payemet[] Returns an array of Payemet objects
     //  */

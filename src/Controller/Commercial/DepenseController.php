@@ -80,6 +80,7 @@ class DepenseController extends AbstractController
                 $this->em->flush();
                 //save caisse depence
                 $payment = new Payemet();
+                $payment->setDate(new \DateTime());
                 $payment->setAddedBy($this->getUser());
                 $payment->setCreatedAt(new \DateTime('now'));
                 $payment->setTotalttc($total_ttc_dep[$key]);

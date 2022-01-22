@@ -326,6 +326,8 @@ class AvoirController extends AbstractController
 
         //save in payement
         $payment = new Payemet();
+        $payment->setDate(new \DateTime());
+
         $payment->setAddedBy($this->getUser());
         $payment->setMontant($av->getTotalttc());
         $payment->setTotalttc($av->getTotalttc());

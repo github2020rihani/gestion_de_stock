@@ -109,6 +109,11 @@ class Payemet
      */
     private $avoir;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $date;
+
 
 
     public function getId(): ?int
@@ -330,6 +335,18 @@ class Payemet
     public function setAvoir(?Avoir $avoir): self
     {
         $this->avoir = $avoir;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(?\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }
