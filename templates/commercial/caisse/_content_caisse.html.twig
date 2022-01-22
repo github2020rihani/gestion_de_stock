@@ -64,10 +64,7 @@
             <td colspan="4"></td>
             <td>Total</td>
         </tr>
-        <tr>
-            <td colspan="4">Montant Caisse</td>
-            <td>{{ total_caisse|format_currency('TND') }}</td>
-        </tr>
+
         <tr>
             <td colspan="4">Total dépense</td>
             <td>{{ total_depense|format_currency('TND') }}</td>
@@ -85,7 +82,10 @@
             <td>{{ totalAvoir|format_currency('TND') }}</td>
         </tr>
 
-
+        <tr>
+            <td colspan="4">Montant Caisse</td>
+            <td>{{ total_caisse|format_currency('TND') }}</td>
+        </tr>
 
         </tbody>
     </table>

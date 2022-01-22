@@ -4,10 +4,14 @@
 namespace App\Controller\Commercial;
 
 
+use App\Entity\History;
 use App\Repository\DepenseRepository;
 use App\Repository\PayemetRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -95,7 +99,7 @@ class CaisseController extends AbstractController
                 'totalEspese' => $totalEspese,
                 'totalCheque' => $totalCheque,
                 'totalAvoir' => $total_avoir,
-                'total_caisse' => $totalFacture - ($total_depense+$total_avoir)
+                'total_caisse' => $totalFacture - ($total_depense + $total_avoir)
             ));
     }
 
@@ -104,7 +108,8 @@ class CaisseController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @Route("/change/caisse", name="change_caisse", options={"expose" = true})
      */
-    public function changeCaise(Request $request) {
+    public function changeCaise(Request $request)
+    {
 
         $date = $request->get('date');
         $dateNew = new \DateTime($date);
@@ -123,7 +128,7 @@ class CaisseController extends AbstractController
         $perfix_depense = $_ENV['PREFIX_DEPENSE'];
         $perfix_avoir = $_ENV['PREFIX_AVOIR'];
         $twig = '';
-        $status = false ;
+        $status = false;
         if ($caisse) {
             foreach ($caisse as $key => $c) {
 
@@ -160,23 +165,21 @@ class CaisseController extends AbstractController
                     $total_avoir = $total_avoir + $c->getMontant();
                 }
             }
-            $status = true ;
+            $status = true;
 
-            $twig =  $this->render('commercial/caisse/_content_caisse.html.twig'
+            $twig = $this->render('commercial/caisse/_content_caisse.html.twig'
                 , array(
                     'data' => $data,
                     'total_depense' => $total_depense,
                     'totalEspese' => $totalEspese,
                     'totalCheque' => $totalCheque,
                     'totalAvoir' => $total_avoir,
-                    'total_caisse' => $totalFacture - ($total_depense+$total_avoir)
+                    'total_caisse' => $totalFacture - ($total_depense + $total_avoir)
                 ))->getContent();
         }
 
 
-
-
-        return $this->json(['status' => $status , 'twig' => $twig]);
+        return $this->json(['status' => $status, 'twig' => $twig]);
     }
 
 
@@ -185,7 +188,8 @@ class CaisseController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @Route("/print/caisse", name="print_caisse", options={"expose" = true})
      */
-    public function printCaisse(Request $request) {
+    public function printCaisse(Request $request)
+    {
 
         $date = $request->get('date');
         $dateNew = new \DateTime($date);
@@ -204,7 +208,7 @@ class CaisseController extends AbstractController
         $perfix_depense = $_ENV['PREFIX_DEPENSE'];
         $perfix_avoir = $_ENV['PREFIX_AVOIR'];
         $twig = '';
-        $status = false ;
+        $status = false;
         if ($caisse) {
             foreach ($caisse as $key => $c) {
 
@@ -241,30 +245,59 @@ class CaisseController extends AbstractController
                     $total_avoir = $total_avoir + $c->getMontant();
                 }
             }
-            $status = true ;
+            $status = true;
+            $uploadDir = $this->getParameter('uploads_directory');
+            $pdfOptions = new Options();
+            $pdfOptions->setDefaultFont('Courier');
+            $pdfOptions->setIsRemoteEnabled(true);
+            $dompdf = new Dompdf($pdfOptions);
+            $html = $this->renderView('commercial/caisse/_print_caisse.html.twig', [
+                'data' => $data,
+                'total_depense' => $total_depense,
+                'totalEspese' => $totalEspese,
+                'totalCheque' => $totalCheque,
+                'totalAvoir' => $total_avoir,
+                'total_caisse' => $totalFacture - ($total_depense + $total_avoir)
+            ]);
+            $html .= '<link type="text/css" href="/public/app/assetes/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />';
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $contxt = stream_context_create([
+                'ssl' => [
+                    'verify_peer' => FALSE,
+                    'verify_peer_name' => FALSE,
+                    'allow_self_signed' => TRUE
+                ]
+            ]);
+            $dompdf->setHttpContext($contxt);
+            $dompdf->render();
+            $output = $dompdf->output();
 
+            $mypath = $uploadDir . 'caisse';
+            $newFilename = 'caisse_' . $date . '.pdf';
+            $pdfFilepath = $uploadDir . 'caisse/' . $newFilename;
+            if (!is_dir($mypath)) {
+                mkdir($mypath, 0777, TRUE);
 
-            //ne9sa bech ta3ml twig caisse pdf w bech tsir telechatgement deja 3amel menha ena  => kamlha inty ok
+            }
+            $baseurl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . '/uploads/caisse/' . $newFilename;
+            file_put_contents($pdfFilepath, $output);
+            $file_with_path = $uploadDir . strstr($baseurl, 'caisse');
+            $response = new BinaryFileResponse ($file_with_path);
+            $response->headers->set('Content-Type', 'application/pdf; charset=utf-8', 'application/force-download');
+            $response->headers->set('Content-Disposition', 'attachment; filename=devis.pdf');
 
+            $res = $response;
+        } else {
+            $res = 'error';
 
-//            $twig =  $this->render('commercial/caisse/_content_caisse.html.twig'
-//                , array(
-//                    'data' => $data,
-//                    'total_depense' => $total_depense,
-//                    'totalEspese' => $totalEspese,
-//                    'totalCheque' => $totalCheque,
-//                    'totalAvoir' => $total_avoir,
-//                    'total_caisse' => $totalFacture - ($total_depense+$total_avoir)
-//                ))->getContent();
         }
 
 
+        return $res;
 
 
-        return $this->json(['status' => $status , 'twig' => $twig]);
+
     }
-
-
-
 
 }
