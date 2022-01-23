@@ -63,7 +63,8 @@ class DevisController extends AbstractController
      */
     public function index()
     {
-        $devis = $this->devisRepository->findAll();
+
+        $devis = $this->devisRepository->findBy(array (),array('id' => 'desc'));
         return $this->render('commercial/devis/index.html.twig', array('devis' => $devis, 'perfex_devis' => $_ENV['PREFIX_DEVI']));
 
     }

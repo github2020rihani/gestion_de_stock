@@ -121,7 +121,7 @@ class BondLivraisonController extends AbstractController
      */
     public function index()
     {
-        $bls = $this->bondLivraisonRepository->findAll();
+        $bls = $this->bondLivraisonRepository->findBy(array (),array('id' => 'desc'));
         return $this->render('commercial/bondLivraison/index.html.twig', array('bls' => $bls, 'perfix_bl' => $_ENV['PREFIX_BL']));
 
     }

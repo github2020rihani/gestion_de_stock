@@ -1,0 +1,156 @@
+body{
+    background-color: grey;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+p{
+    margin: 0;
+}
+.facture{
+    width: 1000px;
+    height: 100%;
+    background-color: white;
+    margin: auto;
+    padding: 60px 30px;
+}
+
+.text-container{
+    display: flex;
+    flex-direction: row;
+}
+.entete{
+   justify-content: center;
+}
+
+.entete span{
+    font-size: 14px;
+    margin-right: 3px;
+}
+
+.entete p{
+    font-size: 14px;
+}
+
+.title-bold{
+font-weight: 700;
+}
+.num-fact{
+    font-size: 22px;
+    font-weight: 700;
+}
+.borders{
+    border: 2px solid grey;
+    padding: 1px;
+    border-radius: 7px;
+}
+.flex{
+    display: flex;
+    padding: 5px 10px;
+}
+.spacing{
+    flex-direction: column;
+    justify-content: space-around;
+}
+.client-entete p {
+    font-size: 17px;
+}
+.client-entete span {
+    font-size: 17px;
+    margin-right: 3px;
+}
+
+.client p {
+    font-size: 14px;
+}
+.client span {
+    font-size: 14px;
+    margin-right: 3px;
+}
+span{
+    margin-right: 3px;
+}
+/* table{
+    border: 2px solid grey;
+border-radius: 7px;
+margin-top: 30px;
+border-collapse: collapse;
+}
+td, th {
+    border: 2px solid grey; 
+    border-collapse: collapse;
+    text-align: center;
+} */
+
+.table-container{
+    margin-top: 30px;
+    border: 2px solid grey;
+border-radius: 7px;
+width: 100%;
+}
+
+tr:first-child{
+    border-bottom: 2px solid grey;
+}
+th {
+    border-right: 2px solid grey; 
+    border-collapse: collapse;
+    text-align: center;
+}
+th:last-child{
+    border: none;
+}  
+td {
+    border-right: 2px solid grey; 
+    border-collapse: collapse;
+    
+}
+td:last-child{
+    border: none;
+  
+} 
+.table2 {
+    width: 400px;
+    border: 2px solid grey;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+   
+}
+.column{
+    border-bottom: 2px solid grey;
+    display: flex;
+    flex-direction: row;
+    
+}
+.rows{
+    flex: 1;
+    text-align: center;
+    border-right: 
+    2px solid grey;
+}
+.rows:last-child, .column:last-child{
+    border: none;
+}
+.rowx{
+    flex: 2;
+    text-align: center;
+    border-right: 
+    2px solid grey;
+}
+.table3 {
+    width: 300px;
+    border: 2px solid grey;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+
+}
+
+.srv-com{
+    text-align: end;
+    margin-top: 10px;
+}

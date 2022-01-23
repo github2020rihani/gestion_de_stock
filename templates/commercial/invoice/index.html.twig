@@ -261,6 +261,11 @@
 
 
 {% block javascripts %}
+    <script>
+        $('#dataTable1').dataTable( {
+            "ordering": false
+        } );
+    </script>
     <script src="{{ asset('app/js/comercial/invoice/index.js') }}"></script>
 
 {% endblock %}

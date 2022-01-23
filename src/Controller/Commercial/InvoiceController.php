@@ -71,7 +71,7 @@ class InvoiceController extends AbstractController
      */
     public function index()
     {
-        $invoices = $this->invoiceRepository->findAll();
+        $invoices = $this->invoiceRepository->findBy(array (),array('id' => 'desc'));
         return $this->render('commercial/invoice/index.html.twig', array('invoices' => $invoices, 'perfex_invoice' => $_ENV['PREFIX_FACT']));
 
     }

@@ -10,10 +10,13 @@ use App\Repository\PayemetRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Snappy\Pdf;
 
 /**
  * Class CaisseController
@@ -46,6 +49,7 @@ class CaisseController extends AbstractController
         $total_caisse = 0;
         $total_avoir = 0;
         $totalFacture = 0;
+        $totalReste = 0;
 
         $data = [];
         $date = new \DateTime();
@@ -57,6 +61,7 @@ class CaisseController extends AbstractController
         $perfix_avoir = $_ENV['PREFIX_AVOIR'];
 
         foreach ($caisse as $key => $c) {
+            $totalReste = $totalReste + ($c->getReste());
 
             $total_caisse = $total_caisse + $c->getMontant();
             $data[$key]['date'] = $c->getCreatedAt();
@@ -77,8 +82,14 @@ class CaisseController extends AbstractController
                 $data[$key]['tp'] = 'Carte';
             }
             if ($c->getType() == 'Facture') {
-                $data[$key]['typeD'] = 'Facture';
-                $data[$key]['num'] = $perfix_invoice . '' . $c->getInvoice()->getId();
+                if ($c->getInvoice()->getExistBl() ) {
+                    $data[$key]['typeD'] = 'BL / Facture';
+
+                }else{
+                    $data[$key]['typeD'] = 'Facture';
+
+                }                $data[$key]['num'] = $perfix_invoice . '' . $c->getInvoice()->getId();
+                $data[$key]['invoiceId'] =$c->getInvoice()->getId();
                 $totalFacture = $totalFacture + $c->getMontant();
 
             } else if ($c->getType() == 'Dépence') {
@@ -91,14 +102,16 @@ class CaisseController extends AbstractController
                 $total_avoir = $total_avoir + $c->getMontant();
             }
         }
-
+//
         return $this->render('commercial/caisse/index.html.twig'
+//        return $this->render('commercial/caisse/_print_caisse.html.twig'
             , array(
                 'data' => $data,
                 'total_depense' => $total_depense,
                 'totalEspese' => $totalEspese,
                 'totalCheque' => $totalCheque,
                 'totalAvoir' => $total_avoir,
+                'totalReste' => $totalReste,
                 'total_caisse' => $totalFacture - ($total_depense + $total_avoir)
             ));
     }
@@ -120,6 +133,7 @@ class CaisseController extends AbstractController
         $total_caisse = 0;
         $total_avoir = 0;
         $totalFacture = 0;
+        $totalReste = 0;
 
         $data = [];
 
@@ -131,6 +145,7 @@ class CaisseController extends AbstractController
         $status = false;
         if ($caisse) {
             foreach ($caisse as $key => $c) {
+                $totalReste = $totalReste + ($c->getReste());
 
                 $total_caisse = $total_caisse + $c->getMontant();
                 $data[$key]['date'] = $c->getCreatedAt();
@@ -151,9 +166,17 @@ class CaisseController extends AbstractController
                     $data[$key]['tp'] = 'Carte';
                 }
                 if ($c->getType() == 'Facture') {
-                    $data[$key]['typeD'] = 'Facture';
+                    if ($c->getInvoice()->getExistBl() ) {
+                        $data[$key]['typeD'] = 'BL / Facture';
+
+                    }else{
+                        $data[$key]['typeD'] = 'Facture';
+
+                    }
                     $data[$key]['num'] = $perfix_invoice . '' . $c->getInvoice()->getId();
                     $totalFacture = $totalFacture + $c->getMontant();
+                    $data[$key]['invoiceId'] =$c->getInvoice()->getId();
+
 
                 } else if ($c->getType() == 'Dépence') {
                     $data[$key]['typeD'] = 'Dépence';
@@ -174,6 +197,7 @@ class CaisseController extends AbstractController
                     'totalEspese' => $totalEspese,
                     'totalCheque' => $totalCheque,
                     'totalAvoir' => $total_avoir,
+                    'totalReste' => $totalReste,
                     'total_caisse' => $totalFacture - ($total_depense + $total_avoir)
                 ))->getContent();
         }
@@ -259,6 +283,14 @@ class CaisseController extends AbstractController
                 'totalAvoir' => $total_avoir,
                 'total_caisse' => $totalFacture - ($total_depense + $total_avoir)
             ]);
+//            $html = $this->renderView('commercial/caisse/_print_caisse.html.twig', [
+//                'data' => $data,
+//                'total_depense' => $total_depense,
+//                'totalEspese' => $totalEspese,
+//                'totalCheque' => $totalCheque,
+//                'totalAvoir' => $total_avoir,
+//                'total_caisse' => $totalFacture - ($total_depense + $total_avoir)
+//            ]);
             $html .= '<link type="text/css" href="/public/app/assetes/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />';
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'portrait');
@@ -299,5 +331,64 @@ class CaisseController extends AbstractController
 
 
     }
+
+//    /**
+//     * @return Response
+//     * @Route("/test", name="test_snappy")
+//     */
+//
+//    public function test()
+//    {
+//        $snappy = $this->get('knp_snappy.pdf');
+//        $filename = 'myFirstSnappyPDF';
+//        $url = 'http://ourcodeworld.com';
+//
+//
+//        return new Response(
+//            $snappy->getOutput($url),
+//            200,
+//            array(
+//                'Content-Type'          => 'application/pdf',
+//                'Content-Disposition'   => 'inline; filename="'.$filename.'.pdf"'
+//            )
+//        );
+//    }
+//
+//
+    /**
+     * @param Pdf $knpSnappyPdf
+     * @return PdfResponse
+     * @Route("/test2", name="test2_snappy")
+     */
+    public function pdfAction(Pdf $knpSnappyPdf)
+    {
+
+        $html = $this->renderView('commercial/caisse/_print_caisse.html.twig', array(
+            'some'  => '$vars'
+        ));
+
+
+        return new PdfResponse(
+            $knpSnappyPdf->getOutputFromHtml($html),
+            'file.pdf'
+        );
+    }
+//
+//    /**
+//     * @param Pdf $knpSnappyPdf
+//     * @return PdfResponse
+//     * @Route("/test3", name="test3_snappy")
+//     */
+//
+//    public function pdf3Action(Pdf $knpSnappyPdf)
+//    {
+//        $pageUrl = $this->generateUrl('test2_snappy', array(), true); // use absolute path!
+//
+//        return new PdfResponse(
+//            $knpSnappyPdf->getOutput($pageUrl),
+//            'file.pdf'
+//        );
+//    }
+
 
 }

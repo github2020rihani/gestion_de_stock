@@ -19,6 +19,7 @@
             <th>Reste</th>
             <th>Retenue</th>
             <th>Type paiement</th>
+            <th></th>
             {#                                <th>Action</th>#}
         </tr>
         </thead>
@@ -34,6 +35,7 @@
             <th>Reste</th>
             <th>Retenue</th>
             <th>Type paiement</th>
+            <th></th>
             {#                                <th>Action</th>#}
 
         </tr>
@@ -54,6 +56,19 @@
                 <td>{%  if c['reste'] is not null %} {{ c['reste']|format_currency('TND') }} {% else %} 0.000 {% endif %}</td>
                 <td>{%  if c['retenu'] is not null %} {{ c['retenu']|format_currency('TND') }} {% else %} 0.000 {% endif %}</td>
                 <td>{{ c['tp']}}</td>
+                <td>
+                    {%  if  c['typeD'] =='Facture' and   c['reste'] %}
+
+                        <a class="  btn btn-sm btn-icon btn-success"
+                           data-toggle="tooltip"
+                           data-placement="top" title="" data-original-title="Paiement"
+                           href="{{ path('perso_paiement_invoice_part2', {id: c['invoiceId']}) }}"
+                           style="color: white">
+                            <i class="fa fa-cc"></i>
+                        </a>
+                    {% endif %}
+
+                </td>
                 {#                                <td>#}
                 {#                                    <a href="" class="btn btn-info btn-sm" title="détail"><i class="fa fa-eye"></i> </a>#}
                 {#                                </td>#}
@@ -80,6 +95,10 @@
         <tr>
             <td colspan="4">Total Avoir</td>
             <td>{{ totalAvoir|format_currency('TND') }}</td>
+        </tr>
+        <tr>
+            <td colspan="4">Total Reste</td>
+            <td>{{ totalReste|format_currency('TND') }}</td>
         </tr>
 
         <tr>
