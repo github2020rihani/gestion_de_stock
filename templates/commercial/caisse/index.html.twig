@@ -3,7 +3,16 @@
 {% block title %} Caisse {% endblock %}
 
 {% block stylesheets %}
+<style>
+    .totalCaisse{
 
+        font-weight: bold;
+        background-color: #ccd9e8;
+        color: red;
+        font-size: 25px;
+
+    }
+</style>
 {% endblock %}
        {% block smenu %}
            <ul class="breadcrumb">
@@ -112,10 +121,7 @@
                                         <td colspan="4"></td>
                                         <td>Total</td>
                                     </tr>
-                                    <tr>
-                                        <td colspan="4">Montant Caisse</td>
-                                        <td>{{ total_caisse|format_currency('TND') }}</td>
-                                    </tr>
+
                                     <tr>
                                         <td colspan="4">Total dépense</td>
                                         <td>{{ total_depense|format_currency('TND') }}</td>
@@ -131,6 +137,14 @@
                                     <tr>
                                         <td colspan="4">Total Avoir</td>
                                         <td>{{ totalAvoir|format_currency('TND') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">Total Reste</td>
+                                        <td>{{ totalReste|format_currency('TND') }}</td>
+                                    </tr>
+                                    <tr class="totalCaisse">
+                                        <td style="font-weight: bold;" colspan="4">Total Caisse</td>
+                                        <td style="font-weight: bold;">{{ total_caisse|format_currency('TND') }}</td>
                                     </tr>
 
 

@@ -6,6 +6,16 @@
         </div>
     </div>
 
+    <style>
+        .totalCaisse{
+
+            font-weight: bold;
+            background-color: #ccd9e8;
+            color: red;
+            font-size: 25px;
+
+        }
+    </style>
     <table id="dataTable1" width="100%" class="table table-striped table-lightfont">
         <thead>
         <tr>
@@ -101,9 +111,9 @@
             <td>{{ totalReste|format_currency('TND') }}</td>
         </tr>
 
-        <tr>
-            <td colspan="4">Montant Caisse</td>
-            <td>{{ total_caisse|format_currency('TND') }}</td>
+        <tr class="totalCaisse">
+            <td style="font-weight: bold;" colspan="4">Total Caisse</td>
+            <td style="font-weight: bold;">{{ total_caisse|format_currency('TND') }}</td>
         </tr>
 
         </tbody>

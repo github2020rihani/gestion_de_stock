@@ -111,7 +111,7 @@
                             {% endfor %}
                             <tr>
                                 <td colspan="5">    <span style="font-size: 25px; font-weight: bold" class="float-right">  TOTAL TTC :</span></td>
-                                <td> <span style="font-size: 25px; font-weight: bold"> {{ inv.totalTTC | number_format(3) }}</span></td>
+                                <td> <span style="font-size: 25px; font-weight: bold"> {{ inv.totalTTC |format_currency('TND') }}</span></td>
                             </tr>
 
 
@@ -143,5 +143,5 @@
         });
 
     </script>
-    <script src="{{ asset('app\js\comercial\inventaire\inventaire.js') }}"></script>
+    <script src="{{ asset('app/js/comercial/inventaire/inventaire.js') }}"></script>
 {% endblock %}

@@ -241,9 +241,11 @@ function saveInvoice() {
             if ($(this).val() == "0" || $(this).val() == null) {
                 error = true;
 
-                toastr.error('Veuillez choisir un client');
+                toastr.error('Veuillez choisir une Facture');
 
                 return true;
+            }else{
+                error = false;
             }
         })
 

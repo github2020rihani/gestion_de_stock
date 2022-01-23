@@ -29,7 +29,7 @@
                                 Modifier une avoir
                             </h6>
                             <div class="element-box" style="min-height: 360px">
-                            {%  if a.status %}
+                            {%  if a.status == 0%}
                                 <form method="post" action="{{ path('edit_avoir', {id: a.id}) }}" class="formEditBL">
                                 {% endif %}
                                     <input type="hidden" class="fodecChecked" name="fodecChecked" value="">
@@ -82,7 +82,7 @@
                                             {% for art in a.articleAvoirs %}
                                          <tr class="ligne_article">
                                                 <td scope="row">
-                                                {%  if a.status %}
+                                                {%  if a.status == 0 %}
                                                     <button class="btn btn-danger mr-2
 
                                                     delete_ligneArticle delete_ligneArticle_{{loop.index}}"
