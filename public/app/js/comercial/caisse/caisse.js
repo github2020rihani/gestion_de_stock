@@ -36,6 +36,11 @@ $(document).ready(function () {
 
 
     $('.printCaisse').click(function () {
+        if ($('#dataTable1').length == 0){
+            toastr.error('Pas de enregistrement');
+            return false;
+
+        }
         date =  $('.date_selected').val();
         $.ajax({
             url: Routing.generate('print_caisse'),
