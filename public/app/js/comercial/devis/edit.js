@@ -240,11 +240,11 @@ function changeQte() {
         // console.log($(this).val())
         // console.log($('.stock_' + idart).val())
 
-        if (parseInt(($(this).val())) > parseInt(($('.stock_' + index).val()))) {
-            toastr.error('la quatité est depasser le stock');
-            $(this).val('');
-            return false;
-        }
+        // if (parseInt(($(this).val())) > parseInt(($('.stock_' + index).val()))) {
+        //     toastr.error('la quatité est depasser le stock');
+        //     $(this).val('');
+        //     return false;
+        // }
 
 
         $(this).attr('value', $(this).val())
@@ -273,11 +273,11 @@ function changeQteInitial() {
             $('.oldQteArt_'+index).val(0);
         }
 
-        if (parseInt(($(this).val())) > parseInt(($('.stock_' + index).val()))) {
-            toastr.error('la quatité est depasser le stock');
-            $(this).val('');
-            return false;
-        }
+        // if (parseInt(($(this).val())) > parseInt(($('.stock_' + index).val()))) {
+        //     toastr.error('la quatité est depasser le stock');
+        //     $(this).val('');
+        //     return false;
+        // }
 
 
         $(this).attr('value', $(this).val())

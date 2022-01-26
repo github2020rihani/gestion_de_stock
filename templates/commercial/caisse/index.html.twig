@@ -3,16 +3,16 @@
 {% block title %} Caisse {% endblock %}
 
 {% block stylesheets %}
-<style>
-    .totalCaisse{
+    <style>
+        .totalCaisse {
 
-        font-weight: bold;
-        background-color: #ccd9e8;
-        color: red;
-        font-size: 25px;
+            font-weight: bold;
+            background-color: #ccd9e8;
+            color: red;
+            font-size: 25px;
 
-    }
-</style>
+        }
+    </style>
 {% endblock %}
        {% block smenu %}
            <ul class="breadcrumb">
@@ -48,17 +48,20 @@
                     <div class="table-responsive">
                         <div class="row">
                             <div class="col-md-6">
-                                <input type="date" class="form-control date_selected" name="date_selected" value="{{ "now"|date("Y-m-d") }}">
+                                <input type="date" class="form-control date_selected" name="date_selected"
+                                       value="{{ "now"|date("Y-m-d") }}">
 
                             </div>
                             <div class="col-md-6">
-                                <button class="btn btn-md btn-primary printCaisse pull-right"><i class="fa fa-print"></i> Imprimer </button>
+                                <button class="btn btn-md btn-primary printCaisse pull-right"><i
+                                            class="fa fa-print"></i> Imprimer
+                                </button>
 
                             </div>
 
                         </div>
                         <div class="twig">
-                            {%  if data %}
+                            {% if data %}
                                 <div class="row">
 
                                 </div>
@@ -76,7 +79,7 @@
                                         <th>Reste</th>
                                         <th>Retenue</th>
                                         <th>Type paiement</th>
-                                        {#                                <th>Action</th>#}
+                                        <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
@@ -91,33 +94,37 @@
                                         <th>Reste</th>
                                         <th>Retenue</th>
                                         <th>Type paiement</th>
-                                        {#                                <th>Action</th>#}
+                                        <th>Action</th>
 
                                     </tr>
                                     </tfoot>
                                     <tbody class="ligth-body">
                                     {% for c in data %}
-                                        <tr style="{%  if  c['typeD'] =='Dépence' %} background-color: rgba(222,180,101,0.12)  {% elseif  c['typeD'] =='Avoir' %}  background-color: rgba(255,0,0,0.12) {% endif %}">
-                                            <td>{{  c['typeD']  }}</td>
+                                        <tr style="{%  if  c['typeD'] =='Dépence' %} background-color: rgba(222,180,101,0.12)
+                                         {% elseif  c['typeD'] =='Avoir' %}  background-color: rgba(255,0,0,0.12) {% endif %}">
+                                            <td>{{ c['typeD'] }}</td>
                                             <td>{{ c['date']|date('d/m/Y - g:ia') }}</td>
-                                            <td>{{  c['num']  }}</td>
-                                            <td>{%  if c['nomCustomer'] %}  {{ c['nomCustomer']}}  {% endif %}</td>
+                                            <td>{{ c['num'] }}</td>
+                                            <td>{% if c['nomCustomer'] %}  {{ c['nomCustomer'] }}  {% endif %}</td>
                                             <td>{{ c['montant']|format_currency('TND') }} </td>
-                                            <td>{%  if c['ncheque'] is not null %} {{ c['ncheque']}} {% endif %}</td>
+                                            <td>{% if c['ncheque'] is not null %} {{ c['ncheque'] }} {% endif %}</td>
                                             <td>
-                                                {%  if  c['typeD'] !='Facture' %} - {% endif %}
-                                                {%  if c['espece'] is not null %} {{ c['espece']|format_currency('TND') }} {% else %} 0.000 {% endif %}
+                                                {% if  c['typeD'] !='Facture' %} - {% endif %}
+                                                {% if c['espece'] is not null %} {{ c['espece']|format_currency('TND') }} {% else %} 0.000 {% endif %}
                                             </td>
-                                            <td>{%  if c['reste'] is not null %} {{ c['reste']|format_currency('TND') }} {% else %} 0.000 {% endif %}</td>
-                                            <td>{%  if c['retenu'] is not null %} {{ c['retenu']|format_currency('TND') }} {% else %} 0.000 {% endif %}</td>
-                                            <td>{{ c['tp']}}</td>
-                                            {#                                <td>#}
-                                            {#                                    <a href="" class="btn btn-info btn-sm" title="détail"><i class="fa fa-eye"></i> </a>#}
-                                            {#                                </td>#}
+                                            <td>{% if c['reste'] is not null %} {{ c['reste']|format_currency('TND') }} {% else %} 0.000 {% endif %}</td>
+                                            <td>{% if c['retenu'] is not null %} {{ c['retenu']|format_currency('TND') }} {% else %} 0.000 {% endif %}</td>
+                                            <td>{{ c['tp'] }}</td>
+                                            <td>
+                                                {%  if  c['typeD'] =='Facture' and c['reste'] > 0 %}
+                                                <a href="{{ path('perso_paiement_invoice_part2', {id :c['num'] }) }}" class="btn btn-info btn-sm" title="Payer"><i
+                                                            class="fa fa-edit"></i> Payer</a>
+                                                {% endif %}
+                                            </td>
                                         </tr>
 
                                     {% endfor %}
-                                    <tr >
+                                    <tr>
                                         <td colspan="4"></td>
                                         <td>Total</td>
                                     </tr>
@@ -146,7 +153,6 @@
                                         <td style="font-weight: bold;" colspan="4">Total Caisse</td>
                                         <td style="font-weight: bold;">{{ total_caisse|format_currency('TND') }}</td>
                                     </tr>
-
 
 
                                     </tbody>

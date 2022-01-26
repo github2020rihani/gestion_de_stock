@@ -82,14 +82,15 @@ class CaisseController extends AbstractController
                 $data[$key]['tp'] = 'Carte';
             }
             if ($c->getType() == 'Facture') {
-                if ($c->getInvoice()->getExistBl() ) {
+                if ($c->getInvoice()->getExistBl()) {
                     $data[$key]['typeD'] = 'BL / Facture';
 
-                }else{
+                } else {
                     $data[$key]['typeD'] = 'Facture';
 
-                }                $data[$key]['num'] = $perfix_invoice . '' . $c->getInvoice()->getId();
-                $data[$key]['invoiceId'] =$c->getInvoice()->getId();
+                }
+                $data[$key]['num'] = $perfix_invoice . '' . $c->getInvoice()->getId();
+                $data[$key]['invoiceId'] = $c->getInvoice()->getId();
                 $totalFacture = $totalFacture + $c->getMontant();
 
             } else if ($c->getType() == 'Dépence') {
@@ -103,8 +104,8 @@ class CaisseController extends AbstractController
             }
         }
 //
-        return $this->render('commercial/caisse/index.html.twig'
-//        return $this->render('commercial/caisse/_print_caisse.html.twig'
+//        return $this->render('commercial/caisse/index.html.twig'
+        return $this->render('commercial/caisse/_print_caisse.html.twig'
             , array(
                 'data' => $data,
                 'total_depense' => $total_depense,
@@ -166,16 +167,16 @@ class CaisseController extends AbstractController
                     $data[$key]['tp'] = 'Carte';
                 }
                 if ($c->getType() == 'Facture') {
-                    if ($c->getInvoice()->getExistBl() ) {
+                    if ($c->getInvoice()->getExistBl()) {
                         $data[$key]['typeD'] = 'BL / Facture';
 
-                    }else{
+                    } else {
                         $data[$key]['typeD'] = 'Facture';
 
                     }
                     $data[$key]['num'] = $perfix_invoice . '' . $c->getInvoice()->getId();
                     $totalFacture = $totalFacture + $c->getMontant();
-                    $data[$key]['invoiceId'] =$c->getInvoice()->getId();
+                    $data[$key]['invoiceId'] = $c->getInvoice()->getId();
 
 
                 } else if ($c->getType() == 'Dépence') {
@@ -329,7 +330,6 @@ class CaisseController extends AbstractController
         return $res;
 
 
-
     }
 
 //    /**
@@ -353,8 +353,8 @@ class CaisseController extends AbstractController
 //            )
 //        );
 //    }
-//
-//
+
+
     /**
      * @param Pdf $knpSnappyPdf
      * @return PdfResponse
@@ -363,15 +363,13 @@ class CaisseController extends AbstractController
     public function pdfAction(Pdf $knpSnappyPdf)
     {
 
-        $html = $this->renderView('commercial/caisse/_print_caisse.html.twig', array(
-            'some'  => '$vars'
-        ));
-
-
-        return new PdfResponse(
-            $knpSnappyPdf->getOutputFromHtml($html),
-            'file.pdf'
-        );
+        return $this->render('commercial/caisse/_print_caisse.html.twig');
+//        $html = $this->renderView('commercial/caisse/_print_caisse.html.twig', array(
+//            'some' => '$vars'
+//        ));
+//
+//
+//        return $html;
     }
 //
 //    /**

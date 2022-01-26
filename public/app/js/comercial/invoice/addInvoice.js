@@ -220,10 +220,10 @@ function selectArticleBl(index) {
                 if (data) {
                     var totalHtGlobal = 0;
                     var totalTTCGlobal = 0;
-                    $('.puht_' + index).val((data[0].puVenteHT).toFixed(3));
+                    $('.puht_' + index).val((data[0].puVenteHT));
                     $('.stock_' + index).val((data[0].qte));
                     $('.remise_' + index).val(data[0].article.remise);
-                    $('.puhtnet_' + index).val((data[0].puVenteHT).toFixed(3));
+                    $('.puhtnet_' + index).val((data[0].puVenteHT));
                     $('.delete_ligneArticle_'+index).attr('data-id_art',data[0].article.id )
                     $('.totalht_' +  index).val(0.000);
                     $('.puttc_' +  index).val(0.000);

@@ -73,6 +73,7 @@ function addLingeArticle() {
             url: Routing.generate('api_get_articles_from_prix_devis'),
             type: "POST",
             success: function (data) {
+                console.log(data);
                 console.log(data[0].qte);
                 if (data) {
                     for (var i = 0; i < data.length; i++) {
@@ -240,11 +241,11 @@ function changeQte() {
         // console.log($(this).val())
         // console.log($('.stock_' + idart).val())
 
-        if (parseInt(($(this).val())) > parseInt(($('.stock_' + index).val()))) {
-            toastr.error('la quatité est depasser le stock');
-            $(this).val('');
-            return false;
-        }
+        // if (parseInt(($(this).val())) > parseInt(($('.stock_' + index).val()))) {
+        //     toastr.error('la quatité est depasser le stock');
+        //     $(this).val('');
+        //     return false;
+        // }
 
 
         $(this).attr('value', $(this).val())

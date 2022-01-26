@@ -41,7 +41,7 @@ class CategoryController extends AbstractController
             $em->flush();
             $this->addFlash('success','Ajout effectué avec succés');
 
-            return $this->redirectToRoute('index_category');
+            return $this->redirectToRoute('achat_index_category');
         }
 
         return $this->render('admin/category/new.html.twig',[
@@ -74,7 +74,7 @@ class CategoryController extends AbstractController
 
             if ($categorieLieByArticle) {
                 $this->addFlash('error','Cet catégorie lié avec un ou des (articles), tu ne peut pas supprimers');
-                return $this->redirectToRoute('index_category');
+                return $this->redirectToRoute('achat_index_category');
             }
 
             $em->remove($categories);
@@ -83,7 +83,7 @@ class CategoryController extends AbstractController
         }else{
             $this->addFlash('error','Aucun categorie trouvé ');
         }
-        return $this->redirectToRoute('index_category');
+        return $this->redirectToRoute('achat_index_category');
     }
 
 
@@ -104,7 +104,7 @@ class CategoryController extends AbstractController
             $em->flush();
             $this->addFlash('success','Modifier effectué avec succés');
 
-            return $this->redirectToRoute('index_category');
+            return $this->redirectToRoute('achat_index_category');
         }
 
         return $this->render('admin/category/new.html.twig',[
