@@ -58,8 +58,8 @@ function annuler() {
 
 
 function onChangePrixAchatNet() {
-    $('.pachatnet').on("input", function (e) {
-        var index = $(this).data('index');
+        $('.table_prix').on("input", '.pachatnet' ,function (e) {
+            var index = $(this).data('index');
         oldpuAchatTTc = $('.pachatttc_' + index);
         newPAchatHT = parseFloat($(this).val());
 
@@ -78,8 +78,9 @@ function onChangePrixAchatNet() {
 }
 
 function onchangePrixVenteTTC() {
-    $('.pventettc').on("input", function (e) {
-        var index = $(this).data('index');
+        $('.table_prix').on("input", '.pventettc' ,function (e) {
+
+            var index = $(this).data('index');
         oldPuVenteHT = $('.pventeht_' + index).val();
         newPventeTTc = parseFloat($(this).val());
         newPAchatHT = $('.pachatnet_'+index).val();
