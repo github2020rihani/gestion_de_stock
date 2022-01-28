@@ -82,6 +82,8 @@ class AchatController extends AbstractController
                 return $this->redirectToRoute('index_achat');
             }
             //input achat
+            $qte = $request->get('qte');
+
             $fournisseur = $request->get('fournisseur');
             $fodec = $request->get('fodecChecked');
             $remise = $request->get('remise');
@@ -112,9 +114,9 @@ class AchatController extends AbstractController
 
             $totalTva =   $totalHt * $_ENV['TVA_ARTICLE'];
             $totalTTC=  (float)$totalHt + (float)$totalTva+ (float)$remise + $_ENV['TIMBRE'] + (float)$transport ;
-            $achat->setTotalHT((float)number_format($totalHt , 3));
-            $achat->setTotalTVA((float)number_format($totalTva , 3));
-            $achat->setTotalTTC((float)number_format($totalTTC , 3));
+            $achat->setTotalHT((float)($totalHt));
+            $achat->setTotalTVA((float)($totalTva ));
+            $achat->setTotalTTC((float)($totalTTC ));
             $achat->setYear($year);
             $achat->setNumId($numAchat);
                 //save achat
@@ -130,14 +132,14 @@ class AchatController extends AbstractController
 
             //save Article achat
             foreach ($ref as $key => $value) {
-                $article = $this->articleRepository->find($value);
+                $article = $this->articleRepository->find((int)$value);
                 $achatArticle = new AchatArticle();
                 //check article exist in other achat
                 $articleAchatExisteInOtherAchat = $this->achatArticleRepository->findBy(array('article' => $article->getId()));
                 if ($articleAchatExisteInOtherAchat) {
-                    foreach ($articleAchatExisteInOtherAchat as $key => $value) {
+                    foreach ($articleAchatExisteInOtherAchat as $key2 => $value2) {
                         $value->setTypePrix('old');
-                        $this->em->persist($value);
+                        $this->em->persist($value2);
                         $this->em->flush();
                     }
                 }
@@ -207,6 +209,8 @@ class AchatController extends AbstractController
             $fournisseur = $request->get('fournisseur');
             $date_creation = $request->get('date_creation');
             $fodec = $request->get('fodec');
+            $remise = $request->get('remise');
+            $transport = $request->get('transport');
             //calculer total
 
             //update achat
@@ -216,6 +220,9 @@ class AchatController extends AbstractController
                 $achat->setAddedBy($this->getUser());
                 $achat->setCreatedAt(new \DateTime($date_creation));
                 $achat->setFodec($fodec);
+                $achat->setRemise( (float)number_format($remise, 3));
+                $achat->setTronsport( (float)number_format($transport, 3));
+                $achat->setTimbre( (float)number_format($_ENV['TIMBRE'], 3));
                 $this->em->persist($achat);
                 $this->em->flush();
             } else {
@@ -229,6 +236,29 @@ class AchatController extends AbstractController
             $puhtnet = $request->get('puhtnet');
             $qte = $request->get('qte');
             $pventettc = $request->get('pventettc');
+            $totalHt = 0 ;
+            $totalTva = 0 ;
+            $totalTTC = 0 ;
+            foreach ($ref as $key => $value) {
+                $totalHt= $totalHt+ ((float)$puhtnet[$key] * $qte[$key]);
+
+            }
+            if ($fodec == "true") {
+                $achat->setFodec(true);
+                $totalHt = $totalHt *  $_ENV['FODEC'];
+            }else{
+                $achat->setFodec(false);
+            }
+
+            $totalTva =   $totalHt * $_ENV['TVA_ARTICLE'];
+            $totalTTC=  (float)$totalHt + (float)$totalTva+ (float)$remise + $_ENV['TIMBRE'] + (float)$transport ;
+            $achat->setTotalHT((float)($totalHt));
+            $achat->setTotalTVA((float)($totalTva ));
+            $achat->setTotalTTC((float)($totalTTC ));
+            $this->em->persist($achat);
+            $this->em->flush();
+
+
             //delete Articles
             $old_articles = $this->achatArticleRepository->findBy(array('Achat' => $achat));
             if ($old_articles) {

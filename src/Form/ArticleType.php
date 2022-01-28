@@ -12,8 +12,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArticleType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
         $builder
             ->add('ref')
             ->add('description')
@@ -22,10 +24,11 @@ class ArticleType extends AbstractType
             ))
             ->add('categorie', EntityType::class, [
                     'class' => Category::class,
-                    'placeholder' => 'choisir une catégorie',
+//                    'placeholder' => 'choisir une catégorie',
                     'choice_label' => 'title',
+
                     'attr' => [
-                        'class' => 'form-control'
+                        'class' => 'form-control',
                     ],
                 ]
             )
